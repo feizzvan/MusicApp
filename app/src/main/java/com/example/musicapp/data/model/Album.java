@@ -1,26 +1,43 @@
 package com.example.musicapp.data.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity(tableName = "albums")
 public class Album {
     @SerializedName("id")
+    @PrimaryKey
+    @ColumnInfo(name = "album_id")
     private int mId;
+
     @SerializedName("name")
+    @ColumnInfo(name = "name")
     private String mName;
+
     @SerializedName("size")
+    @ColumnInfo(name = "size")
     private int mSize;
+
     @SerializedName("artwork")
+    @ColumnInfo(name = "artwork")
     private String mArtwork;
+
     @SerializedName("songs")
+    @Ignore
     private final List<String> mSongs = new ArrayList<>();
 
     public Album() {
     }
 
+    @Ignore
     public Album(int id, int size, String name, String artwork) {
         this.mId = id;
         this.mSize = size;

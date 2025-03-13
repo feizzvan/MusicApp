@@ -1,35 +1,62 @@
 package com.example.musicapp.data.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
+@Entity(tableName = "songs")
 public class Song {
     @SerializedName("id")
-    private String mId;
+    @NonNull
+    @PrimaryKey
+    @ColumnInfo(name = "song_id")
+    private String mId = " ";
+
     @SerializedName("title")
+    @ColumnInfo(name = "title")
     private String mTitle;
+
     @SerializedName("album")
+    @ColumnInfo(name = "album")
     private String mAlbum;
+
     @SerializedName("artist")
+    @ColumnInfo(name = "artist")
     private String mArtist;
+
     @SerializedName("source")
+    @ColumnInfo(name = "source")
     private String mSource;
+
     @SerializedName("image")
+    @ColumnInfo(name = "image")
     private String mImage;
+
     @SerializedName("duration")
+    @ColumnInfo(name = "duration")
     private int mDuration;
+
     @SerializedName("favorite")
+    @ColumnInfo(name = "favorite")
     private boolean mFavorite;
+
     @SerializedName("counter")
+    @ColumnInfo(name = "counter")
     private int mCounter;
+
     @SerializedName("replay")
+    @ColumnInfo(name = "replay")
     private int mReplay;
 
     public Song() {
     }
 
-    public Song(String Id, String Title, String Album, String Artist, String Source,
+    public Song(@NonNull String Id, String Title, String Album, String Artist, String Source,
                 String Image, int Duration, boolean Favorite, int Counter, int Replay) {
         this.mId = Id;
         this.mTitle = Title;

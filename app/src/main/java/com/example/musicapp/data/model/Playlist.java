@@ -1,28 +1,49 @@
 package com.example.musicapp.data.model;
 
 import androidx.media3.common.MediaItem;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity(tableName = "playlists")
 public class Playlist {
+    @Ignore
     private static int sNextId = 1001;
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "playlist_id")
     private int mId = 1001;
-    private String mArtwork;
+
+    @ColumnInfo(name = "name")
     private String mName;
+
+    @ColumnInfo(name = "artwork")
+    private String mArtwork;
+
+    @ColumnInfo(name = "create_at")
     private Date mCreateAt;
+
+    @Ignore
     private List<Song> mSongs = new ArrayList<>();
+
+    @Ignore
     private final List<MediaItem> mMediaItems = new ArrayList<>();
 
     public Playlist() {
 
     }
 
-    public Playlist(int id, String name){
+    @Ignore
+    public Playlist(int id, String name) {
         this(id, name, null, null, null);
     }
 
+    @Ignore
     public Playlist(int id, String name, String artwork, Date createAt, List<Song> songs) {
         setId(id);
         setName(name);
@@ -36,7 +57,7 @@ public class Playlist {
     }
 
     public void setId(int id) {
-        if(id > 0){
+        if (id > 0) {
             mId = id;
         } else {
             mId = sNextId++;
@@ -47,16 +68,16 @@ public class Playlist {
         return mArtwork;
     }
 
-    public void setArtwork(String artwork) {
-        mArtwork = artwork;
-    }
-
     public String getName() {
         return mName;
     }
 
     public void setName(String name) {
         mName = name;
+    }
+
+    public void setArtwork(String artwork) {
+        mArtwork = artwork;
     }
 
     public Date getCreateAt() {

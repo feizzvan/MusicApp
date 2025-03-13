@@ -2,6 +2,8 @@ package com.example.musicapp.ui.playing;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.media3.session.MediaController;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
@@ -30,6 +33,7 @@ public class MiniPlayerFragment extends Fragment {
     // Listener để lắng nghe các thay đổi trạng thái của trình phát nhạc
     private Player.Listener mPlayerListener;
     private Animator mAnimator;
+    private ObjectAnimator mRotationAnimator;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -111,6 +115,7 @@ public class MiniPlayerFragment extends Fragment {
         mBinding.btnMiniPlayerSkipNext.setOnClickListener(view -> {
             mAnimator.setTarget(view);
             mAnimator.start();
+            mRotationAnimator.end();
             if (mMediaController.hasNextMediaItem()) {
                 mMediaController.seekToNext();
             }
@@ -119,13 +124,25 @@ public class MiniPlayerFragment extends Fragment {
 
     private void setupAnimator() {
         mAnimator = AnimatorInflater.loadAnimator(requireContext(), R.animator.button_pressed);
+        mRotationAnimator = ObjectAnimator
+                .ofFloat(mBinding.imgMiniPlayerAvatar, "rotation", 0f, 360f);
+        mRotationAnimator.setInterpolator(new LinearInterpolator());
+        mRotationAnimator.setDuration(10000);
+        mRotationAnimator.setRepeatMode(ValueAnimator.RESTART);
+        mRotationAnimator.setRepeatCount(ValueAnimator.INFINITE);
     }
 
     private void updatePlayingState(Boolean isPlaying) {
         if (isPlaying) {
             mBinding.btnMiniPlayerPlayPause.setImageResource(R.drawable.ic_pause);
+            if (mRotationAnimator.isPaused()) {
+                mRotationAnimator.resume();
+            } else if (!mRotationAnimator.isRunning()) {
+                mRotationAnimator.start();
+            }
         } else {
             mBinding.btnMiniPlayerPlayPause.setImageResource(R.drawable.ic_play);
+            mRotationAnimator.pause();
         }
     }
 
