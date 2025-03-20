@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MiniPlayerFragment extends Fragment {
+public class MiniPlayerFragment extends Fragment implements View.OnClickListener {
     private FragmentMiniPlayerBinding mBinding;
     private MiniPlayerViewModel mMiniPlayerViewModel;
     // MediaController để điều khiển trình phát nhạc
@@ -53,8 +54,8 @@ public class MiniPlayerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Thiết lập ViewModel và lắng nghe dữ liệu thay đổi
         setupViewModel();
-        setupView();
         setupAnimator();
+        setupListener();
     }
 
     @Override
@@ -98,53 +99,11 @@ public class MiniPlayerFragment extends Fragment {
                     }
                 });
 
-        // Quan sát MediaController từ MediaPlayerViewModel để liên kết mini player với trình phát nhạc
+        // Quan sát MediaController từ MediaPlayerViewModel để liên kết Mini player với trình phát nhạc
         MediaPlayerViewModel.getInstance()
                 .getMediaPlayerLiveData()
                 .observe(getViewLifecycleOwner(), this::setMediaController);
         mMiniPlayerViewModel.isPlaying().observe(getViewLifecycleOwner(), this::updatePlayingState);
-    }
-
-    private void setupView() {
-        mBinding.btnMiniPlayerPlayPause.setOnClickListener(view -> {
-            mAnimator.setTarget(view);
-            mAnimator.start();
-            if (mMediaController.isPlaying()) {
-                mMediaController.pause();
-            } else {
-                mMediaController.play();
-            }
-        });
-        mBinding.btnMiniPlayerSkipNext.setOnClickListener(view -> {
-            mAnimator.setTarget(view);
-            mAnimator.start();
-            mRotationAnimator.end();
-            if (mMediaController.hasNextMediaItem()) {
-                mMediaController.seekToNext();
-            }
-        });
-
-        mBinding.btnMiniPlayerFavourite.setOnClickListener(view -> {
-            mAnimator.setTarget(view);
-            mAnimator.start();
-            PlayingSong playingSong = mNowPlayingViewModel.getPlayingSong().getValue();
-            if (playingSong != null) {
-                Song song = playingSong.getSong();
-                song.setFavorite(!song.isFavorite());
-                mDisposable.add(mNowPlayingViewModel.updateSongFavoriteStatus(song)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> updateFavoriteStatus(song)));
-            }
-        });
-    }
-
-    private void updateFavoriteStatus(Song song) {
-        if (song.isFavorite()) {
-            mBinding.btnMiniPlayerFavourite.setImageResource(R.drawable.ic_favorite_on);
-        } else {
-            mBinding.btnMiniPlayerFavourite.setImageResource(R.drawable.ic_favorite_off);
-        }
     }
 
     private void setupAnimator() {
@@ -155,6 +114,67 @@ public class MiniPlayerFragment extends Fragment {
         mRotationAnimator.setDuration(10000);
         mRotationAnimator.setRepeatMode(ValueAnimator.RESTART);
         mRotationAnimator.setRepeatCount(ValueAnimator.INFINITE);
+    }
+
+    private void setupListener() {
+        mBinding.getRoot().setOnClickListener(view -> navigateToNowPlaying());
+        mBinding.btnMiniPlayerPlayPause.setOnClickListener(this);
+        mBinding.btnMiniPlayerSkipNext.setOnClickListener(this);
+        mBinding.btnMiniPlayerFavorite.setOnClickListener(this);
+    }
+
+    private void navigateToNowPlaying() {
+        Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        requireContext().startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        mAnimator.setTarget(view);
+        mAnimator.start();
+        if (view.getId() == R.id.btn_mini_player_play_pause) {
+            setupPlayPauseAction();
+        } else if (view.getId() == R.id.btn_mini_player_skip_next) {
+            setupNextAction();
+        } else if (view.getId() == R.id.btn_mini_player_favorite) {
+            setupFavorite();
+        }
+    }
+
+    private void setupPlayPauseAction() {
+        if (mMediaController.isPlaying()) {
+            mMediaController.pause();
+        } else {
+            mMediaController.play();
+        }
+    }
+
+    private void setupNextAction() {
+        mRotationAnimator.end();
+        if (mMediaController.hasNextMediaItem()) {
+            mMediaController.seekToNext();
+        }
+    }
+
+    private void setupFavorite() {
+        PlayingSong playingSong = mNowPlayingViewModel.getPlayingSong().getValue();
+        if (playingSong != null) {
+            Song song = playingSong.getSong();
+            song.setFavorite(!song.isFavorite());
+            mDisposable.add(mNowPlayingViewModel.updateSongFavoriteStatus(song)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> updateFavoriteStatus(song)));
+        }
+    }
+
+    private void updateFavoriteStatus(Song song) {
+        if (song.isFavorite()) {
+            mBinding.btnMiniPlayerFavorite.setImageResource(R.drawable.ic_favorite_on);
+        } else {
+            mBinding.btnMiniPlayerFavorite.setImageResource(R.drawable.ic_favorite_off);
+        }
     }
 
     private void updatePlayingState(Boolean isPlaying) {

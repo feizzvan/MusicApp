@@ -97,6 +97,12 @@ public class NowPlayingViewModel extends ViewModel {
         return mSongRepository.updateSong(song);
     }
 
+    public Completable updateSongInDB(Song song){
+        song.setCounter(song.getCounter() + 1);
+        song.setReplay(song.getReplay() + 1);
+        return mSongRepository.updateSong(song);
+    }
+
     public LiveData<Playlist> getCurrentPlaylist() {
         return mPlaylistLiveData;
     }

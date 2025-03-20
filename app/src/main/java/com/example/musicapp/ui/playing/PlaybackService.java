@@ -2,6 +2,8 @@ package com.example.musicapp.ui.playing;
 
 
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Process;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +20,6 @@ import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.ui.viewmodel.NowPlayingViewModel;
 
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -81,7 +82,7 @@ public class PlaybackService extends MediaSessionService {
         mMediaSession = mediaSessionBuilder.build();
     }
 
-    private void setupViewModel(){
+    private void setupViewModel() {
         mNowPlayingViewModel = NowPlayingViewModel.getInstance();
     }
 
@@ -116,12 +117,26 @@ public class PlaybackService extends MediaSessionService {
             Handler handler = new Handler();
             handler.postDelayed(() -> {
                 Player player = mMediaSession.getPlayer();
-                if(player.isPlaying()){
+                if (player.isPlaying()) {
                     mDisposable.add(mNowPlayingViewModel.saveRecentSong(song)
                             .subscribeOn(Schedulers.io())
                             .subscribe());
+                    saveCounterToDB();
                 }
-            }, 3000);
+            }, 5000);
+        }
+    }
+
+    private void saveCounterToDB() {
+        Song song = extractSong();
+        if (song != null) {
+            HandlerThread handlerThread = new HandlerThread("Thread Save Counter",
+                    Process.THREAD_PRIORITY_BACKGROUND);
+            handlerThread.start();
+            Handler handler = new Handler(handlerThread.getLooper());
+            handler.post(() -> mDisposable.add(mNowPlayingViewModel.updateSongInDB(song)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe()));
         }
     }
 

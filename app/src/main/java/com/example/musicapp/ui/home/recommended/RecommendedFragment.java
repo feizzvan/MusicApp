@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -16,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
+import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.FragmentRecommendedBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
@@ -23,12 +22,18 @@ import com.example.musicapp.ui.home.recommended.more.MoreRecommendedFragment;
 import com.example.musicapp.ui.home.recommended.more.MoreRecommendedViewModel;
 import com.example.musicapp.ui.viewmodel.NowPlayingViewModel;
 
+import java.util.List;
+
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class RecommendedFragment extends AppBaseFragment {
     private FragmentRecommendedBinding mBinding;
     private SongListAdapter mSongListAdapter;
     private RecommendedSongViewModel mRecommendedSongViewModel;
     private MoreRecommendedViewModel mMoreRecommendedViewModel;
     private DetailAlbumViewModel mDetailAlbumViewModel;
+    CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -42,6 +47,12 @@ public class RecommendedFragment extends AppBaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupView();
         setupViewModel();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDisposable.dispose();
     }
 
     private void setupView() {
@@ -60,21 +71,20 @@ public class RecommendedFragment extends AppBaseFragment {
         RecommendedSongViewModel.Factory factory = new RecommendedSongViewModel.Factory(musicApplication.getSongRepository());
         mRecommendedSongViewModel = new ViewModelProvider(this, factory).get(RecommendedSongViewModel.class);
         mMoreRecommendedViewModel = new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
-
-//        mDetailAlbumViewModel =
-//                new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
-//        mRecommendedSongViewModel =
-//                new ViewModelProvider(requireActivity()).get(RecommendedSongViewModel.class);
-//        mMoreRecommendedViewModel =
-//                new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
-
         mRecommendedSongViewModel.getSongList().observe(getViewLifecycleOwner(), songs -> {
+            saveSongToDB(songs);
             mDetailAlbumViewModel.setSongs(songs);
             mSongListAdapter.updateSongs(songs.subList(0, 15));
             mMoreRecommendedViewModel.setSongs(songs);
             NowPlayingViewModel.getInstance().setupPlaylist(songs, RECOMMENDED.getValue());
             mBinding.progressRecommendedSong.setVisibility(View.GONE);
         });
+    }
+
+    private void saveSongToDB(List<Song> songs) {
+        mDisposable.add(mRecommendedSongViewModel.saveSongToDB(songs)
+                .subscribeOn(Schedulers.io())
+                .subscribe());
     }
 
     private void navigateToMoreRecommended() {

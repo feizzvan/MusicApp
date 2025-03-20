@@ -3,6 +3,7 @@ package com.example.musicapp.data.source.local;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -22,7 +23,7 @@ public interface SongDAO {
     @Query("SELECT * FROM songs WHERE song_id = :songId")
     Flowable<Song> getSongById(int songId); // Dùng cho tập dữ liệu có thể phát sinh hoặc thay đổi theo thời gian
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertSongs(Song... song);
 
     @Delete

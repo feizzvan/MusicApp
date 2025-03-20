@@ -13,6 +13,7 @@ import com.example.musicapp.data.repository.SongRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +42,14 @@ public class RecommendedSongViewModel extends ViewModel {
                 mSongList.postValue(new ArrayList<>());
             }
         });
+    }
+
+    Completable saveSongToDB(List<Song> songs){
+        if(songs == null){
+            return Completable.complete();
+        }
+        Song[] songArray = songs.toArray(new Song[0]);
+        return mSongRepository.saveSongs(songArray);
     }
 
     public void setSong(List<Song> songs) {

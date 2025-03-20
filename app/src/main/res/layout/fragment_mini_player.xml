@@ -44,7 +44,7 @@
             android:text="@string/label_song_title"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toStartOf="@+id/btn_mini_player_favourite"
+            app:layout_constraintEnd_toStartOf="@+id/btn_mini_player_favorite"
             app:layout_constraintStart_toEndOf="@+id/img_mini_player_avatar" />
 
         <TextView
@@ -59,12 +59,12 @@
             app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
         <ImageButton
-            android:id="@+id/btn_mini_player_favourite"
+            android:id="@+id/btn_mini_player_favorite"
             android:layout_width="@dimen/button_size_48dp"
             android:layout_height="@dimen/button_size_48dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/imgDescription"
-            android:src="@drawable/ic_favourite"
+            android:src="@drawable/ic_favorite_off"
             app:layout_constraintBottom_toBottomOf="@+id/btn_mini_player_play_pause"
             app:layout_constraintEnd_toStartOf="@+id/btn_mini_player_play_pause"
             app:layout_constraintTop_toTopOf="@+id/btn_mini_player_play_pause"
