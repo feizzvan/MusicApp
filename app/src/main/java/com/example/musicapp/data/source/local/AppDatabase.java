@@ -9,9 +9,10 @@ import androidx.room.TypeConverters;
 
 import com.example.musicapp.data.model.Album;
 import com.example.musicapp.data.model.Playlist;
+import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.Song;
 
-@Database(entities = {Album.class, Playlist.class, Song.class,}, version = 1)
+@Database(entities = {Album.class, Playlist.class, Song.class, RecentSong.class}, version = 1)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase sInstance;
@@ -23,7 +24,6 @@ public abstract class AppDatabase extends RoomDatabase {
                     sInstance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "music.db").build();
                 }
-
             }
         }
 

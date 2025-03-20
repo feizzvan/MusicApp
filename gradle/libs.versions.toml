@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.2"
+core = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -10,6 +11,8 @@ constraintlayout = "2.1.4"
 legacySupportV4 = "1.0.0"
 lifecycleLivedataKtx = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
+navigationFragment = "2.8.1"
+navigationUi = "2.8.1"
 
 #custom
 gson = "2.10.1"
@@ -20,11 +23,11 @@ room = "2.6.1"
 rxJava = "3.1.8"
 rxAndroid = "3.0.2"
 preference = "1.2.1"
-navigationFragment = "2.8.1"
-navigationUi = "2.8.1"
+
 recyclerview = "1.3.0"
 
 [libraries]
+core = { module = "androidx.core:core", version.ref = "core" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -35,6 +38,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 
 #custom
 gson-di = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
@@ -46,17 +51,12 @@ media3-media-session-di = { group = "androidx.media3", name = "media3-session", 
 media3-common-di = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
 media3-ui-di = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
 room-runtime-di = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-complier-di = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-compiler-di = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-rxJava3-di = { group = "androidx.room", name = "room-rxjava3", version.ref = "room" }
 rxjava3-di = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxJava" }
 rxandroid-di = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxAndroid" }
 preference-di = { group = "androidx.preference", name = "preference", version.ref = "preference" }
-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
-
-
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -15,7 +15,7 @@ public class Song {
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "song_id")
-    private String mId = " ";
+    private String mId = "";
 
     @SerializedName("title")
     @ColumnInfo(name = "title")

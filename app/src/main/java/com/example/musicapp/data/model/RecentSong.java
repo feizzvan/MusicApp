@@ -17,7 +17,7 @@ public class RecentSong extends Song {
 
     // Thiết lập thời gian phát gần nhất của bài hát
     public void setPlayAt(Date playAt) {
-        this.mPlayAt = playAt;
+        mPlayAt = playAt;
     }
 
     // Lớp Builder để xây dựng đối tượng RecentSong từ lớp Song

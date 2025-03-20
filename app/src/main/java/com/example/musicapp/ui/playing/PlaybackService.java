@@ -1,21 +1,31 @@
 package com.example.musicapp.ui.playing;
 
 
+import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
+import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.MediaSessionService;
 
+import com.example.musicapp.data.model.PlayingSong;
+import com.example.musicapp.data.model.Song;
 import com.example.musicapp.ui.viewmodel.NowPlayingViewModel;
+
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 // Lớp PlaybackService để cung cấp và quản lý phát nhạc cho ứng dụng
 public class PlaybackService extends MediaSessionService {
     // ID của thông báo phát nhạc (dùng để cập nhật hoặc hủy thông báo khi cần thiết)
-    public static final int NOTIFICATION_ID = 1;
+    public static final int NOTIFICATION_ID = 9999;
 
     public static final String CHANNEL_ID = "music_app_notification_channel_id";
 
@@ -23,15 +33,20 @@ public class PlaybackService extends MediaSessionService {
     private MediaSession mMediaSession;
 
     // Listener để theo dõi các thay đổi từ ExoPlayer
-    private Player.Listener mPlayerListener = new Player.Listener() {
+    private Player.Listener mPlayerListener;
 
-    };
+    private NowPlayingViewModel mNowPlayingViewModel;
 
+    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
+    @OptIn(markerClass = UnstableApi.class)
+    @Override
     public void onCreate() {
         super.onCreate();
         // Khởi tạo MediaSession và ExoPlayer khi dịch vụ được tạo
         initSessionAndPlayer();
+
+        setupViewModel();
         // Thiết lập listener để theo dõi các sự kiện từ ExoPlayer
         setupListener();
     }
@@ -48,6 +63,7 @@ public class PlaybackService extends MediaSessionService {
         mMediaSession.getPlayer().release(); // Giải phóng tài nguyên của ExoPlayer
         mMediaSession.release(); // Giải phóng tài nguyên của MediaSession
         mMediaSession = null;
+        mDisposable.dispose();
         super.onDestroy();
     }
 
@@ -65,13 +81,23 @@ public class PlaybackService extends MediaSessionService {
         mMediaSession = mediaSessionBuilder.build();
     }
 
+    private void setupViewModel(){
+        mNowPlayingViewModel = NowPlayingViewModel.getInstance();
+    }
+
     private void setupListener() {
         Player player = mMediaSession.getPlayer();
         mPlayerListener = new Player.Listener() {
             @Override
             public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
-                // Cập nhật chỉ số bài hát đang phát trong NowPlayingViewModel
-                NowPlayingViewModel.getInstance().setPlayingSong(player.getCurrentMediaItemIndex());
+                boolean isPlaylistChanged = reason == Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED;
+                mNowPlayingViewModel = NowPlayingViewModel.getInstance();
+                Integer indexToPlay = mNowPlayingViewModel.getIndexToPlay().getValue();
+                if (!isPlaylistChanged || indexToPlay != null && indexToPlay == 0) {
+                    // Cập nhật chỉ số bài hát đang phát trong NowPlayingViewModel
+                    mNowPlayingViewModel.setPlayingSong(player.getCurrentMediaItemIndex());
+                    saveDataToDB();
+                }
             }
 
             // Gọi khi trạng thái phát nhạc thay đổi (bắt đầu hoặc tạm dừng).
@@ -82,5 +108,28 @@ public class PlaybackService extends MediaSessionService {
         };
 
         player.addListener(mPlayerListener);
+    }
+
+    private void saveDataToDB() {
+        Song song = extractSong();
+        if (song != null) {
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                Player player = mMediaSession.getPlayer();
+                if(player.isPlaying()){
+                    mDisposable.add(mNowPlayingViewModel.saveRecentSong(song)
+                            .subscribeOn(Schedulers.io())
+                            .subscribe());
+                }
+            }, 3000);
+        }
+    }
+
+    private Song extractSong() {
+        PlayingSong playingSong = mNowPlayingViewModel.getPlayingSong().getValue();
+        if (playingSong == null) {
+            return null;
+        }
+        return playingSong.getSong();
     }
 }

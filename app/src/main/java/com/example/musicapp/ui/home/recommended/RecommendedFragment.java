@@ -7,12 +7,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.databinding.FragmentRecommendedBinding;
 import com.example.musicapp.ui.AppBaseFragment;
@@ -48,17 +50,23 @@ public class RecommendedFragment extends AppBaseFragment {
                 (song, index) -> showAndPlay(song, index, RECOMMENDED.getValue()),
                 this::showMenuOption);
         mBinding.includeRecommendedSongs.recyclerSongList.setAdapter(mSongListAdapter);
-        mBinding.textTitleRecommendedSongs.setOnClickListener(view -> navigateToMoreRecommended());
+        mDetailAlbumViewModel = new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
         mBinding.btnMoreRecommendedSongs.setOnClickListener(view -> navigateToMoreRecommended());
+        mBinding.textTitleRecommendedSongs.setOnClickListener(view -> navigateToMoreRecommended());
     }
 
     private void setupViewModel() {
-        mDetailAlbumViewModel =
-                new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
-        mRecommendedSongViewModel =
-                new ViewModelProvider(requireActivity()).get(RecommendedSongViewModel.class);
-        mMoreRecommendedViewModel =
-                new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
+        MusicApplication musicApplication = (MusicApplication) requireActivity().getApplication();
+        RecommendedSongViewModel.Factory factory = new RecommendedSongViewModel.Factory(musicApplication.getSongRepository());
+        mRecommendedSongViewModel = new ViewModelProvider(this, factory).get(RecommendedSongViewModel.class);
+        mMoreRecommendedViewModel = new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
+
+//        mDetailAlbumViewModel =
+//                new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
+//        mRecommendedSongViewModel =
+//                new ViewModelProvider(requireActivity()).get(RecommendedSongViewModel.class);
+//        mMoreRecommendedViewModel =
+//                new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
 
         mRecommendedSongViewModel.getSongList().observe(getViewLifecycleOwner(), songs -> {
             mDetailAlbumViewModel.setSongs(songs);

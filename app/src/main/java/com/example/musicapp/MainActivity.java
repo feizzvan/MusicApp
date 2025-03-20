@@ -15,6 +15,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.musicapp.data.repository.RecentSongRepository;
+import com.example.musicapp.data.repository.SongRepositoryImpl;
 import com.example.musicapp.databinding.ActivityMainBinding;
 import com.example.musicapp.ui.viewmodel.NowPlayingViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setupToolbar();
         setupViewModel();
     }
@@ -46,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewModel(){
-        mNowPlayingViewModel = new ViewModelProvider(this).get(NowPlayingViewModel.class);
+        MusicApplication musicApplication = (MusicApplication) getApplication();
+        RecentSongRepository recentSongRepository = musicApplication.getRecentSongRepository();
+        SongRepositoryImpl songRepository = musicApplication.getSongRepository();
+        NowPlayingViewModel.Factory factory = new NowPlayingViewModel.Factory(songRepository, recentSongRepository);
+        mNowPlayingViewModel = new ViewModelProvider(this, factory).get(NowPlayingViewModel.class);
     }
 }

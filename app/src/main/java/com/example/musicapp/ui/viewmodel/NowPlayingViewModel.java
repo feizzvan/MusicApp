@@ -11,6 +11,7 @@ import com.example.musicapp.data.model.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.data.repository.RecentSongRepository;
+import com.example.musicapp.data.repository.SongRepositoryImpl;
 import com.example.musicapp.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ import io.reactivex.rxjava3.core.Flowable;
 
 // Trung tâm quản lý trạng thái phát nhạc
 public class NowPlayingViewModel extends ViewModel {
-    private RecentSongRepository mRecentSongRepository;
+    private final SongRepositoryImpl mSongRepository;
+    private final RecentSongRepository mRecentSongRepository;
 
     //Tạo singleton để tránh truy cập không cần thiết
     private static volatile NowPlayingViewModel sInstance;
@@ -49,10 +51,11 @@ public class NowPlayingViewModel extends ViewModel {
 
     // Constructor này được gọi khi không có đối tượng RecentSongRepository được cung cấp.
     private NowPlayingViewModel() {
-        this(null);
+        this(null, null);
     }
 
-    private NowPlayingViewModel(RecentSongRepository recentSongRepository) {
+    private NowPlayingViewModel(SongRepositoryImpl songRepository, RecentSongRepository recentSongRepository) {
+        mSongRepository = songRepository;
         // Liên kết NowPlayingViewModel với repository để truy cập dữ liệu bài hát gần đây.
         mRecentSongRepository = recentSongRepository;
         //Đảm bảo an toàn trong môi trường đa luồng
@@ -88,6 +91,10 @@ public class NowPlayingViewModel extends ViewModel {
 
         RecentSong recentSong = new RecentSong.Builder(song).build();
         return mRecentSongRepository.insertRecentSong(recentSong);
+    }
+
+    public Completable updateSongFavoriteStatus(Song song) {
+        return mSongRepository.updateSong(song);
     }
 
     public LiveData<Playlist> getCurrentPlaylist() {
@@ -169,11 +176,13 @@ public class NowPlayingViewModel extends ViewModel {
 
     // Factory để tạo ra một instance của NowPlayingViewModel
     public static class Factory implements ViewModelProvider.Factory {
+        private final SongRepositoryImpl mSongRepository;
         private final RecentSongRepository mRecentSongRepository;
 
         // Factory sẽ nhận tham số cần thiết để khởi tạo NowPlayingViewModel.
         // Sau đó, đối tượng NowPlayingViewModel sẽ có thể sử dụng mRecentSongRepository để tương tác với cơ sở dữ liệu hoặc bộ nhớ.
-        public Factory(RecentSongRepository recentSongRepository) {
+        public Factory(SongRepositoryImpl songRepository, RecentSongRepository recentSongRepository) {
+            mSongRepository = songRepository;
             mRecentSongRepository = recentSongRepository;
         }
 
@@ -186,7 +195,7 @@ public class NowPlayingViewModel extends ViewModel {
             if (modelClass.isAssignableFrom(NowPlayingViewModel.class)) {
                 // Nếu kiểm tra kiểu lớp thành công, Factory sẽ khởi tạo và trả về một đối tượng NowPlayingViewModel
                 // với tham số mRecentSongRepository đã được truyền vào. Phương thức này sẽ trả về đối tượng NowPlayingViewModel với kiểu động (T).
-                return (T) new NowPlayingViewModel(mRecentSongRepository);
+                return (T) new NowPlayingViewModel(mSongRepository, mRecentSongRepository);
             }
 
             // Nếu modelClass không phải là NowPlayingViewModel,

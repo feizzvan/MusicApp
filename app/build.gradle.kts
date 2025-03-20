@@ -51,10 +51,15 @@ dependencies {
     implementation(libs.media3.common.di)
     implementation(libs.media3.ui.di)
     implementation(libs.room.runtime.di)
-    implementation(libs.room.complier.di)
+
+    annotationProcessor(libs.room.compiler.di)
+
     implementation(libs.room.rxJava3.di)
     implementation(libs.rxjava3.di)
     implementation(libs.rxandroid.di)
+    implementation(libs.preference.di)
+
+    //implementation(libs.core)
 
     implementation(libs.appcompat)
     implementation(libs.material)

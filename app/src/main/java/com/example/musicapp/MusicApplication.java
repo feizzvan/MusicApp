@@ -2,12 +2,19 @@ package com.example.musicapp;
 
 import android.app.Application;
 import android.content.ComponentName;
+import android.telephony.ims.RcsUceAdapter;
 
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
 
+import com.example.musicapp.data.repository.RecentSongRepository;
+import com.example.musicapp.data.repository.SongRepository;
+import com.example.musicapp.data.repository.SongRepositoryImpl;
+import com.example.musicapp.data.source.RecentSongDataSource;
+import com.example.musicapp.data.source.local.LocalSongDataSource;
 import com.example.musicapp.ui.playing.PlaybackService;
 import com.example.musicapp.ui.viewmodel.MediaPlayerViewModel;
+import com.example.musicapp.utils.InjectionUtils;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 
@@ -19,12 +26,17 @@ public class MusicApplication extends Application {
     // Biến lưu trữ MediaController sau khi khởi tạo thành công
     private MediaController mMediaController;
 
+    private RecentSongRepository mRecentSongRepository;
+
+    private SongRepositoryImpl mSongRepository;
 
     @Override
     public void onCreate() {
         super.onCreate();
         // Gọi phương thức để khởi tạo MediaController khi ứng dụng bắt đầu
         setupMediaController();
+
+        setupComponents();
     }
 
     private void setupMediaController() {
@@ -39,7 +51,7 @@ public class MusicApplication extends Application {
                 .buildAsync();
 
         // Đăng ký một listener để xử lý kết quả khi mControllerFuture hoàn thành
-        mControllerFuture.addListener(() -> {
+        Runnable listener = () -> {
             if (mControllerFuture.isDone() && !mControllerFuture.isCancelled()) {
                 try {
                     // Lấy MediaController từ Future
@@ -53,7 +65,23 @@ public class MusicApplication extends Application {
                 // Nếu Future bị hủy hoặc không thành công, đặt MediaController là null
                 mMediaController = null;
             }
-        }, MoreExecutors.directExecutor());
+        };
+        mControllerFuture.addListener(listener, MoreExecutors.directExecutor());
         // Thực thi trực tiếp trên thread hiện tại
+    }
+
+    private void setupComponents(){
+        RecentSongDataSource recentSongDataSource = InjectionUtils.provideRecentSongDataSource(getApplicationContext());
+        mRecentSongRepository = InjectionUtils.provideRecentSongRepository(recentSongDataSource);
+        LocalSongDataSource localSongDataSource = InjectionUtils.provideLocalSongDataSource(getApplicationContext());
+        mSongRepository = InjectionUtils.provideSongRepository(localSongDataSource);
+    }
+
+    public RecentSongRepository getRecentSongRepository() {
+        return mRecentSongRepository;
+    }
+
+    public SongRepositoryImpl getSongRepository(){
+        return mSongRepository;
     }
 }
