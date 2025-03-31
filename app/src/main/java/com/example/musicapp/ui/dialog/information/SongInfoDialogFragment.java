@@ -37,6 +37,11 @@ public class SongInfoDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setupViewModel();
+    }
+
+    private void setupViewModel(){
         mViewModel = new ViewModelProvider(requireActivity()).get(SongInfoDialogViewModel.class);
         mViewModel.getSong().observe(getViewLifecycleOwner(), this::showSongInfo);
     }

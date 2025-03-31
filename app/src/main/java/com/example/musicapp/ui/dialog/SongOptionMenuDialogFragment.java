@@ -14,24 +14,24 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.Song;
-import com.example.musicapp.databinding.FragmentSongMenuOptionDialogBinding;
+import com.example.musicapp.databinding.FragmentSongOptionMenuDialogBinding;
 import com.example.musicapp.ui.dialog.information.SongInfoDialogFragment;
 import com.example.musicapp.ui.dialog.information.SongInfoDialogViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class SongMenuOptionDialogFragment extends BottomSheetDialogFragment {
-    public static final String TAG = "SongMenuOptionDialogFragment";
-    private FragmentSongMenuOptionDialogBinding mBinding;
-    private MenuOptionAdapter mMenuOptionAdapter;
+public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
+    public static final String TAG = "SongOptionMenuDialogFragment";
+    private FragmentSongOptionMenuDialogBinding mBinding;
+    private OptionMenuAdapter mOptionMenuAdapter;
 
-    public static SongMenuOptionDialogFragment newInstance() {
-        return new SongMenuOptionDialogFragment();
+    public static SongOptionMenuDialogFragment newInstance() {
+        return new SongOptionMenuDialogFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentSongMenuOptionDialogBinding.inflate(inflater, container, false);
+        mBinding = FragmentSongOptionMenuDialogBinding.inflate(inflater, container, false);
         return mBinding.getRoot();
     }
 
@@ -43,28 +43,28 @@ public class SongMenuOptionDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void setupView() {
-        mMenuOptionAdapter = new MenuOptionAdapter(menuOptionItem -> {
-            handleMenuItemClick(menuOptionItem);
+        mOptionMenuAdapter = new OptionMenuAdapter(optionMenuItem -> {
+            handleMenuItemClick(optionMenuItem);
             dismiss();
         });
-        mBinding.recyclerMenuOption.setAdapter(mMenuOptionAdapter);
+        mBinding.recyclerMenuOption.setAdapter(mOptionMenuAdapter);
     }
 
     private void setupViewModel() {
-        MenuOptionViewModel menuOptionViewModel =
-                new ViewModelProvider(requireActivity()).get(MenuOptionViewModel.class);
+        OptionMenuViewModel optionMenuViewModel =
+                new ViewModelProvider(requireActivity()).get(OptionMenuViewModel.class);
         SongInfoDialogViewModel songInfoDialogViewModel =
                 new ViewModelProvider(requireActivity()).get(SongInfoDialogViewModel.class);
-        menuOptionViewModel.getMenuOptionItem()
-                .observe(getViewLifecycleOwner(), mMenuOptionAdapter::updateMenuOptionItems);
-        menuOptionViewModel.getSong().observe(getViewLifecycleOwner(), song -> {
+        optionMenuViewModel.getOptionMenuItem()
+                .observe(getViewLifecycleOwner(), mOptionMenuAdapter::updateMenuOptionItems);
+        optionMenuViewModel.getSong().observe(getViewLifecycleOwner(), song -> {
             showSongInfo(song);
             songInfoDialogViewModel.setSong(song);
         });
     }
 
-    private void handleMenuItemClick(MenuOptionItem menuOptionItem) {
-        switch (menuOptionItem.getMenuOption()) {
+    private void handleMenuItemClick(OptionMenuItem optionMenuItem) {
+        switch (optionMenuItem.getMenuOption()) {
             case BLOCK:
                 break;
             case VIEW_DETAILS:

@@ -1,5 +1,6 @@
 package com.example.musicapp.ui.home.recommended;
 
+import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.DEFAULT;
 import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.RECOMMENDED;
 
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
 import com.example.musicapp.ui.home.recommended.more.MoreRecommendedFragment;
 import com.example.musicapp.ui.home.recommended.more.MoreRecommendedViewModel;
-import com.example.musicapp.ui.viewmodel.NowPlayingViewModel;
+import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class RecommendedFragment extends AppBaseFragment {
     private RecommendedSongViewModel mRecommendedSongViewModel;
     private MoreRecommendedViewModel mMoreRecommendedViewModel;
     private DetailAlbumViewModel mDetailAlbumViewModel;
+    private final SharedViewModel mSharedViewModel = SharedViewModel.getInstance();
     CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Override
@@ -45,6 +47,7 @@ public class RecommendedFragment extends AppBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setupView();
         setupViewModel();
     }
@@ -76,8 +79,10 @@ public class RecommendedFragment extends AppBaseFragment {
             mDetailAlbumViewModel.setSongs(songs);
             mSongListAdapter.updateSongs(songs.subList(0, 15));
             mMoreRecommendedViewModel.setSongs(songs);
-            NowPlayingViewModel.getInstance().setupPlaylist(songs, RECOMMENDED.getValue());
+            mSharedViewModel.setupPlaylist(songs, DEFAULT.getValue());
+            mSharedViewModel.setupPlaylist(songs, RECOMMENDED.getValue());
             mBinding.progressRecommendedSong.setVisibility(View.GONE);
+            mSharedViewModel.setSongLoaded(true);
         });
     }
 

@@ -3,6 +3,7 @@ package com.example.musicapp.data.model;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -56,18 +57,23 @@ public class Song {
     public Song() {
     }
 
+    @Ignore
+    public Song(@NonNull String Id) {
+        setId(Id);
+    }
+
     public Song(@NonNull String Id, String Title, String Album, String Artist, String Source,
                 String Image, int Duration, boolean Favorite, int Counter, int Replay) {
-        this.mId = Id;
-        this.mTitle = Title;
-        this.mAlbum = Album;
-        this.mArtist = Artist;
-        this.mSource = Source;
-        this.mImage = Image;
-        this.mDuration = Duration;
-        this.mFavorite = Favorite;
-        this.mCounter = Counter;
-        this.mReplay = Replay;
+        setId(Id);
+        setTitle(Title);
+        setAlbum(Album);
+        setArtist(Artist);
+        setSource(Source);
+        setImage(Image);
+        setDuration(Duration);
+        setFavorite(Favorite);
+        setCounter(Counter);
+        setReplay(Replay);
     }
 
     public String getId() {

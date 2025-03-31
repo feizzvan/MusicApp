@@ -2,12 +2,12 @@ package com.example.musicapp.ui.dialog;
 
 import com.example.musicapp.utils.MenuOptionUtils;
 
-public class MenuOptionItem {
+public class OptionMenuItem {
     private final MenuOptionUtils.MenuOption mMenuOption;
     private final int mIconId;
     private final int mMenuItemTitle;
 
-    public MenuOptionItem(MenuOptionUtils.MenuOption menuOption, int iconId, int menuItemTitle) {
+    public OptionMenuItem(MenuOptionUtils.MenuOption menuOption, int iconId, int menuItemTitle) {
         mMenuOption = menuOption;
         mIconId = iconId;
         mMenuItemTitle = menuItemTitle;

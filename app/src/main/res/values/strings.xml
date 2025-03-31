@@ -38,4 +38,8 @@
     <string name="text_na">N/A</string>
     <string name="label_song_title">Song tilte</string>
     <string name="label_song_artist">Song artist</string>
+    <string name="title_now_playing">Now Playing</string>
+    <string name="image_button_description">image_button_description</string>
+    <string name="label_place_holder">Label</string>
+    <string name="label_under_score">_ ___ _</string>
 </resources>

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.dialog.SongMenuOptionDialogFragment">
+    tools:context=".ui.dialog.SongOptionMenuDialogFragment">
 
     <include
         android:id="@+id/include_song_menu_option"
-        layout="@layout/item_song_menu_option"
+        layout="@layout/item_song_option_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp" />
@@ -34,5 +34,5 @@
         android:paddingTop="@dimen/margin_8dp"
         android:paddingBottom="@dimen/margin_8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_menu_option" />
+        tools:listitem="@layout/item_option_menu" />
 </LinearLayout>
