@@ -137,7 +137,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/label_place_holder"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         app:layout_constraintEnd_toEndOf="@+id/text_now_playing_song_title"
         app:layout_constraintStart_toStartOf="@+id/text_now_playing_song_title"
         app:layout_constraintTop_toBottomOf="@+id/text_now_playing_song_title" />
@@ -146,9 +146,9 @@
         android:id="@+id/seek_bar_now_playing"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="20dp"
         android:min="0"
         android:progressTint="?attr/colorPrimary"
         android:thumb="@drawable/thumb"
@@ -190,8 +190,8 @@
 
     <ImageButton
         android:id="@+id/btn_shuffle"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imgDescription"
         android:scaleType="fitXY"
@@ -204,8 +204,8 @@
 
     <ImageButton
         android:id="@+id/btn_skip_previous"
-        android:layout_width="@dimen/button_size_48dp"
-        android:layout_height="@dimen/button_size_48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginEnd="@dimen/margin_16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imgDescription"
@@ -213,12 +213,13 @@
         android:src="@drawable/ic_skip_previous"
         app:layout_constraintBottom_toBottomOf="@+id/btn_play_pause"
         app:layout_constraintEnd_toStartOf="@+id/btn_play_pause"
-        app:layout_constraintTop_toTopOf="@+id/btn_play_pause" />
+        app:layout_constraintTop_toTopOf="@+id/btn_play_pause"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/btn_play_pause"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="32dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imgDescription"
@@ -230,8 +231,8 @@
 
     <ImageButton
         android:id="@+id/btn_skip_next"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="@dimen/margin_16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imgDescription"
@@ -239,12 +240,13 @@
         android:src="@drawable/ic_skip_next"
         app:layout_constraintBottom_toBottomOf="@+id/btn_play_pause"
         app:layout_constraintStart_toEndOf="@+id/btn_play_pause"
-        app:layout_constraintTop_toTopOf="@+id/btn_play_pause" />
+        app:layout_constraintTop_toTopOf="@+id/btn_play_pause"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/btn_repeat"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/imgDescription"
         android:scaleType="fitXY"

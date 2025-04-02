@@ -1,9 +1,16 @@
 package com.example.musicapp;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -14,21 +21,38 @@ import com.example.musicapp.data.model.Song;
 import com.example.musicapp.data.repository.RecentSongRepository;
 import com.example.musicapp.data.repository.SongRepositoryImpl;
 import com.example.musicapp.databinding.ActivityMainBinding;
+import com.example.musicapp.databinding.FragmentMoreAlbumBinding;
+import com.example.musicapp.ui.viewmodel.PermissionViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_SONG_ID = "com.example.musicapp.PREF_SONG_ID";
     public static final String PREF_PLAYLIST_NAME = "com.example.musicapp.PREF_PLAYLIST_NAME";
 
-    private ActivityMainBinding binding;
+    private ActivityMainBinding mBinding;
     private SharedViewModel mSharedViewModel;
     private SharedPreferences mSharedPreferences;
+
+//    private final ActivityResultLauncher<String> mResultLauncher = registerForActivityResult(
+//            new ActivityResultContracts.RequestPermission(), isGranted -> {
+//                if (isGranted) {
+//                    PermissionViewModel.getInstance().setPermissionGranted(isGranted);
+//                } else {
+//                    Snackbar snackbar = Snackbar.make(mBinding.getRoot(),
+//                            R.string.message_permission_denied,
+//                            Snackbar.LENGTH_LONG);
+//                    snackbar.setAnchorView(R.id.bottom_nav_view);
+//                    snackbar.show();
+//                }
+//            }
+//    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         setupToolbar();
         setupViewModel();
@@ -49,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
-            NavigationUI.setupWithNavController(binding.bottomNavView, navController);
+            NavigationUI.setupWithNavController(mBinding.bottomNavView, navController);
         }
     }
 
@@ -64,6 +88,14 @@ public class MainActivity extends AppCompatActivity {
                 readPrefPlayingSong();
             }
         });
+
+//        PermissionViewModel.getInstance().getPermissionAsked().observe(this, isAsked -> {
+//            if (isAsked) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                    checkPermission();
+//                }
+//            }
+//        });
     }
 
     private void setupSharedPreferences() {
@@ -91,4 +123,24 @@ public class MainActivity extends AppCompatActivity {
             mSharedViewModel.setupPrefPlayingSong(songId, playlistName);
         }
     }
+
+//    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU) //Đảm bảo cho android 13 trở lên
+//    private void checkPermission() {
+//        final String permission = android.Manifest.permission.POST_NOTIFICATIONS;
+//        boolean isGranted = ActivityCompat.checkSelfPermission(this, permission)
+//                == PackageManager.PERMISSION_GRANTED;
+//        if (isGranted) {
+//            PermissionViewModel.getInstance().setPermissionGranted(true);
+//        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+//            // Kiểm tra xem hệ thống có nên hiển thị lời giải thích về quyền trước khi yêu cầu lại không
+//            Snackbar snackbar = Snackbar.make(mBinding.getRoot(),
+//                    R.string.permission_description,
+//                    Snackbar.LENGTH_LONG);
+//            snackbar.setAnchorView(R.id.bottom_nav_view);
+//            snackbar.setAction(R.string.action_agree, v -> mResultLauncher.launch(permission));
+//            snackbar.show();
+//        } else {
+//            mResultLauncher.launch(permission);
+//        }
+//    }
 }

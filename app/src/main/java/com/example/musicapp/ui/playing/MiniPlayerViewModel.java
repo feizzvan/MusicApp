@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.media3.common.MediaItem;
 
-import com.example.musicapp.data.model.Song;
-
 import java.util.List;
 
 public class MiniPlayerViewModel extends ViewModel {

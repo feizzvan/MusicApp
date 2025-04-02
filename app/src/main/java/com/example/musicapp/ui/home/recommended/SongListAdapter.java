@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.ItemSongBinding;
+import com.example.musicapp.ui.viewmodel.PermissionViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +45,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
     }
 
     public void updateSongs(List<Song> songs) {
-        if(songs != null){
+        if (songs != null) {
             int oldSize = mSongs.size();
             mSongs.clear();
             mSongs.addAll(songs);
-            if(oldSize > mSongs.size()){
+            if (oldSize > mSongs.size()) {
                 notifyItemRangeRemoved(0, oldSize);
             }
             notifyItemRangeChanged(0, mSongs.size());
@@ -76,9 +77,20 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
                     .load(song.getImage())
                     .error(R.drawable.ic_music_note)
                     .into(mBinding.imgItemSongAvatar);
-            mBinding.getRoot()
-                    .setOnClickListener(
-                            view -> mSongItemClickListener.onSongItemClick(song, position));
+
+//            mBinding.getRoot().setOnClickListener(view -> {
+//                Boolean isGranted = PermissionViewModel.getInstance()
+//                        .getPermissionGranted()
+//                        .getValue();
+//                if (isGranted == null || !isGranted) {
+//                    PermissionViewModel.getInstance().setPermissionAsked(true);
+//                }
+//                mSongItemClickListener.onSongItemClick(song, position);
+//            });
+
+            mBinding.getRoot().setOnClickListener(view -> mSongItemClickListener.onSongItemClick(song, position));
+
+
             mBinding.btnItemSongOption
                     .setOnClickListener(
                             view -> mSongItemMenuClickListener.onSongMenuItemClick(song));

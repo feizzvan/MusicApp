@@ -19,8 +19,7 @@ public class DetailAlbumViewModel extends ViewModel {
 
     public void extractSongList(Album album) {
         List<Song> songList = new ArrayList<>();
-        mPlaylist = new Playlist();
-        mPlaylist.setName(album.getName());
+        mPlaylist = new Playlist(-1, album.getName());
         List<Song> songs = mSongs.getValue();
 
         if (songs != null) {

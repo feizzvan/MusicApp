@@ -1,5 +1,7 @@
 package com.example.musicapp.ui.playing;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
@@ -7,8 +9,11 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
@@ -21,10 +26,12 @@ import android.view.animation.LinearInterpolator;
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.PlayingSong;
+import com.example.musicapp.data.model.Playlist;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.FragmentMiniPlayerBinding;
 import com.example.musicapp.ui.viewmodel.MediaPlayerViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.AppUtils;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -41,6 +48,22 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     private ObjectAnimator mRotationAnimator;
     private SharedViewModel mSharedViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+    private float currentFraction = 0f; //Lưu tỷ lệ hoàn thành của animation xoay
+
+    private final ActivityResultLauncher<Intent> nowPlayingActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData(); //Lấy dữ liệu trả về từ NowPlayingActivity
+                    if (data != null) {
+                        float fraction = data.getFloatExtra(AppUtils.EXTRA_CURRENT_FRACTION, 0f);
+                        mRotationAnimator.setCurrentFraction(currentFraction);
+                        currentFraction = fraction;
+                    } else {
+                        currentFraction = 0f;
+                    }
+                }
+            }
+    );
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -72,9 +95,19 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         mSharedViewModel = SharedViewModel.getInstance();
         mMiniPlayerViewModel = MiniPlayerViewModel.getInstance();
 
-        // Lấy danh sách bài hát hiện tại từ NowPlayingViewModel
-        mSharedViewModel.getCurrentPlaylist().observe(getViewLifecycleOwner(), playlist ->
-                mMiniPlayerViewModel.setMediaItems(playlist.getMediaItems()));
+        // Lấy danh sách bài hát hiện tại từ SharedViewModel
+        mSharedViewModel.getCurrentPlaylist().observe(getViewLifecycleOwner(), playlist -> {
+            PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+            Playlist currentPlaylist = null;
+            if (playingSong != null) {
+                currentPlaylist = playingSong.getPlaylist();
+            }
+            if (playlist != null && playlist.getMediaItems() != null
+                    && !playlist.getMediaItems().isEmpty()
+                    && (currentPlaylist == null || currentPlaylist.getId() != playlist.getId())) {
+                mMiniPlayerViewModel.setMediaItems(playlist.getMediaItems());
+            }
+        });
 
         // Quan sát bài hát đang phát để hiển thị thông tin bài hát
         mSharedViewModel.getPlayingSong().observe(getViewLifecycleOwner(), playingSong -> {
@@ -99,7 +132,7 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         mRotationAnimator = ObjectAnimator
                 .ofFloat(mBinding.imgMiniPlayerAvatar, "rotation", 0f, 360f);
         mRotationAnimator.setInterpolator(new LinearInterpolator());
-        mRotationAnimator.setDuration(10000);
+        mRotationAnimator.setDuration(12000);
         mRotationAnimator.setRepeatMode(ValueAnimator.RESTART);
         mRotationAnimator.setRepeatCount(ValueAnimator.INFINITE);
     }
@@ -113,8 +146,11 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
 
     private void navigateToNowPlaying() {
         Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
+        intent.putExtra(AppUtils.EXTRA_CURRENT_FRACTION, mRotationAnimator.getAnimatedFraction());
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        requireContext().startActivity(intent);
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeCustomAnimation(requireContext(), R.anim.slide_up, R.anim.fade_out);
+        nowPlayingActivityLauncher.launch(intent, options);
     }
 
     @Override
@@ -218,9 +254,24 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
 
         // Quan sát index bài hát để phát bài hát tương ứng trong danh sách bài hát hiện tại của MediaController
         mSharedViewModel.getIndexToPlay().observe(getViewLifecycleOwner(), index -> {
-            if (index > -1 && mMediaController != null && mMediaController.getMediaItemCount() > index) {
-                mMediaController.seekTo(index, 0);
-                mMediaController.prepare();
+            PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+            Playlist currentPlaylist = null;
+            if (playingSong != null) {
+                currentPlaylist = playingSong.getPlaylist();
+            }
+            Playlist playlist = mSharedViewModel.getCurrentPlaylist().getValue();
+            //TH1: cùng playlist, cùng index => KHÔNG phát lại mà tiếp tục
+            //TH2: khác playlist, cùng index => PHÁT từ đầu bài hát
+            if (mMediaController != null && index > -1) {
+                Boolean condition1 = mMediaController.getMediaItemCount() > index
+                        && mMediaController.getCurrentMediaItemIndex() != index;
+                Boolean condition2 = playlist != null && currentPlaylist != null
+                        && mMediaController.getCurrentMediaItemIndex() == index
+                        && playlist.getId() != currentPlaylist.getId();
+                if (condition1 || condition2) {
+                    mMediaController.seekTo(index, 0);
+                    mMediaController.prepare();
+                }
             }
         });
     }

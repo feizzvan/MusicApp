@@ -17,6 +17,7 @@ import com.example.musicapp.data.model.Album;
 import com.example.musicapp.databinding.FragmentDetailAlbumBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 public class DetailAlbumFragment extends AppBaseFragment {
     private FragmentDetailAlbumBinding mBinding;
@@ -46,6 +47,7 @@ public class DetailAlbumFragment extends AppBaseFragment {
         mSongListAdapter = new SongListAdapter((song, index) -> {
             Album album = mDetailAlbumViewModel.getAlbum().getValue();
             String playlistName = album == null ? " " : album.getName();
+            SharedViewModel.getInstance().addPlaylist(mDetailAlbumViewModel.getPlaylist());
             showAndPlay(song, index, playlistName);
         }, this::showMenuOption);
 

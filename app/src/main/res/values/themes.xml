@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="Theme.MusicApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
@@ -9,26 +9,25 @@
         <!-- Màu lỗi -->
         <item name="colorError">@color/md_theme_light_error</item>
         <item name="colorOnError">@color/md_theme_light_onError</item>
-        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
-        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
 
         <!-- Màu nền và bề mặt -->
-        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
         <item name="colorSurface">@color/md_theme_light_surface</item>
         <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
 
-        <!-- Màu bổ sung (nếu cần thêm) -->
+        <!-- Màu bổ sung -->
         <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
-        <item name="colorSecondary">@color/green_500</item>
+        <item name="colorSecondary">@color/pink_700</item>
         <item name="colorOnSecondary">@color/white</item>
-
     </style>
 
     <style name="ToolbarStyle" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/purple_500</item>
+        <item name="android:titleTextColor">@color/white</item>
+        <item name="android:subtitleTextColor">@color/white</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
     </style>
 
     <style name="MiniPlayerStyle">
-        <item name="android:background">@color/green_50</item>
+        <item name="android:background">@color/purple_50</item>
     </style>
 </resources>
