@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -57,6 +58,22 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupViewModel();
         setupSharedPreferences();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSharedViewModel.getPlayingSong().observe(this, playingSong -> {
+            if (playingSong != null) {
+                if(playingSong.getSong() != null){ //Nếu bài hát có cả ở local và ở remote
+                    mBinding.fcvMiniPlayer.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.fcvMiniPlayer.setVisibility(View.GONE);
+                }
+            } else {
+                mBinding.fcvMiniPlayer.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

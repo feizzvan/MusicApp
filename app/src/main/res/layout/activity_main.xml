@@ -33,9 +33,11 @@
         android:name="com.example.musicapp.ui.playing.MiniPlayerFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout="@layout/fragment_mini_player" />
+        tools:layout="@layout/fragment_mini_player"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
