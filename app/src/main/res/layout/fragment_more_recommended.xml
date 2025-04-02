@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/include_toolbar"
-        layout="@layout/toolbar"
+        layout="@layout/partial_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +17,7 @@
 
     <include
         android:id="@+id/include_song_list"
-        layout="@layout/song_list"
+        layout="@layout/partial_song_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_8dp"

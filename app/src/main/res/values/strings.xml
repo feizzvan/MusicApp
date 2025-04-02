@@ -45,4 +45,9 @@
     <string name="message_permission_denied">Please grant post notification to continue.</string>
     <string name="action_agree">Agree</string>
     <string name="permission_description">This application need post notification permission to play music correctly and give you more experience when using app. Would you agree permit app use this permission?</string>
+    <string name="title_recent_songs">Recent heard</string>
+    <string name="title_favorite_songs">Favorite songs</string>
+    <string name="text_playlist_name">Playlist name</string>
+    <string name="text_create_a_playlist">Create a playlist</string>
+    <string name="title_playlist">Playlists</string>
 </resources>

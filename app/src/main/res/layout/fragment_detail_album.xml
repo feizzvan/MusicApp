@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/include_fragment_detail_playlist"
-        layout="@layout/playlist_detail"
+        layout="@layout/partial_playlist_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

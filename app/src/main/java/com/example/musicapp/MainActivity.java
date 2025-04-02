@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,6 +26,7 @@ import com.example.musicapp.databinding.ActivityMainBinding;
 import com.example.musicapp.databinding.FragmentMoreAlbumBinding;
 import com.example.musicapp.ui.viewmodel.PermissionViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.AppUtils;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         setupViewModel();
         setupSharedPreferences();
+        setupComponents();
     }
 
     @Override
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mSharedViewModel.getPlayingSong().observe(this, playingSong -> {
             if (playingSong != null) {
-                if(playingSong.getSong() != null){ //Nếu bài hát có cả ở local và ở remote
+                if (playingSong.getSong() != null) { //Nếu bài hát có cả ở local và ở remote
                     mBinding.fcvMiniPlayer.setVisibility(View.VISIBLE);
                 } else {
                     mBinding.fcvMiniPlayer.setVisibility(View.GONE);
@@ -118,6 +121,14 @@ public class MainActivity extends AppCompatActivity {
     private void setupSharedPreferences() {
         mSharedPreferences = getApplicationContext()
                 .getSharedPreferences("MUSIC_APP_PREFERENCES", MODE_PRIVATE);
+    }
+
+    private void setupComponents() {
+        //Thiết lập giá trị xdpi trong AppUtils để sử dụng trong toàn ứng dụng
+        // bằng cách lấy mật độ điểm ảnh theo trục X của màn hình thiết bị
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        AppUtils.X_DPI = displayMetrics.xdpi;
     }
 
     private void saveCurrentSong() {

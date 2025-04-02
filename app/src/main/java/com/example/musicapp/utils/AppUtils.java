@@ -23,4 +23,6 @@ public abstract class AppUtils {
             return value;
         }
     }
+
+    public static float X_DPI = 0;
 }

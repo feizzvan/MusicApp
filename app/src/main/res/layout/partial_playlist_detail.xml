@@ -85,7 +85,7 @@
 
         <include
             android:id="@+id/include_song_list"
-            layout="@layout/song_list"
+            layout="@layout/partial_song_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8dp"

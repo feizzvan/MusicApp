@@ -1,4 +1,4 @@
-package com.example.musicapp.ui.library;
+package com.example.musicapp.ui.library.recent;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,14 +8,14 @@ import com.example.musicapp.data.model.Song;
 
 import java.util.List;
 
-public class LibraryViewModel extends ViewModel {
+public class RecentSongViewModel extends ViewModel {
     private final MutableLiveData<List<Song>> mRecentSongs = new MutableLiveData<>();
-
-    public void setRecentSongs(List<Song> recentSongs) {
-        mRecentSongs.postValue(recentSongs);
-    }
 
     public LiveData<List<Song>> getRecentSongs() {
         return mRecentSongs;
+    }
+
+    public void setRecentSongs(List<Song> recentSongs){
+        mRecentSongs.setValue(recentSongs);
     }
 }
