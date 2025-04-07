@@ -1,4 +1,4 @@
-package com.example.musicapp.data.repository;
+package com.example.musicapp.data.repository.album;
 
 import com.example.musicapp.data.model.AlbumList;
 

@@ -16,16 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musicapp.R;
+import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.FragmentRecentSongBinding;
-import com.example.musicapp.ui.library.LibraryViewModel;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.ui.library.recent.more.MoreRecentFragment;
+import com.example.musicapp.ui.library.recent.more.MoreRecentViewModel;
 import com.example.musicapp.utils.AppUtils;
+
+import java.util.List;
 
 public class RecentSongFragment extends Fragment {
     private FragmentRecentSongBinding mBinding;
-    private LibraryViewModel mLibraryViewModel;
     private RecentSongViewModel mRecentSongViewModel;
     private RecentSongAdapter mRecentSongAdapter;
+    private MoreRecentViewModel mMoreRecentViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -63,16 +66,29 @@ public class RecentSongFragment extends Fragment {
                 requireContext(), 3, RecyclerView.HORIZONTAL, false
         );
         mBinding.rvRecentSong.setLayoutManager(layoutManager);
+        mBinding.textTitleRecentSongs.setOnClickListener(view -> navigateToMoreRecentScreen());
+        mBinding.btnMoreRecentSongs.setOnClickListener(view -> navigateToMoreRecentScreen());
+    }
+
+    private void navigateToMoreRecentScreen() {
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, MoreRecentFragment.class, null)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void setupViewModel() {
-        mLibraryViewModel = new ViewModelProvider(requireActivity()).get(LibraryViewModel.class);
         mRecentSongViewModel = new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
-        mLibraryViewModel.getRecentSongs().observe(getViewLifecycleOwner(), recentSongs -> {
-            mRecentSongViewModel.setRecentSongs(recentSongs);
-        });
+        mMoreRecentViewModel = new ViewModelProvider(requireActivity()).get(MoreRecentViewModel.class);
+
         mRecentSongViewModel.getRecentSongs().observe(getViewLifecycleOwner(), recentSongs -> {
-            mRecentSongAdapter.updateSongs(recentSongs);
+            mMoreRecentViewModel.setRecentSongs(recentSongs);
+            List<Song> subList = recentSongs;
+            if (recentSongs.size() >= 21) {
+                subList = recentSongs.subList(0, 21);
+            }
+            mRecentSongAdapter.updateSongs(subList);
             mBinding.progressBarRecentSong.setVisibility(View.GONE);
         });
     }

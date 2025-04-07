@@ -12,8 +12,8 @@ import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.Song;
-import com.example.musicapp.data.repository.RecentSongRepository;
-import com.example.musicapp.data.repository.SongRepositoryImpl;
+import com.example.musicapp.data.repository.recent.RecentSongRepository;
+import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.utils.AppUtils;
 
 import java.util.ArrayList;

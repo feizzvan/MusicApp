@@ -1,4 +1,4 @@
-package com.example.musicapp.data.source.local;
+package com.example.musicapp.data.source.local.song;
 
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.data.source.SongDataSource;
@@ -6,6 +6,7 @@ import com.example.musicapp.data.source.SongDataSource;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
 public class LocalSongDataSource implements SongDataSource.Local {
@@ -18,6 +19,11 @@ public class LocalSongDataSource implements SongDataSource.Local {
     @Override
     public Single<List<Song>> getSongs() {
         return mSongDAO.getAllSongs();
+    }
+
+    @Override
+    public Flowable<List<Song>> getFavoriteSongs() {
+        return mSongDAO.getFavoriteSongs();
     }
 
     @Override

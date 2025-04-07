@@ -1,4 +1,4 @@
-package com.example.musicapp.data.repository;
+package com.example.musicapp.data.repository.recent;
 
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.source.RecentSongDataSource;

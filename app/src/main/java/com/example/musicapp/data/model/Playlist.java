@@ -25,8 +25,8 @@ public class Playlist {
     @ColumnInfo(name = "artwork")
     private String mArtwork;
 
-    @ColumnInfo(name = "create_at")
-    private Date mCreateAt;
+    @ColumnInfo(name = "created_at")
+    private Date mCreatedAt;
 
     @Ignore
     private List<Song> mSongs = new ArrayList<>();
@@ -44,11 +44,11 @@ public class Playlist {
     }
 
     @Ignore
-    public Playlist(int id, String name, String artwork, Date createAt, List<Song> songs) {
+    public Playlist(int id, String name, String artwork, Date createdAt, List<Song> songs) {
         setId(id);
         setName(name);
         setArtwork(artwork);
-        setCreateAt(createAt);
+        setCreatedAt(createdAt);
         updateSongs(songs);
     }
 
@@ -80,12 +80,12 @@ public class Playlist {
         mArtwork = artwork;
     }
 
-    public Date getCreateAt() {
-        return mCreateAt;
+    public Date getCreatedAt() {
+        return mCreatedAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        mCreateAt = createAt;
+    public void setCreatedAt(Date createdAt) {
+        mCreatedAt = createdAt;
     }
 
     public List<Song> getSongs() {

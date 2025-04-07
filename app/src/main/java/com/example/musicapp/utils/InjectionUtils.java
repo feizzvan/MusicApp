@@ -2,13 +2,16 @@ package com.example.musicapp.utils;
 
 import android.content.Context;
 
-import com.example.musicapp.data.repository.RecentSongRepository;
-import com.example.musicapp.data.repository.RecentSongRepositoryImpl;
-import com.example.musicapp.data.repository.SongRepositoryImpl;
+import com.example.musicapp.data.repository.playlist.PlaylistRepositoryImpl;
+import com.example.musicapp.data.repository.recent.RecentSongRepository;
+import com.example.musicapp.data.repository.recent.RecentSongRepositoryImpl;
+import com.example.musicapp.data.repository.song.SongRepositoryImpl;
+import com.example.musicapp.data.source.PlaylistDataSource;
 import com.example.musicapp.data.source.RecentSongDataSource;
 import com.example.musicapp.data.source.local.AppDatabase;
-import com.example.musicapp.data.source.local.LocalRecentSongDataSource;
-import com.example.musicapp.data.source.local.LocalSongDataSource;
+import com.example.musicapp.data.source.local.playlist.LocalPlaylistDataSource;
+import com.example.musicapp.data.source.local.recent.LocalRecentSongDataSource;
+import com.example.musicapp.data.source.local.song.LocalSongDataSource;
 
 // là lớp chứa các phương thức để cung cấp các đối tượng cần thiết cho ứng dụng,
 public abstract class InjectionUtils {
@@ -32,5 +35,14 @@ public abstract class InjectionUtils {
     // Cung cấp SongRepositoryImpl để truy cập dữ liệu cho bài hát trong ứng dụng
     public static SongRepositoryImpl provideSongRepository(LocalSongDataSource dataSource) {
         return new SongRepositoryImpl(dataSource);
+    }
+
+    public static PlaylistDataSource.Local provideLocalPlaylistDataSource(Context context) {
+        AppDatabase database = AppDatabase.getInstance(context);
+        return new LocalPlaylistDataSource(database.playlistDAO());
+    }
+
+    public static PlaylistRepositoryImpl providePlaylistRepository(PlaylistDataSource.Local localDataSource) {
+        return new PlaylistRepositoryImpl(localDataSource);
     }
 }

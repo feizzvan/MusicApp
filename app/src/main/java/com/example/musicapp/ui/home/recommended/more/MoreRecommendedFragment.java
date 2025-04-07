@@ -49,7 +49,7 @@ public class MoreRecommendedFragment extends AppBaseFragment {
                 (song, index) -> showAndPlay(song, index, RECOMMENDED.getValue()),
                 this::showMenuOption);
 
-        mBinding.includeSongList.recyclerSongList.setAdapter(mSongListAdapter);
+        mBinding.includeMoreRecentSongList.rvSongList.setAdapter(mSongListAdapter);
     }
 
     private void setupViewModel() {

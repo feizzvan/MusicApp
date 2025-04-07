@@ -1,18 +1,11 @@
 package com.example.musicapp;
 
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -20,14 +13,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.Song;
-import com.example.musicapp.data.repository.RecentSongRepository;
-import com.example.musicapp.data.repository.SongRepositoryImpl;
+import com.example.musicapp.data.repository.recent.RecentSongRepository;
+import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.databinding.ActivityMainBinding;
-import com.example.musicapp.databinding.FragmentMoreAlbumBinding;
-import com.example.musicapp.ui.viewmodel.PermissionViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 import com.example.musicapp.utils.AppUtils;
-import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_SONG_ID = "com.example.musicapp.PREF_SONG_ID";

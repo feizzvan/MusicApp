@@ -52,8 +52,8 @@ public class DetailAlbumFragment extends AppBaseFragment {
         }, this::showMenuOption);
 
         mBinding.includeFragmentDetailPlaylist
-                .includeSongList
-                .recyclerSongList
+                .includeMoreRecentSongList
+                .rvSongList
                 .setAdapter(mSongListAdapter);
 
         mDetailAlbumViewModel =

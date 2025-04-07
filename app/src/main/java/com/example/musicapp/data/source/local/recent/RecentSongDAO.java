@@ -1,4 +1,4 @@
-package com.example.musicapp.data.source.local;
+package com.example.musicapp.data.source.local.recent;
 
 
 import androidx.room.Dao;

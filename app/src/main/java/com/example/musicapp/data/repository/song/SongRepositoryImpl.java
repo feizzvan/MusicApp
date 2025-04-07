@@ -1,13 +1,14 @@
-package com.example.musicapp.data.repository;
+package com.example.musicapp.data.repository.song;
 
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.data.model.SongList;
-import com.example.musicapp.data.source.local.LocalSongDataSource;
+import com.example.musicapp.data.source.local.song.LocalSongDataSource;
 import com.example.musicapp.data.source.remote.SongRemoteDataSourceImpl;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.Callback;
 
@@ -27,6 +28,11 @@ public class SongRepositoryImpl implements SongRepository.Local, SongRepository.
     @Override
     public Single<List<Song>> getSongs() {
         return mLocalSongDataSource.getSongs();
+    }
+
+    @Override
+    public Flowable<List<Song>> getFavoriteSongs() {
+        return mLocalSongDataSource.getFavoriteSongs();
     }
 
     @Override

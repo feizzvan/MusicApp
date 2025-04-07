@@ -11,6 +11,9 @@ import com.example.musicapp.data.model.Album;
 import com.example.musicapp.data.model.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.source.local.playlist.PlaylistDAO;
+import com.example.musicapp.data.source.local.recent.RecentSongDAO;
+import com.example.musicapp.data.source.local.song.SongDAO;
 
 @Database(entities = {Album.class, Playlist.class, Song.class, RecentSong.class}, version = 1)
 @TypeConverters({DateConverter.class})

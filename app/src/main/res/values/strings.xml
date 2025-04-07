@@ -50,4 +50,10 @@
     <string name="text_playlist_name">Playlist name</string>
     <string name="text_create_a_playlist">Create a playlist</string>
     <string name="title_playlist">Playlists</string>
+    <string name="playlist_name_hint">Playlist name</string>
+    <string name="title_create_playlist">Create playlist</string>
+    <string name="action_create">Create</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="error_empty_playlist_name">Playlist name cannot be empty</string>
+    <string name="error_playlist_already_exists">This playlist name already exists. Please use other name.</string>
 </resources>

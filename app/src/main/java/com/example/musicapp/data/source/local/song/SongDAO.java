@@ -1,4 +1,4 @@
-package com.example.musicapp.data.source.local;
+package com.example.musicapp.data.source.local.song;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -22,6 +22,9 @@ public interface SongDAO {
 
     @Query("SELECT * FROM songs WHERE song_id = :songId")
     Flowable<Song> getSongById(int songId); // Dùng cho tập dữ liệu có thể phát sinh hoặc thay đổi theo thời gian
+
+    @Query("SELECT * FROM songs WHERE favorite = 1")
+    Flowable<List<Song>> getFavoriteSongs();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertSongs(Song... song);
