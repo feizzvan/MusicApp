@@ -1,6 +1,8 @@
 package com.example.musicapp.data.repository.playlist;
 
-import com.example.musicapp.data.model.Playlist;
+import com.example.musicapp.data.model.playlist.Playlist;
+import com.example.musicapp.data.model.playlist.PlaylistSongCrossRef;
+import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.data.source.PlaylistDataSource;
 
 import java.util.List;
@@ -28,8 +30,23 @@ public class PlaylistRepositoryImpl implements PlaylistRepository.Local, Playlis
     }
 
     @Override
+    public Flowable<List<PlaylistWithSongs>> getAllPlaylistWithSongs() {
+        return mLocalDataSource.getAllPlaylistWithSongs();
+    }
+
+    @Override
+    public Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId) {
+        return mLocalDataSource.findPlaylistWithSongByPlaylistId(playlistId);
+    }
+
+    @Override
     public Completable insert(Playlist playlist) {
         return mLocalDataSource.insert(playlist);
+    }
+
+    @Override
+    public Completable insertPlaylistSongCrossRef(PlaylistSongCrossRef object) {
+        return mLocalDataSource.insertPlaylistSongCrossRef(object);
     }
 
     @Override

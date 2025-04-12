@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class PlaylistCreationDialog extends DialogFragment {
     public static final String TAG = "PlaylistCreationDialog";
-    private PlaylistDialogListener mListener;
+    private final PlaylistDialogListener mListener;
 
     public PlaylistCreationDialog(PlaylistDialogListener listener) {
         mListener = listener;
@@ -31,6 +31,7 @@ public class PlaylistCreationDialog extends DialogFragment {
         LayoutInflater layoutInflater = requireActivity().getLayoutInflater();
         View rootView = layoutInflater.inflate(R.layout.dialog_playlist_creation, null);
         TextInputEditText editText = rootView.findViewById(R.id.edit_playlist_name);
+
         builder.setView(rootView)
                 .setTitle(getString(R.string.title_create_playlist))
                 .setPositiveButton(getString(R.string.action_create), (dialogInterface, id) -> {
@@ -45,6 +46,8 @@ public class PlaylistCreationDialog extends DialogFragment {
                     }
                 })
                 .setNegativeButton(getString(R.string.action_cancel), (dialog, id) -> dismiss());
+
+        // Ng dùng click vào ô thì sẽ không thay đổi vị trí hoặc kích thước của cửa sổ
         editText.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
                 requireActivity().getWindow().setSoftInputMode(SOFT_INPUT_ADJUST_NOTHING);
@@ -53,6 +56,7 @@ public class PlaylistCreationDialog extends DialogFragment {
         return builder.create();
     }
 
+    // Truyền tên playlist từ dialog cho về activity hoặc fragment gọi dialog này
     public interface PlaylistDialogListener {
         void onCreateDialog(String playlistName);
     }

@@ -1,6 +1,8 @@
 package com.example.musicapp.data.source.local.playlist;
 
-import com.example.musicapp.data.model.Playlist;
+import com.example.musicapp.data.model.playlist.Playlist;
+import com.example.musicapp.data.model.playlist.PlaylistSongCrossRef;
+import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.data.source.PlaylistDataSource;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
-// Triển khai tất cả các phương thức trong PlaylistDataSource.Local bằng cách sử dụng PlaylistDAO
+// Triển khai tất cả các phương thức trong PlaylistDataSource.Local giao tiếp với ROOM bằng cách sử dụng PlaylistDAO
 public class LocalPlaylistDataSource implements PlaylistDataSource.Local {
     private final PlaylistDAO mPlaylistDAO;
 
@@ -28,8 +30,23 @@ public class LocalPlaylistDataSource implements PlaylistDataSource.Local {
     }
 
     @Override
+    public Flowable<List<PlaylistWithSongs>> getAllPlaylistWithSongs() {
+        return mPlaylistDAO.getAllPlaylistWithSongs();
+    }
+
+    @Override
+    public Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId) {
+        return mPlaylistDAO.findPlaylistWithSongByPlaylistId(playlistId);
+    }
+
+    @Override
     public Completable insert(Playlist playlist) {
         return mPlaylistDAO.insert(playlist.getName(), playlist.getArtwork(), playlist.getCreatedAt());
+    }
+
+    @Override
+    public Completable insertPlaylistSongCrossRef(PlaylistSongCrossRef object) {
+        return mPlaylistDAO.insertPlaylistSongCrossRef(object);
     }
 
     @Override

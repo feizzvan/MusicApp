@@ -2,6 +2,8 @@ package com.example.musicapp.data.model;
 
 import androidx.media3.common.MediaItem;
 
+import com.example.musicapp.data.model.playlist.Playlist;
+
 public class PlayingSong {
     private Song mSong;
     private MediaItem mMediaItem;

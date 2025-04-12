@@ -12,17 +12,26 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.FragmentSongOptionMenuDialogBinding;
 import com.example.musicapp.ui.dialog.information.SongInfoDialogFragment;
 import com.example.musicapp.ui.dialog.information.SongInfoDialogViewModel;
+import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
     public static final String TAG = "SongOptionMenuDialogFragment";
     private FragmentSongOptionMenuDialogBinding mBinding;
     private OptionMenuAdapter mOptionMenuAdapter;
+    private OptionMenuViewModel mOptionMenuViewModel;
+    private PlaylistViewModel mPlaylistViewModel;
+    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     public static SongOptionMenuDialogFragment newInstance() {
         return new SongOptionMenuDialogFragment();
@@ -38,26 +47,35 @@ public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setupView();
         setupViewModel();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDisposable.clear();
+    }
+
     private void setupView() {
-        mOptionMenuAdapter = new OptionMenuAdapter(optionMenuItem -> {
-            handleMenuItemClick(optionMenuItem);
-            dismiss();
-        });
+        mOptionMenuAdapter = new OptionMenuAdapter(this::handleMenuItemClick);
         mBinding.recyclerMenuOption.setAdapter(mOptionMenuAdapter);
     }
 
     private void setupViewModel() {
-        OptionMenuViewModel optionMenuViewModel =
+        MusicApplication application = (MusicApplication) requireActivity().getApplication();
+        PlaylistViewModel.Factory factory =
+                new PlaylistViewModel.Factory(application.getPlaylistRepository());
+        mPlaylistViewModel =
+                new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
+        mOptionMenuViewModel =
                 new ViewModelProvider(requireActivity()).get(OptionMenuViewModel.class);
         SongInfoDialogViewModel songInfoDialogViewModel =
                 new ViewModelProvider(requireActivity()).get(SongInfoDialogViewModel.class);
-        optionMenuViewModel.getOptionMenuItem()
+        mOptionMenuViewModel.getOptionMenuItem()
                 .observe(getViewLifecycleOwner(), mOptionMenuAdapter::updateMenuOptionItems);
-        optionMenuViewModel.getSong().observe(getViewLifecycleOwner(), song -> {
+        mOptionMenuViewModel.getSong().observe(getViewLifecycleOwner(), song -> {
             showSongInfo(song);
             songInfoDialogViewModel.setSong(song);
         });
@@ -71,6 +89,9 @@ public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
                 SongInfoDialogFragment.newInstance().show(requireActivity()
                         .getSupportFragmentManager(), SongInfoDialogFragment.TAG);
                 break;
+            case ADD_TO_PLAYLIST:
+                showAddToPlaylistDialog();
+                break;
             default:
                 Toast.makeText(requireActivity(), "Not implemented yet", Toast.LENGTH_SHORT).show();
         }
@@ -83,5 +104,25 @@ public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
                 .load(song.getImage())
                 .error(R.drawable.ic_music_note)
                 .into(mBinding.includeSongMenuOption.imgItemMenuOptionAvatar);
+    }
+
+    private void showAddToPlaylistDialog() {
+        AddToPlaylistDialog dialog = new AddToPlaylistDialog(playlist -> {
+            Song song = mOptionMenuViewModel.getSong().getValue();
+            if (song != null) {
+                mDisposable.add(mPlaylistViewModel.createPlaylistSongCrossRef(playlist, song)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            String message = getString(R.string.add_to_playlist_success, playlist.getName());
+                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                        }, error -> {
+                            String message = getString(R.string.error_add_to_playlist);
+                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                        })
+                );
+            }
+        });
+        dialog.show(requireActivity().getSupportFragmentManager(), AddToPlaylistDialog.TAG);
     }
 }

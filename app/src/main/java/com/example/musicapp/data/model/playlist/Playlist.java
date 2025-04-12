@@ -1,10 +1,12 @@
-package com.example.musicapp.data.model;
+package com.example.musicapp.data.model.playlist;
 
 import androidx.media3.common.MediaItem;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.example.musicapp.data.model.Song;
 
 import java.util.ArrayList;
 import java.util.Date;

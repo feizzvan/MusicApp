@@ -56,4 +56,6 @@
     <string name="action_cancel">Cancel</string>
     <string name="error_empty_playlist_name">Playlist name cannot be empty</string>
     <string name="error_playlist_already_exists">This playlist name already exists. Please use other name.</string>
+    <string name="add_to_playlist_success">The song has been add to the playlist \"%s\" successfully!</string>
+    <string name="error_add_to_playlist">This song already exists in your selected playlist.</string>
 </resources>

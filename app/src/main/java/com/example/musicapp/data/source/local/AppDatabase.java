@@ -2,20 +2,39 @@ package com.example.musicapp.data.source.local;
 
 import android.content.Context;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.AutoMigrationSpec;
 
 import com.example.musicapp.data.model.Album;
-import com.example.musicapp.data.model.Playlist;
+import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.playlist.PlaylistSongCrossRef;
 import com.example.musicapp.data.source.local.playlist.PlaylistDAO;
 import com.example.musicapp.data.source.local.recent.RecentSongDAO;
 import com.example.musicapp.data.source.local.song.SongDAO;
 
-@Database(entities = {Album.class, Playlist.class, Song.class, RecentSong.class}, version = 1)
+@Database(
+        entities = {
+                Album.class,
+                Playlist.class,
+                Song.class,
+                RecentSong.class,
+                PlaylistSongCrossRef.class
+        },
+        version = 2,
+        exportSchema = true,
+        autoMigrations = {
+                @AutoMigration(
+                        from = 1,
+                        to = 2,
+                        spec = AppDatabase.DbMigrationSpec.class)
+        }
+)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase sInstance;
@@ -41,4 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AlbumDAO albumDAO();
 
+    static class DbMigrationSpec implements AutoMigrationSpec {
+
+    }
 }

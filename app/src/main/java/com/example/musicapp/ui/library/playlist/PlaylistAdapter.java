@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
-import com.example.musicapp.data.model.Playlist;
+import com.example.musicapp.data.model.playlist.Playlist;
+import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.databinding.ItemPlaylistBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
-    private final List<Playlist> mPlaylists = new ArrayList<>();
+    private final List<PlaylistWithSongs> mPlaylists = new ArrayList<>();
     private final onPlaylistItemClickListener mItemClickListener;
     private final onPlaylistOptionMenuClickListener mOptionMenuClickListener;
 
@@ -43,7 +44,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         return mPlaylists.size();
     }
 
-    void updatePlaylists(List<Playlist> playlists) {
+    public void updatePlaylists(List<PlaylistWithSongs> playlists) {
         if (playlists != null) {
             int oldSize = mPlaylists.size();
             mPlaylists.clear();
@@ -69,17 +70,19 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             mOptionMenuClickListener = optionMenuClickListener;
         }
 
-        public void bind(Playlist playlist) {
-            mBinding.textItemPlaylistName.setText(playlist.getName());
-            String content = mBinding.getRoot().getContext().getString(R.string.text_number_song, playlist.getSongs().size());
+        public void bind(PlaylistWithSongs playlistWithSongs) {
+            mBinding.textItemPlaylistName.setText(playlistWithSongs.playlist.getName());
+            String content = mBinding.getRoot()
+                    .getContext()
+                    .getString(R.string.text_number_song, playlistWithSongs.songs.size());
             mBinding.textItemPlaylistCount.setText(content);
             Glide.with(mBinding.getRoot())
-                    .load(playlist.getArtwork())
+                    .load(playlistWithSongs.playlist.getArtwork())
                     .error(R.drawable.ic_album)
                     .into(mBinding.imgItemPlaylistAvatar);
-            mBinding.getRoot().setOnClickListener(view -> mItemClickListener.onClick(playlist));
+            mBinding.getRoot().setOnClickListener(view -> mItemClickListener.onClick(playlistWithSongs.playlist));
             mBinding.btnItemPlaylistOption.setOnClickListener(view ->
-                    mOptionMenuClickListener.onClick(playlist));
+                    mOptionMenuClickListener.onClick(playlistWithSongs.playlist));
         }
     }
 

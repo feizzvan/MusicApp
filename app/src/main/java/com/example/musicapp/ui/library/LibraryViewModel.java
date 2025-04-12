@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.musicapp.data.model.Playlist;
 import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.data.repository.playlist.PlaylistRepositoryImpl;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
@@ -59,8 +59,8 @@ public class LibraryViewModel extends ViewModel {
         return mFavoriteSongs;
     }
 
-    public Flowable<List<Playlist>> loadPlaylists() {
-        return mPlaylistRepository.getAll();
+    public Flowable<List<PlaylistWithSongs>> loadPlaylistWithSongs() {
+        return mPlaylistRepository.getAllPlaylistWithSongs();
     }
 
     public static class Factory implements ViewModelProvider.Factory {

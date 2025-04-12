@@ -1,6 +1,8 @@
 package com.example.musicapp.data.source;
 
-import com.example.musicapp.data.model.Playlist;
+import com.example.musicapp.data.model.playlist.Playlist;
+import com.example.musicapp.data.model.playlist.PlaylistSongCrossRef;
+import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 
 import java.util.List;
 
@@ -15,7 +17,13 @@ public interface PlaylistDataSource {
 
         Single<Playlist> findByName(String playlistName);
 
+        Flowable<List<PlaylistWithSongs>> getAllPlaylistWithSongs();
+
+        Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId);
+
         Completable insert(Playlist playlist);
+
+        Completable insertPlaylistSongCrossRef(PlaylistSongCrossRef object);
 
         Completable update(Playlist playlist);
 

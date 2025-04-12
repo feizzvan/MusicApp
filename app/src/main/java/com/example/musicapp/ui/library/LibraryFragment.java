@@ -104,7 +104,7 @@ public class LibraryFragment extends Fragment {
                         throwable -> mLibraryViewModel.setFavoriteSongs(null))
         );
 
-        mDisposable.add(mLibraryViewModel.loadPlaylists()
+        mDisposable.add(mLibraryViewModel.loadPlaylistWithSongs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(playlists -> mPlaylistViewModel.setPlaylists(playlists),
