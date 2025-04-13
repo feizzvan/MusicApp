@@ -9,7 +9,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SongRemoteDataSourceImpl implements SongDataSource.Remote {
+public class RemoteSongDataSourceImpl implements SongDataSource.Remote {
     @Override
     public void loadSongs(Callback<SongList> callback) {
         AppService appService = RetrofitHelper.getInstance();

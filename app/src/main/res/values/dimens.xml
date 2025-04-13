@@ -22,5 +22,7 @@
     <dimen name="mini_player_avatar_size_48dp">48dp</dimen>
     <dimen name="margin_32dp">32dp</dimen>
     <dimen name="width_2dp">2dp</dimen>
+    <dimen name="img_size_48dp">48dp</dimen>
+    <dimen name="padding_2dp">2dp</dimen>
     />
 </resources>

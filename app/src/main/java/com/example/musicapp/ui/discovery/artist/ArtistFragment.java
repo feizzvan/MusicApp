@@ -1,4 +1,4 @@
-package com.example.musicapp.ui.discovery;
+package com.example.musicapp.ui.discovery.artist;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,15 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musicapp.R;
-import com.example.musicapp.databinding.FragmentDiscoveryBinding;
+import com.example.musicapp.databinding.FragmentArtistBinding;
+import com.example.musicapp.databinding.FragmentMoreAlbumBinding;
 
-public class DiscoveryFragment extends Fragment {
-    private FragmentDiscoveryBinding mBinding;
+public class ArtistFragment extends Fragment {
+    FragmentArtistBinding mBinding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentDiscoveryBinding.inflate(inflater, container, false);
+        mBinding = FragmentArtistBinding.inflate(inflater, container, false);
         return mBinding.getRoot();
     }
 

@@ -59,4 +59,8 @@
     <string name="add_to_playlist_success">The song has been add to the playlist \"%s\" successfully!</string>
     <string name="error_add_to_playlist">This song already exists in your selected playlist.</string>
     <string name="title_playlist_detail">Playlist detail</string>
+    <string name="text_artist_name">Artist name</string>
+    <string name="text_number_of_interest">Number of interest: %d</string>
+    <string name="action_interest">Interest</string>
+    <string name="title_artist">Featured Artists</string>
 </resources>

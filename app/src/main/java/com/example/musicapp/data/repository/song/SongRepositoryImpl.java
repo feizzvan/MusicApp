@@ -3,7 +3,7 @@ package com.example.musicapp.data.repository.song;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.data.model.SongList;
 import com.example.musicapp.data.source.local.song.LocalSongDataSource;
-import com.example.musicapp.data.source.remote.SongRemoteDataSourceImpl;
+import com.example.musicapp.data.source.remote.RemoteSongDataSourceImpl;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class SongRepositoryImpl implements SongRepository.Local, SongRepository.
 
     @Override
     public void loadSongs(Callback<SongList> callback) {
-        SongRemoteDataSourceImpl songRemoteDataSource = new SongRemoteDataSourceImpl();
+        RemoteSongDataSourceImpl songRemoteDataSource = new RemoteSongDataSourceImpl();
         songRemoteDataSource.loadSongs(callback);
     }
 

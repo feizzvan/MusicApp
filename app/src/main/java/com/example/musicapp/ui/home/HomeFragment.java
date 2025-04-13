@@ -29,6 +29,8 @@ public class HomeFragment extends Fragment {
 
         if (savedInstanceState != null) {
             int scrollY = savedInstanceState.getInt(SCROLL_POSITION);
+//            post(...) giúp chờ cho đến khi layout hiển thị xong rồi mới thực hiện scrollTo(...).
+//            Nếu gọi scrollTo() ngay lập tức, có thể ScrollView chưa kịp đo kích thước và layout → cuộn không đúng.
             mBinding.scrollViewHome.post(() -> mBinding.scrollViewHome.scrollTo(0, scrollY));
         }
     }

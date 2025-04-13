@@ -9,7 +9,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AlbumRemoteDataSouceImpl implements AlbumDataSource.Remote {
+public class RemoteAlbumDataSourceImpl implements AlbumDataSource.Remote {
     @Override
     public void loadAlbums(Callback<AlbumList> callback) {
         // Lấy một thể hiện của `AppService` từ `RetrofitHelper` để gọi API.

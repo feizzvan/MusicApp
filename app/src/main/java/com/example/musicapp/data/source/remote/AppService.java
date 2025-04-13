@@ -2,6 +2,7 @@ package com.example.musicapp.data.source.remote;
 
 import com.example.musicapp.data.model.AlbumList;
 import com.example.musicapp.data.model.SongList;
+import com.example.musicapp.data.model.artist.ArtistList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,4 +17,7 @@ public interface AppService {
 
     @GET("/resources/braniumapis/songs.json")
     Call<SongList> getSongs();
+
+    @GET("resources/braniumapis/artists.json")
+    Call<ArtistList> getArtists();
 }
