@@ -16,8 +16,13 @@ import com.example.musicapp.data.model.Song;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.databinding.ActivityMainBinding;
+import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 import com.example.musicapp.utils.AppUtils;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_SONG_ID = "com.example.musicapp.PREF_SONG_ID";
@@ -25,7 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
     private SharedViewModel mSharedViewModel;
+    private PlaylistViewModel mPlaylistViewModel;
     private SharedPreferences mSharedPreferences;
+
+    private boolean isFirstLoad = true;
+
+    private CompositeDisposable mDisposable = new CompositeDisposable();
 
 //    private final ActivityResultLauncher<String> mResultLauncher = registerForActivityResult(
 //            new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -51,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewModel();
         setupSharedPreferences();
         setupComponents();
+        observeData();
     }
 
     @Override
@@ -75,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
         saveCurrentSong();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDisposable.dispose();
+    }
+
     private void setupToolbar() {
         //AppBarConfiguration appBarConfiguration = new AppBarConfiguration
         // .Builder(R.id.nav_home, R.id.nav_library, R.id.nav_discovery, R.id.nav_settings).build();
@@ -88,14 +105,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        MusicApplication musicApplication = (MusicApplication) getApplication();
-        RecentSongRepository recentSongRepository = musicApplication.getRecentSongRepository();
-        SongRepositoryImpl songRepository = musicApplication.getSongRepository();
-        SharedViewModel.Factory factory = new SharedViewModel.Factory(songRepository, recentSongRepository);
-        mSharedViewModel = new ViewModelProvider(this, factory).get(SharedViewModel.class);
+        MusicApplication application = (MusicApplication) getApplication();
+        RecentSongRepository recentSongRepository = application.getRecentSongRepository();
+        SongRepositoryImpl songRepository = application.getSongRepository();
+
+        SharedViewModel.Factory shareViewModelFactory =
+                new SharedViewModel.Factory(songRepository, recentSongRepository);
+        mSharedViewModel =
+                new ViewModelProvider(this, shareViewModelFactory).get(SharedViewModel.class);
+
+        PlaylistViewModel.Factory playlistViewModelFactory =
+                new PlaylistViewModel.Factory(application.getPlaylistRepository());
+        mPlaylistViewModel =
+                new ViewModelProvider(this, playlistViewModelFactory).get(PlaylistViewModel.class);
+
         mSharedViewModel.isSongLoaded().observe(this, isLoaded -> {
-            if (isLoaded) {
+            if (isLoaded && isFirstLoad) {
                 readPrefPlayingSong();
+                isFirstLoad = false;
             }
         });
 
@@ -119,6 +146,21 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         AppUtils.X_DPI = displayMetrics.xdpi;
+    }
+
+    private void observeData() {
+        mDisposable.add(mPlaylistViewModel.getAllPlaylistWithSongs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        playlistWithSongs -> {
+                            mPlaylistViewModel.setPlaylists(playlistWithSongs);
+                            mSharedViewModel.setPlaylistSongs(playlistWithSongs);
+                        },
+                        error -> {
+                        }
+                )
+        );
     }
 
     private void saveCurrentSong() {

@@ -27,6 +27,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LibraryFragment extends Fragment {
+    public static final String SCROLL_POSITION = "com.example.musicapp.ui.library.SCROLL_POSITION";
     private FragmentLibraryBinding mBinding;
     private LibraryViewModel mLibraryViewModel;
     private RecentSongViewModel mRecentSongViewModel;
@@ -46,8 +47,20 @@ public class LibraryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (savedInstanceState != null) {
+            int scrollY = savedInstanceState.getInt(SCROLL_POSITION);
+            mBinding.scrollViewLibrary.post(() -> mBinding.scrollViewLibrary.scrollTo(0, scrollY));
+        }
+
         setupViewModel();
         setupObserver();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int scrollY = mBinding.scrollViewLibrary.getScrollY();
+        outState.putInt(SCROLL_POSITION, scrollY);
     }
 
     @Override
@@ -73,11 +86,14 @@ public class LibraryFragment extends Fragment {
                 musicApplication.getPlaylistRepository()
         );
 
-        mLibraryViewModel = new ViewModelProvider(requireActivity(), libraryFactory).get(LibraryViewModel.class);
+        mLibraryViewModel =
+                new ViewModelProvider(requireActivity(), libraryFactory).get(LibraryViewModel.class);
         mSharedViewModel = SharedViewModel.getInstance();
-        mRecentSongViewModel = new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
+        mRecentSongViewModel =
+                new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
         mFavoriteViewModel = new ViewModelProvider(requireActivity()).get(FavoriteViewModel.class);
-        mPlaylistViewModel = new ViewModelProvider(requireActivity(), playlistFactory).get(PlaylistViewModel.class);
+        mPlaylistViewModel =
+                new ViewModelProvider(requireActivity(), playlistFactory).get(PlaylistViewModel.class);
 
         mLibraryViewModel.getFavoriteSongs().observe(getViewLifecycleOwner(), songs -> {
             mFavoriteViewModel.setFavoriteSongs(songs);

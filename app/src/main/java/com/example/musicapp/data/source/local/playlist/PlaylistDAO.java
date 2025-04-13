@@ -35,7 +35,7 @@ public interface PlaylistDAO {
     //Truy vấn một playlist theo ID, kèm luôn danh sách các bài hát trong nó
     @Transaction
     @Query("SELECT * FROM playlists WHERE playlist_id = :playlistId")
-    Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId);
+    Single<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId);
 
     @Query("INSERT INTO playlists(name, artwork, created_at) VALUES(:name, :artwork, :createdAt)")
     Completable insert(String name, String artwork, Date createdAt);

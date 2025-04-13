@@ -19,7 +19,7 @@ public interface PlaylistRepository {
 
         Flowable<List<PlaylistWithSongs>> getAllPlaylistWithSongs();
 
-        Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId);
+        Single<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId);
 
         Completable insert(Playlist playlist);
 

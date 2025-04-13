@@ -35,7 +35,7 @@ public class LocalPlaylistDataSource implements PlaylistDataSource.Local {
     }
 
     @Override
-    public Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId) {
+    public Single<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId) {
         return mPlaylistDAO.findPlaylistWithSongByPlaylistId(playlistId);
     }
 

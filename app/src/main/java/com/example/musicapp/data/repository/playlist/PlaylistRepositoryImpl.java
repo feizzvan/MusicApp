@@ -35,7 +35,7 @@ public class PlaylistRepositoryImpl implements PlaylistRepository.Local, Playlis
     }
 
     @Override
-    public Flowable<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId) {
+    public Single<PlaylistWithSongs> findPlaylistWithSongByPlaylistId(int playlistId) {
         return mLocalDataSource.findPlaylistWithSongByPlaylistId(playlistId);
     }
 

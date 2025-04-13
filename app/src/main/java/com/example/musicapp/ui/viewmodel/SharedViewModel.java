@@ -12,6 +12,7 @@ import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.utils.AppUtils;
@@ -120,7 +121,7 @@ public class SharedViewModel extends ViewModel {
             mPlayingSong.setPlaylist(playlist);
             List<Song> songList = playlist.getSongs();
             index = songList.indexOf(new Song(songId));
-            if(index >= 0 && index < songList.size()){
+            if (index >= 0 && index < songList.size()) {
                 Song song = songList.get(index);
                 mPlayingSong.setSong(song);
                 mPlayingSong.setCurrentSongIndex(index);
@@ -128,6 +129,16 @@ public class SharedViewModel extends ViewModel {
             setCurrentPlaylist(playlistName);
             setPlayingSong(mPlayingSong);
             setIndexToPlay(index);
+        }
+    }
+
+    public void setPlaylistSongs(List<PlaylistWithSongs> playlistWithSongs) {
+        if (playlistWithSongs != null) {
+            for (PlaylistWithSongs element : playlistWithSongs) {
+                Playlist playlist = element.playlist;
+                playlist.updateSongs(element.songs);
+                addPlaylist(playlist);
+            }
         }
     }
 
@@ -172,20 +183,10 @@ public class SharedViewModel extends ViewModel {
     }
 
     // Thêm một playlist mới vào danh sách nếu playlist đó chưa tồn tại.
-    public boolean addPlaylist(Playlist playlist) {
-        // Kiểm tra xem playlist có tồn tại trong danh sách chưa
+    public void addPlaylist(Playlist playlist) {
         if (!mPlaylistMap.containsKey(playlist.getName())) {
-            //Thêm playlist, khi playlist tồn tại thì != null, != null cho thấy một playlist cũ được thay thế thành công
-            return mPlaylistMap.put(playlist.getName(), playlist) != null;
+            mPlaylistMap.put(playlist.getName(), playlist);
         }
-
-        // Nếu playlist đã tồn tại, cập nhật playlist vào danh sách
-        return updatePlaylist(playlist);
-    }
-
-    // Cập nhật thông tin của một playlist đã tồn tại
-    public boolean updatePlaylist(Playlist playlist) {
-        return mPlaylistMap.put(playlist.getName(), playlist) != null;
     }
 
     // Cập nhật bài hát đang phát dựa trên chỉ số (index) của bài hát trong playlist hiện tại và lưu trữ vào mPlayingSong

@@ -60,7 +60,7 @@ public class PlaylistViewModel extends ViewModel {
         return mPlaylistRepository.getAllPlaylistWithSongs();
     }
 
-    public Flowable<PlaylistWithSongs> getPlaylistWithSongs(int playlistId) {
+    public Single<PlaylistWithSongs> getPlaylistWithSongs(int playlistId) {
         return mPlaylistRepository.findPlaylistWithSongByPlaylistId(playlistId);
     }
 
