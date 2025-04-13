@@ -10,7 +10,7 @@
     <string name="text_song_title">Song title</string>
     <string name="text_song_artist">Song artist</string>
     <string name="title_recommended_songs">Recommended songs</string>
-    <string name="title_detail_album">Detail album</string>
+    <string name="title_detail_album">Album detail</string>
     <string name="imgDescription">TODO</string>
     <string name="title_song_list">Song list</string>
     <string name="text_number_song">Number of songs: %d</string>

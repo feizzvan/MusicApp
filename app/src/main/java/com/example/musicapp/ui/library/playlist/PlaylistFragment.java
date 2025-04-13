@@ -18,6 +18,8 @@ import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.databinding.FragmentPlaylistBinding;
 import com.example.musicapp.ui.dialog.PlaylistCreationDialog;
+import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailFragment;
+import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailViewModel;
 import com.example.musicapp.ui.library.playlist.more.MorePlaylistFragment;
 import com.example.musicapp.ui.library.playlist.more.MorePlaylistViewModel;
 
@@ -33,6 +35,7 @@ public class PlaylistFragment extends Fragment {
     private PlaylistAdapter mAdapter;
     private PlaylistViewModel mPlaylistViewModel;
     private MorePlaylistViewModel mMorePlaylistViewModel;
+    private PlaylistDetailViewModel mPlaylistDetailViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Override
@@ -65,7 +68,7 @@ public class PlaylistFragment extends Fragment {
     private void setupView() {
         mAdapter = new PlaylistAdapter(
                 playlist -> {
-
+                    loadPlaylist(playlist);
                 },
                 playlist -> {
 
@@ -76,6 +79,26 @@ public class PlaylistFragment extends Fragment {
         mBinding.includeBtnAddPlaylist.textAddPlaylist.setOnClickListener(view -> createPlaylist());
         mBinding.btnMorePlaylist.setOnClickListener(view -> navigateToMorePlaylist());
         mBinding.textTitlePlaylist.setOnClickListener(view -> navigateToMorePlaylist());
+    }
+
+    private void loadPlaylist(Playlist playlist) {
+        mDisposable.add(mPlaylistViewModel.getPlaylistWithSongs(playlist.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    mPlaylistDetailViewModel.setPlaylistWithSongs(result);
+                    navigateToPlaylistDetail();
+                }, error -> {
+                })
+        );
+    }
+
+    private void navigateToPlaylistDetail() {
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, PlaylistDetailFragment.class, null)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void createPlaylist() {
@@ -118,6 +141,7 @@ public class PlaylistFragment extends Fragment {
         PlaylistViewModel.Factory factory = new PlaylistViewModel.Factory(musicApplication.getPlaylistRepository());
         mPlaylistViewModel = new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
         mMorePlaylistViewModel = new ViewModelProvider(requireActivity()).get(MorePlaylistViewModel.class);
+        mPlaylistDetailViewModel = new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
 
         mPlaylistViewModel.getPlaylists().observe(getViewLifecycleOwner(), playlistWithSongs -> {
             List<PlaylistWithSongs> subList = new ArrayList<>();
