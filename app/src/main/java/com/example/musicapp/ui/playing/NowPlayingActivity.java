@@ -21,7 +21,7 @@ import androidx.media3.session.MediaController;
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.PlayingSong;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.ActivityNowPlayingBinding;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;

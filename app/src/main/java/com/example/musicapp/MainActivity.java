@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.musicapp.data.model.PlayingSong;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.databinding.ActivityMainBinding;

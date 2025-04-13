@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.musicapp.R;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;
 import com.example.musicapp.ui.playing.NowPlayingActivity;

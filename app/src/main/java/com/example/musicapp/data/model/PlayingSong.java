@@ -3,6 +3,7 @@ package com.example.musicapp.data.model;
 import androidx.media3.common.MediaItem;
 
 import com.example.musicapp.data.model.playlist.Playlist;
+import com.example.musicapp.data.model.song.Song;
 
 public class PlayingSong {
     private Song mSong;

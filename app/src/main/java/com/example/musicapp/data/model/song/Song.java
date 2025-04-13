@@ -1,4 +1,4 @@
-package com.example.musicapp.data.model;
+package com.example.musicapp.data.model.song;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

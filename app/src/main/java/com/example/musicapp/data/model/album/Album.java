@@ -1,4 +1,4 @@
-package com.example.musicapp.data.model;
+package com.example.musicapp.data.model.album;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

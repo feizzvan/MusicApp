@@ -1,21 +1,31 @@
 package com.example.musicapp.data.model.artist;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
 @SuppressWarnings("unused")
+@Entity(tableName = "artists")
 public class Artist {
     @SerializedName("id")
+    @PrimaryKey
+    @ColumnInfo(name = "artist_id")
     private int mId;
 
     @SerializedName("name")
+    @ColumnInfo(name = "name")
     private String mName;
 
     @SerializedName("avatar")
+    @ColumnInfo(name = "avatar")
     private String mAvatar;
 
     @SerializedName("interested")
+    @ColumnInfo(name = "interested")
     private int mInterested;
 
     public Artist() {

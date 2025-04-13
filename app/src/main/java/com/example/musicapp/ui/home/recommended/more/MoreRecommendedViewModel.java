@@ -3,7 +3,7 @@ package com.example.musicapp.ui.home.recommended.more;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 
 import java.util.List;
 

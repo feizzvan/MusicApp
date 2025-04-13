@@ -1,7 +1,7 @@
 package com.example.musicapp.data.source.remote;
 
-import com.example.musicapp.data.model.AlbumList;
-import com.example.musicapp.data.model.SongList;
+import com.example.musicapp.data.model.album.AlbumList;
+import com.example.musicapp.data.model.song.SongList;
 import com.example.musicapp.data.model.artist.ArtistList;
 
 import retrofit2.Call;

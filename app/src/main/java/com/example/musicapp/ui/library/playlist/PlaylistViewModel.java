@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.playlist.PlaylistSongCrossRef;
 import com.example.musicapp.data.model.playlist.PlaylistWithSongs;

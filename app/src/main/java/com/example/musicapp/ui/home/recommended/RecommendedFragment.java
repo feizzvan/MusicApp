@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentRecommendedBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;

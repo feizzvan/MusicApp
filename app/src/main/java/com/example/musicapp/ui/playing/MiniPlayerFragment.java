@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.playlist.Playlist;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentMiniPlayerBinding;
 import com.example.musicapp.ui.viewmodel.MediaPlayerViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;

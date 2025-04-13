@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.ItemSongBinding;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
 import com.example.musicapp.utils.AppUtils;

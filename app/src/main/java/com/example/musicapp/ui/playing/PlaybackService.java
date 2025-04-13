@@ -19,7 +19,7 @@ import androidx.media3.session.MediaSession;
 import androidx.media3.session.MediaSessionService;
 
 import com.example.musicapp.data.model.PlayingSong;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;

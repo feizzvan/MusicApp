@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.RecentSong;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;

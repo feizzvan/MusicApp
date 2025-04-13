@@ -1,6 +1,6 @@
 package com.example.musicapp.data.source;
 
-import com.example.musicapp.data.model.AlbumList;
+import com.example.musicapp.data.model.album.AlbumList;
 
 import retrofit2.Callback;
 

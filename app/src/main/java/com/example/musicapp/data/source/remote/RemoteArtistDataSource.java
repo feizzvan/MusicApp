@@ -9,6 +9,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+//triển khai RemoteArtistDataSource từ interface ArtistDataSource.Remote
+// dùng để gọi API lấy danh sách nghệ sĩ từ server thông qua Retrofit.
 public class RemoteArtistDataSource implements ArtistDataSource.Remote {
     @Override
     public void loadArtists(Callback<ArtistList> callback) {

@@ -1,6 +1,6 @@
 package com.example.musicapp.data.source.local.song;
 
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.source.SongDataSource;
 
 import java.util.List;

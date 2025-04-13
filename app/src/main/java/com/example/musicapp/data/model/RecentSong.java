@@ -3,6 +3,8 @@ package com.example.musicapp.data.model;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
+import com.example.musicapp.data.model.song.Song;
+
 import java.util.Date;
 
 @Entity(tableName = "recent_songs")

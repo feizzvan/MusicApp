@@ -6,9 +6,11 @@ import android.content.ComponentName;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
 
+import com.example.musicapp.data.repository.artist.ArtistRepository;
 import com.example.musicapp.data.repository.playlist.PlaylistRepositoryImpl;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
+import com.example.musicapp.data.source.ArtistDataSource;
 import com.example.musicapp.data.source.PlaylistDataSource;
 import com.example.musicapp.data.source.RecentSongDataSource;
 import com.example.musicapp.data.source.local.song.LocalSongDataSource;
@@ -31,6 +33,8 @@ public class MusicApplication extends Application {
     private SongRepositoryImpl mSongRepository;
 
     private PlaylistRepositoryImpl mPlaylistRepository;
+
+    private ArtistRepository mArtistRepository;
 
     @Override
     public void onCreate() {
@@ -73,12 +77,21 @@ public class MusicApplication extends Application {
     }
 
     private void setupComponents() {
-        RecentSongDataSource recentSongDataSource = InjectionUtils.provideRecentSongDataSource(getApplicationContext());
+        RecentSongDataSource recentSongDataSource =
+                InjectionUtils.provideRecentSongDataSource(getApplicationContext());
         mRecentSongRepository = InjectionUtils.provideRecentSongRepository(recentSongDataSource);
-        LocalSongDataSource localSongDataSource = InjectionUtils.provideLocalSongDataSource(getApplicationContext());
+
+        LocalSongDataSource localSongDataSource =
+                InjectionUtils.provideLocalSongDataSource(getApplicationContext());
         mSongRepository = InjectionUtils.provideSongRepository(localSongDataSource);
-        PlaylistDataSource.Local localPlaylistDataSource = InjectionUtils.provideLocalPlaylistDataSource(getApplicationContext());
+
+        PlaylistDataSource.Local localPlaylistDataSource =
+                InjectionUtils.provideLocalPlaylistDataSource(getApplicationContext());
         mPlaylistRepository = InjectionUtils.providePlaylistRepository(localPlaylistDataSource);
+
+        ArtistDataSource.Local localArtistDataSource =
+                InjectionUtils.provideLocalArtistDataSource(getApplicationContext());
+        mArtistRepository = InjectionUtils.provideArtistRepository(localArtistDataSource);
     }
 
     public RecentSongRepository getRecentSongRepository() {
@@ -91,5 +104,9 @@ public class MusicApplication extends Application {
 
     public PlaylistRepositoryImpl getPlaylistRepository() {
         return mPlaylistRepository;
+    }
+
+    public ArtistRepository getArtistRepository() {
+        return mArtistRepository;
     }
 }

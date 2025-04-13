@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.musicapp.data.model.Album;
+import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.data.model.playlist.Playlist;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 
 import java.util.ArrayList;
 import java.util.Date;

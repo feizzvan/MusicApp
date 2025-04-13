@@ -2,13 +2,16 @@ package com.example.musicapp.utils;
 
 import android.content.Context;
 
+import com.example.musicapp.data.repository.artist.ArtistRepositoryImpl;
 import com.example.musicapp.data.repository.playlist.PlaylistRepositoryImpl;
 import com.example.musicapp.data.repository.recent.RecentSongRepository;
 import com.example.musicapp.data.repository.recent.RecentSongRepositoryImpl;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
+import com.example.musicapp.data.source.ArtistDataSource;
 import com.example.musicapp.data.source.PlaylistDataSource;
 import com.example.musicapp.data.source.RecentSongDataSource;
 import com.example.musicapp.data.source.local.AppDatabase;
+import com.example.musicapp.data.source.local.artist.LocalArtistDataSource;
 import com.example.musicapp.data.source.local.playlist.LocalPlaylistDataSource;
 import com.example.musicapp.data.source.local.recent.LocalRecentSongDataSource;
 import com.example.musicapp.data.source.local.song.LocalSongDataSource;
@@ -44,5 +47,14 @@ public abstract class InjectionUtils {
 
     public static PlaylistRepositoryImpl providePlaylistRepository(PlaylistDataSource.Local localDataSource) {
         return new PlaylistRepositoryImpl(localDataSource);
+    }
+
+    public static ArtistDataSource.Local provideLocalArtistDataSource(Context context) {
+        AppDatabase database = AppDatabase.getInstance(context);
+        return new LocalArtistDataSource(database.artistDAO());
+    }
+
+    public static ArtistRepositoryImpl provideArtistRepository(ArtistDataSource.Local localDataSource) {
+        return new ArtistRepositoryImpl(localDataSource);
     }
 }

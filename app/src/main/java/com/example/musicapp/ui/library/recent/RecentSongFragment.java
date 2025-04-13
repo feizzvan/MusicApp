@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musicapp.R;
-import com.example.musicapp.data.model.Song;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentRecentSongBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.library.recent.more.MoreRecentFragment;

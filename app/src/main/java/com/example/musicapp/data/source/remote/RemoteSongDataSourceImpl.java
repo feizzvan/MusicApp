@@ -2,7 +2,7 @@ package com.example.musicapp.data.source.remote;
 
 import androidx.annotation.NonNull;
 
-import com.example.musicapp.data.model.SongList;
+import com.example.musicapp.data.model.song.SongList;
 import com.example.musicapp.data.source.SongDataSource;
 
 import retrofit2.Call;

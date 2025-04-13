@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.musicapp.data.model.Song;
-import com.example.musicapp.data.model.SongList;
+import com.example.musicapp.data.model.song.Song;
+import com.example.musicapp.data.model.song.SongList;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 
 import java.util.ArrayList;

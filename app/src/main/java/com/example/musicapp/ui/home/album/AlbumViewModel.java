@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.musicapp.data.model.Album;
-import com.example.musicapp.data.model.AlbumList;
+import com.example.musicapp.data.model.album.Album;
+import com.example.musicapp.data.model.album.AlbumList;
 import com.example.musicapp.data.repository.album.AlbumRepository;
 import com.example.musicapp.data.repository.album.AlbumRepositoryImpl;
 import com.google.common.collect.Lists;
