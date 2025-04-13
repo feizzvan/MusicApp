@@ -11,7 +11,6 @@ import com.example.musicapp.data.model.Song;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;
 import com.example.musicapp.ui.playing.NowPlayingActivity;
-import com.example.musicapp.ui.viewmodel.PermissionViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 public class AppBaseFragment extends Fragment {
@@ -36,7 +35,7 @@ public class AppBaseFragment extends Fragment {
         doNavigate(index, playlistName);
     }
 
-    protected void showMenuOption(Song song) {
+    protected void showOptionMenu(Song song) {
         OptionMenuViewModel optionMenuViewModel =
                 new ViewModelProvider(requireActivity()).get(OptionMenuViewModel.class);
         optionMenuViewModel.setSong(song);

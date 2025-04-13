@@ -1,24 +1,23 @@
 package com.example.musicapp.ui.library.recent.more;
 
+import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.RECENT;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
-import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.FragmentMoreRecentBinding;
+import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
 
-public class MoreRecentFragment extends Fragment {
+public class MoreRecentFragment extends AppBaseFragment {
     private FragmentMoreRecentBinding mBinding;
-    private MoreRecentViewModel mMoreRecentViewModel;
     private SongListAdapter mAdapter;
 
     @Override
@@ -41,18 +40,18 @@ public class MoreRecentFragment extends Fragment {
                 requireActivity().getOnBackPressedDispatcher().onBackPressed());
         mAdapter = new SongListAdapter(
                 (song, index) -> {
-
+                    String playlistName = RECENT.getValue();
+                    showAndPlay(song, index, playlistName);
                 },
-                song -> {
-
-                }
+                this::showOptionMenu
         );
-        mBinding.includeMoreRecentSongList.rvSongList.setAdapter(mAdapter);
+        mBinding.includeSongList.rvSongList.setAdapter(mAdapter);
     }
 
     private void setupViewModel() {
-        mMoreRecentViewModel = new ViewModelProvider(requireActivity()).get(MoreRecentViewModel.class);
-        mMoreRecentViewModel.getRecentSongs().observe(getViewLifecycleOwner(), songs ->
+        MoreRecentViewModel moreRecentViewModel =
+                new ViewModelProvider(requireActivity()).get(MoreRecentViewModel.class);
+        moreRecentViewModel.getRecentSongs().observe(getViewLifecycleOwner(), songs ->
                 mAdapter.updateSongs(songs));
     }
 }

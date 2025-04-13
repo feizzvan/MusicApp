@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -15,9 +14,10 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.databinding.FragmentPlaylistDetailBinding;
+import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
 
-public class PlaylistDetailFragment extends Fragment {
+public class PlaylistDetailFragment extends AppBaseFragment {
     private FragmentPlaylistDetailBinding mBinding;
     private SongListAdapter mAdaper;
     private PlaylistDetailViewModel mPlaylistDetailViewModel;
@@ -40,23 +40,30 @@ public class PlaylistDetailFragment extends Fragment {
     private void setupView() {
         mBinding.includePlaylistDetail.toolbarPlaylistDetail.setNavigationOnClickListener(
                 view -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
+        String toolBarTitle = getString(R.string.title_playlist_detail);
+        mBinding.includePlaylistDetail.textToolbarTitle.setText(toolBarTitle);
         mAdaper = new SongListAdapter(
                 (song, index) -> {
-
+                    PlaylistWithSongs playlistWithSongs =
+                            mPlaylistDetailViewModel.getPlaylistWithSongs().getValue();
+                    if (playlistWithSongs != null) {
+                        String playlistName = playlistWithSongs.playlist.getName();
+                        showAndPlay(song, index, playlistName);
+                    }
                 },
-                song -> {
-
-                }
+                this::showOptionMenu
         );
-        mBinding.includePlaylistDetail.includeMoreRecentSongList.rvSongList.setAdapter(mAdaper);
+        mBinding.includePlaylistDetail.includeSongList.rvSongList.setAdapter(mAdaper);
     }
 
     private void setupViewModel() {
-        mPlaylistDetailViewModel = new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
-        mPlaylistDetailViewModel.getPlaylistWithSongs().observe(getViewLifecycleOwner(), playlistWithSongs -> {
-            mAdaper.updateSongs(playlistWithSongs.songs);
-            showPlaylistInfo(playlistWithSongs);
-        });
+        mPlaylistDetailViewModel =
+                new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
+        mPlaylistDetailViewModel.getPlaylistWithSongs()
+                .observe(getViewLifecycleOwner(), playlistWithSongs -> {
+                    mAdaper.updateSongs(playlistWithSongs.songs);
+                    showPlaylistInfo(playlistWithSongs);
+                });
     }
 
     private void showPlaylistInfo(PlaylistWithSongs playlistWithSongs) {

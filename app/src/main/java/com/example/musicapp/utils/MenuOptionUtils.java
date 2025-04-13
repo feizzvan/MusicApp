@@ -21,7 +21,7 @@ public abstract class MenuOptionUtils {
         sMenuItems.add(new OptionMenuItem(MenuOption.ADD_TO_FAVOURITE, R.drawable.ic_favorite_off, R.string.favourite));
         sMenuItems.add(new OptionMenuItem(MenuOption.ADD_TO_PLAYLIST, R.drawable.ic_playlist_add, R.string.add_to_playlist));
         sMenuItems.add(new OptionMenuItem(MenuOption.PLAY_NEXT, R.drawable.ic_play_next, R.string.play_next));
-        sMenuItems.add(new OptionMenuItem(MenuOption.VIEW_ALBUM, R.drawable.ic_album, R.string.view_album));
+        sMenuItems.add(new OptionMenuItem(MenuOption.VIEW_ALBUM, R.drawable.ic_album_menu, R.string.view_album));
         sMenuItems.add(new OptionMenuItem(MenuOption.VIEW_ARTIST, R.drawable.ic_view_artist, R.string.view_artist));
         sMenuItems.add(new OptionMenuItem(MenuOption.BLOCK, R.drawable.ic_block, R.string.block));
         sMenuItems.add(new OptionMenuItem(MenuOption.REPORT_ERROR, R.drawable.ic_report_error, R.string.report_error));

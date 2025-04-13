@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +46,9 @@ public class MoreRecommendedFragment extends AppBaseFragment {
         
         mSongListAdapter = new SongListAdapter(
                 (song, index) -> showAndPlay(song, index, RECOMMENDED.getValue()),
-                this::showMenuOption);
+                this::showOptionMenu);
 
-        mBinding.includeMoreRecentSongList.rvSongList.setAdapter(mSongListAdapter);
+        mBinding.includeSongList.rvSongList.setAdapter(mSongListAdapter);
     }
 
     private void setupViewModel() {

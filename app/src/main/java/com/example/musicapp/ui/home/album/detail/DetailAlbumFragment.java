@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -49,10 +48,10 @@ public class DetailAlbumFragment extends AppBaseFragment {
             String playlistName = album == null ? " " : album.getName();
             SharedViewModel.getInstance().addPlaylist(mDetailAlbumViewModel.getPlaylist());
             showAndPlay(song, index, playlistName);
-        }, this::showMenuOption);
+        }, this::showOptionMenu);
 
         mBinding.includeFragmentDetailPlaylist
-                .includeMoreRecentSongList
+                .includeSongList
                 .rvSongList
                 .setAdapter(mSongListAdapter);
 

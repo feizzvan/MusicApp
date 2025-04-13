@@ -16,5 +16,4 @@ public class PlaylistDetailViewModel extends ViewModel {
     public LiveData<PlaylistWithSongs> getPlaylistWithSongs() {
         return mPlaylistWithSongs;
     }
-
 }

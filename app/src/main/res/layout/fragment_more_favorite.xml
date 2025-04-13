@@ -23,9 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:text="@string/title_favorite_songs"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white"
-            tools:text="@string/title_favorite_songs" />
+            android:textColor="@color/white" />
     </androidx.appcompat.widget.Toolbar>
 
     <include

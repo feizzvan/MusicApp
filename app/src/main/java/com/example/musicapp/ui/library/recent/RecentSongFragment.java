@@ -1,5 +1,7 @@
 package com.example.musicapp.ui.library.recent;
 
+import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.RECENT;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -7,7 +9,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,15 +19,15 @@ import android.view.ViewGroup;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.Song;
 import com.example.musicapp.databinding.FragmentRecentSongBinding;
+import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.library.recent.more.MoreRecentFragment;
 import com.example.musicapp.ui.library.recent.more.MoreRecentViewModel;
 import com.example.musicapp.utils.AppUtils;
 
 import java.util.List;
 
-public class RecentSongFragment extends Fragment {
+public class RecentSongFragment extends AppBaseFragment {
     private FragmentRecentSongBinding mBinding;
-    private RecentSongViewModel mRecentSongViewModel;
     private RecentSongAdapter mRecentSongAdapter;
     private MoreRecentViewModel mMoreRecentViewModel;
 
@@ -55,11 +56,10 @@ public class RecentSongFragment extends Fragment {
         mBinding.progressBarRecentSong.setVisibility(View.VISIBLE);
         mRecentSongAdapter = new RecentSongAdapter(
                 (song, index) -> {
-
+                    String playlistName = RECENT.getValue();
+                    showAndPlay(song, index, playlistName);
                 },
-                (song) -> {
-
-                }
+                this::showOptionMenu
         );
         mBinding.rvRecentSong.setAdapter(mRecentSongAdapter);
         MyLayoutManager layoutManager = new MyLayoutManager(
@@ -79,10 +79,12 @@ public class RecentSongFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        mRecentSongViewModel = new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
-        mMoreRecentViewModel = new ViewModelProvider(requireActivity()).get(MoreRecentViewModel.class);
+        RecentSongViewModel recentSongViewModel =
+                new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
+        mMoreRecentViewModel =
+                new ViewModelProvider(requireActivity()).get(MoreRecentViewModel.class);
 
-        mRecentSongViewModel.getRecentSongs().observe(getViewLifecycleOwner(), recentSongs -> {
+        recentSongViewModel.getRecentSongs().observe(getViewLifecycleOwner(), recentSongs -> {
             mMoreRecentViewModel.setRecentSongs(recentSongs);
             List<Song> subList = recentSongs;
             if (recentSongs.size() >= 21) {

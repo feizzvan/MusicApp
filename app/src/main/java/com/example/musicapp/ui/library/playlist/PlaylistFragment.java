@@ -67,9 +67,7 @@ public class PlaylistFragment extends Fragment {
 
     private void setupView() {
         mAdapter = new PlaylistAdapter(
-                playlist -> {
-                    loadPlaylist(playlist);
-                },
+                this::loadPlaylist,
                 playlist -> {
 
                 }
@@ -79,6 +77,25 @@ public class PlaylistFragment extends Fragment {
         mBinding.includeBtnAddPlaylist.textAddPlaylist.setOnClickListener(view -> createPlaylist());
         mBinding.btnMorePlaylist.setOnClickListener(view -> navigateToMorePlaylist());
         mBinding.textTitlePlaylist.setOnClickListener(view -> navigateToMorePlaylist());
+    }
+
+    private void setupViewModel() {
+        MusicApplication musicApplication = (MusicApplication) requireActivity().getApplication();
+        PlaylistViewModel.Factory factory = new PlaylistViewModel.Factory(musicApplication.getPlaylistRepository());
+        mPlaylistViewModel = new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
+        mMorePlaylistViewModel = new ViewModelProvider(requireActivity()).get(MorePlaylistViewModel.class);
+        mPlaylistDetailViewModel = new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
+
+        mPlaylistViewModel.getPlaylists().observe(getViewLifecycleOwner(), playlistWithSongs -> {
+            List<PlaylistWithSongs> subList = new ArrayList<>();
+            if (playlistWithSongs.size() > 10) {
+                subList.subList(0, 10);
+            } else {
+                subList.addAll(playlistWithSongs);
+            }
+            mAdapter.updatePlaylists(subList);
+            mMorePlaylistViewModel.setPlaylistLiveData(playlistWithSongs);
+        });
     }
 
     private void loadPlaylist(Playlist playlist) {
@@ -102,26 +119,16 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void createPlaylist() {
-        PlaylistCreationDialog.PlaylistDialogListener listener = playlistName -> {
-            mDisposable.add(mPlaylistViewModel.getPlaylistByName(playlistName)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(result -> checkAndCreatePlaylist(result, playlistName),
-                            error -> checkAndCreatePlaylist(null, playlistName))
-            );
-        };
+        PlaylistCreationDialog.PlaylistDialogListener listener = playlistName ->
+                mDisposable.add(mPlaylistViewModel.getPlaylistByName(playlistName)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> checkAndCreatePlaylist(result, playlistName),
+                                error -> checkAndCreatePlaylist(null, playlistName))
+                );
 
         PlaylistCreationDialog dialog = new PlaylistCreationDialog(listener);
-        final String tag = PlaylistCreationDialog.TAG;
-        dialog.show(requireActivity().getSupportFragmentManager(), tag);
-    }
-
-    private void navigateToMorePlaylist() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MorePlaylistFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        dialog.show(requireActivity().getSupportFragmentManager(), PlaylistCreationDialog.TAG);
     }
 
     private void checkAndCreatePlaylist(Playlist playlist, String playlistName) {
@@ -136,22 +143,11 @@ public class PlaylistFragment extends Fragment {
         }
     }
 
-    private void setupViewModel() {
-        MusicApplication musicApplication = (MusicApplication) requireActivity().getApplication();
-        PlaylistViewModel.Factory factory = new PlaylistViewModel.Factory(musicApplication.getPlaylistRepository());
-        mPlaylistViewModel = new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
-        mMorePlaylistViewModel = new ViewModelProvider(requireActivity()).get(MorePlaylistViewModel.class);
-        mPlaylistDetailViewModel = new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
-
-        mPlaylistViewModel.getPlaylists().observe(getViewLifecycleOwner(), playlistWithSongs -> {
-            List<PlaylistWithSongs> subList = new ArrayList<>();
-            if (playlistWithSongs.size() > 10) {
-                subList.subList(0, 10);
-            } else {
-                subList.addAll(playlistWithSongs);
-            }
-            mAdapter.updatePlaylists(subList);
-            mMorePlaylistViewModel.setPlaylistLiveData(playlistWithSongs);
-        });
+    private void navigateToMorePlaylist() {
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, MorePlaylistFragment.class, null)
+                .addToBackStack(null)
+                .commit();
     }
 }

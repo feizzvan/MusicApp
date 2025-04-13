@@ -28,7 +28,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MorePlaylistFragment extends Fragment {
     private FragmentMorePlaylistBinding mBinding;
     private PlaylistAdapter mAdapter;
-    private MorePlaylistViewModel mMorePlaylistViewModel;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistDetailViewModel mPlaylistDetailViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
@@ -58,9 +57,7 @@ public class MorePlaylistFragment extends Fragment {
         mBinding.toolbarMorePlaylist.setNavigationOnClickListener(view ->
                 requireActivity().getOnBackPressedDispatcher().onBackPressed());
         mAdapter = new PlaylistAdapter(
-                playlist -> {
-                    loadPlaylist(playlist);
-                },
+                this::loadPlaylist,
                 playlist -> {
 
                 });
@@ -69,12 +66,16 @@ public class MorePlaylistFragment extends Fragment {
 
     private void setupViewModel() {
         MusicApplication application = (MusicApplication) requireActivity().getApplication();
-        PlaylistViewModel.Factory factory = new PlaylistViewModel.Factory(application.getPlaylistRepository());
-        mPlaylistViewModel = new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
-        mPlaylistDetailViewModel = new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
-        mMorePlaylistViewModel = new ViewModelProvider(requireActivity()).get(MorePlaylistViewModel.class);
-        mMorePlaylistViewModel.getPlaylistLiveData().observe(getViewLifecycleOwner(),
+        PlaylistViewModel.Factory factory =
+                new PlaylistViewModel.Factory(application.getPlaylistRepository());
+        mPlaylistViewModel =
+                new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
+        MorePlaylistViewModel morePlaylistViewModel =
+                new ViewModelProvider(requireActivity()).get(MorePlaylistViewModel.class);
+        morePlaylistViewModel.getPlaylistLiveData().observe(getViewLifecycleOwner(),
                 playlists -> mAdapter.updatePlaylists(playlists));
+        mPlaylistDetailViewModel =
+                new ViewModelProvider(requireActivity()).get(PlaylistDetailViewModel.class);
     }
 
     private void loadPlaylist(Playlist playlist) {
@@ -96,5 +97,4 @@ public class MorePlaylistFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
     }
-
 }

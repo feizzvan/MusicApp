@@ -62,7 +62,7 @@ public class RecommendedFragment extends AppBaseFragment {
         mBinding.progressRecommendedSong.setVisibility(View.VISIBLE);
         mSongListAdapter = new SongListAdapter(
                 (song, index) -> showAndPlay(song, index, RECOMMENDED.getValue()),
-                this::showMenuOption);
+                this::showOptionMenu);
         mBinding.includeRecommendedSongs.rvSongList.setAdapter(mSongListAdapter);
         mDetailAlbumViewModel = new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
         mBinding.btnMoreRecommendedSongs.setOnClickListener(view -> navigateToMoreRecommended());
