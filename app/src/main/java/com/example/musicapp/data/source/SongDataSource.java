@@ -20,6 +20,10 @@ public interface SongDataSource {
 
         Flowable<List<Song>> getFavoriteSongs(); // Hàm để lấy danh sách bài hát yêu thích từ nguồn dữ liệu cục bộ
 
+        Flowable<List<Song>> getTopNMostHeardSongs(int limit);
+
+        Flowable<List<Song>> getTopNForYouSongs(int limit);
+
         Completable saveSongs(Song... songs); // Hàm để lưu danh sách bài hát vào nguồn dữ liệu cục bộ
 
         Completable updateSong(Song song); // Hàm để cập nhật thông tin của một bài hát

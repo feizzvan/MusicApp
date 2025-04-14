@@ -96,15 +96,17 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         mMiniPlayerViewModel = MiniPlayerViewModel.getInstance();
 
         // Lấy danh sách bài hát hiện tại từ SharedViewModel
+        //Nếu MiniPlayer đang trống hoặc danh sách bài trong playlist mới khác với danh sách hiện tại, thì cập nhật MiniPlayer.
         mSharedViewModel.getCurrentPlaylist().observe(getViewLifecycleOwner(), playlist -> {
             PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
             Playlist currentPlaylist = null;
             if (playingSong != null) {
                 currentPlaylist = playingSong.getPlaylist();
             }
-            if (playlist != null && playlist.getMediaItems() != null
+            if ((mMediaController != null && mMediaController.getMediaItemCount() == 0)
+                    || playlist != null && playlist.getMediaItems() != null
                     && !playlist.getMediaItems().isEmpty()
-                    && (currentPlaylist == null || currentPlaylist.getId() != playlist.getId())) {
+                    && playlist.getMediaItems().size() != mMediaController.getMediaItemCount()) {
                 mMiniPlayerViewModel.setMediaItems(playlist.getMediaItems());
             }
         });

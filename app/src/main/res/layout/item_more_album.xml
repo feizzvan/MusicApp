@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="160dp"
     android:layout_marginBottom="@dimen/margin_4dp"
+    android:background="?attr/selectableItemBackground"
     android:paddingStart="@dimen/padding_8dp"
     android:paddingTop="@dimen/padding_8dp"
     android:paddingEnd="@dimen/padding_8dp">

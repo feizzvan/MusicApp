@@ -69,14 +69,14 @@
             app:layout_constraintTop_toBottomOf="@+id/fcv_most_heard"
             tools:layout="@layout/fragment_for_you" />
 
-        <include
-            android:id="@+id/include_discovery_empty_item"
-            layout="@layout/partial_empty_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fcv_for_you" />
+<!--        <include-->
+<!--            android:id="@+id/include_discovery_empty_item"-->
+<!--            layout="@layout/partial_empty_item"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/fcv_for_you" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -1,12 +1,15 @@
 package com.example.musicapp.data.source.local.artist;
 
 import com.example.musicapp.data.model.artist.Artist;
+import com.example.musicapp.data.model.artist.ArtistSongCrossRef;
+import com.example.musicapp.data.model.artist.ArtistWithSongs;
 import com.example.musicapp.data.source.ArtistDataSource;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public class LocalArtistDataSource implements ArtistDataSource.Local {
     private final ArtistDAO mArtistDAO;
@@ -26,8 +29,18 @@ public class LocalArtistDataSource implements ArtistDataSource.Local {
     }
 
     @Override
+    public Single<ArtistWithSongs> getArtistWithSongs(int artistId) {
+        return mArtistDAO.getArtistWithSongs(artistId);
+    }
+
+    @Override
     public Completable insertArtist(List<Artist> artists) {
         return mArtistDAO.insertArtist(artists);
+    }
+
+    @Override
+    public Completable insertArtistSongCrossRef(List<ArtistSongCrossRef> artistSongCrossRefList) {
+        return mArtistDAO.insertArtistSongCrossRef(artistSongCrossRefList);
     }
 
     @Override

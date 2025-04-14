@@ -2,6 +2,8 @@ package com.example.musicapp.data.repository.artist;
 
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.data.model.artist.ArtistList;
+import com.example.musicapp.data.model.artist.ArtistSongCrossRef;
+import com.example.musicapp.data.model.artist.ArtistWithSongs;
 import com.example.musicapp.data.source.ArtistDataSource;
 import com.example.musicapp.data.source.remote.RemoteArtistDataSource;
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Callback;
 
 public class ArtistRepositoryImpl implements ArtistRepository {
@@ -25,18 +28,28 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     }
 
     @Override
-    public Flowable<List<Artist>> getAllArtists() {
-        return mLocalArtistDataSource.getAllArtists();
-    }
-
-    @Override
     public Flowable<List<Artist>> getTopNArtists(int limit) {
         return mLocalArtistDataSource.getTopNArtists(limit);
     }
 
     @Override
+    public Flowable<List<Artist>> getAllArtists() {
+        return mLocalArtistDataSource.getAllArtists();
+    }
+
+    @Override
+    public Single<ArtistWithSongs> getArtistWithSongs(int artistId) {
+        return mLocalArtistDataSource.getArtistWithSongs(artistId);
+    }
+
+    @Override
     public Completable insertArtist(List<Artist> artists) {
         return mLocalArtistDataSource.insertArtist(artists);
+    }
+
+    @Override
+    public Completable insertArtistSongCrossRef(List<ArtistSongCrossRef> artistSongCrossRefList) {
+        return mLocalArtistDataSource.insertArtistSongCrossRef(artistSongCrossRefList);
     }
 
     @Override

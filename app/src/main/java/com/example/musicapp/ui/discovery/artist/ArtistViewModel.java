@@ -8,24 +8,30 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.data.model.artist.ArtistList;
+import com.example.musicapp.data.model.artist.ArtistSongCrossRef;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.repository.artist.ArtistRepository;
+import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ArtistViewModel extends ViewModel {
     private final ArtistRepository mArtistRepository;
+    private final SongRepositoryImpl mSongRepository;
     private final MutableLiveData<List<Artist>> mArtists = new MutableLiveData<>();
     private final MutableLiveData<List<Artist>> mLocalArtists = new MutableLiveData<>();
 
-    public ArtistViewModel(ArtistRepository artistRepository) {
+    public ArtistViewModel(ArtistRepository artistRepository, SongRepositoryImpl songRepository) {
         mArtistRepository = artistRepository;
+        mSongRepository = songRepository;
         loadArtists();
     }
 
@@ -37,12 +43,12 @@ public class ArtistViewModel extends ViewModel {
         return mArtists;
     }
 
-    public LiveData<List<Artist>> getLocalArtists() {
-        return mLocalArtists;
-    }
-
     public void setLocalArtists(List<Artist> artists) {
         mLocalArtists.postValue(artists);
+    }
+
+    public LiveData<List<Artist>> getLocalArtists() {
+        return mLocalArtists;
     }
 
     //load từ trên Internet
@@ -71,22 +77,53 @@ public class ArtistViewModel extends ViewModel {
         return mArtistRepository.insertArtist(artists);
     }
 
-    public Flowable<List<Artist>> loadLocalArtists() {
+    public Single<List<Song>> loadAllSongs() {
+        return mSongRepository.getSongs();
+    }
+
+    public Completable saveArtistSongCrossRef(List<Artist> artists, List<Song> songs) {
+        if (artists != null) {
+            List<ArtistSongCrossRef> artistSongCrossRefList = getArtistSongCrossRef(artists, songs);
+            return mArtistRepository.insertArtistSongCrossRef(artistSongCrossRefList);
+        }
+        return Completable.complete();
+    }
+
+    public Flowable<List<Artist>> loadLocalNArtists() {
         return mArtistRepository.getTopNArtists(15);
+    }
+
+    public Flowable<List<Artist>> loadAllLocalArtists() {
+        return mArtistRepository.getAllArtists();
+    }
+
+    private List<ArtistSongCrossRef> getArtistSongCrossRef(List<Artist> artists, List<Song> songs) {
+        List<ArtistSongCrossRef> artistSongCrossRefList = new ArrayList<>();
+        for (Artist artist : artists) {
+            for (Song song : songs) {
+                String key = ".*" + artist.getName().toLowerCase() + ".*";
+                if (song.getArtist().toLowerCase().matches(key)) {
+                    artistSongCrossRefList.add(new ArtistSongCrossRef(artist.getId(), song.getId()));
+                }
+            }
+        }
+        return artistSongCrossRefList;
     }
 
     public static class Factory implements ViewModelProvider.Factory {
         private final ArtistRepository mRepository;
+        private final SongRepositoryImpl mSongRepository;
 
-        public Factory(ArtistRepository repository) {
+        public Factory(ArtistRepository repository, SongRepositoryImpl songRepository) {
             mRepository = repository;
+            mSongRepository = songRepository;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(ArtistViewModel.class)) {
-                return (T) new ArtistViewModel(mRepository);
+                return (T) new ArtistViewModel(mRepository, mSongRepository);
             }
             throw new IllegalArgumentException("Unknown ViewModel class" + modelClass.getName());
         }

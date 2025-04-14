@@ -38,6 +38,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        if (mBinding == null) {
+            return;
+        }
         int scrollY = mBinding.scrollViewHome.getScrollY();
         outState.putInt(SCROLL_POSITION, scrollY);
     }

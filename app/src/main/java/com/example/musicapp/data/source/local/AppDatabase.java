@@ -11,6 +11,7 @@ import androidx.room.migration.AutoMigrationSpec;
 
 import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.data.model.artist.Artist;
+import com.example.musicapp.data.model.artist.ArtistSongCrossRef;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.song.Song;
@@ -28,14 +29,15 @@ import com.example.musicapp.data.source.local.artist.ArtistDAO;
                 Song.class,
                 RecentSong.class,
                 PlaylistSongCrossRef.class,
-                Artist.class
+                Artist.class,
+                ArtistSongCrossRef.class
         },
-        version = 3,
+        version = 4,
         exportSchema = true,
         autoMigrations = {
                 @AutoMigration(
-                        from = 2,
-                        to = 3,
+                        from = 3,
+                        to = 4,
                         spec = AppDatabase.DbMigrationSpec.class)
         }
 )

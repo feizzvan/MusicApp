@@ -89,9 +89,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
 
             mBinding.getRoot().setOnClickListener(view -> mSongItemClickListener.onSongItemClick(song, position));
 
-
-            mBinding.btnItemSongOption
-                    .setOnClickListener(
+            mBinding.btnItemSongOption.setOnClickListener(
                             view -> mSongItemMenuClickListener.onSongMenuItemClick(song));
         }
     }

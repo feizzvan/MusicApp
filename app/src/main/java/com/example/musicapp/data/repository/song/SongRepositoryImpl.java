@@ -36,6 +36,16 @@ public class SongRepositoryImpl implements SongRepository.Local, SongRepository.
     }
 
     @Override
+    public Flowable<List<Song>> getTopNMostHeardSongs(int limit) {
+        return mLocalSongDataSource.getTopNMostHeardSongs(limit);
+    }
+
+    @Override
+    public Flowable<List<Song>> getTopNForYouSongs(int limit) {
+        return mLocalSongDataSource.getTopNForYouSongs(limit);
+    }
+
+    @Override
     public Completable saveSongs(Song... songs) {
         return mLocalSongDataSource.saveSongs(songs);
     }

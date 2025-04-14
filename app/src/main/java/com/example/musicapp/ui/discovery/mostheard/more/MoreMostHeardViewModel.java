@@ -1,4 +1,4 @@
-package com.example.musicapp.ui.discovery.mostheard;
+package com.example.musicapp.ui.discovery.mostheard.more;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -13,11 +13,11 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
 
-public class MostHeardViewModel extends ViewModel {
+public class MoreMostHeardViewModel extends ViewModel {
     private final SongRepositoryImpl mSongRepository;
     private final MutableLiveData<List<Song>> mSongs = new MutableLiveData<>();
 
-    public MostHeardViewModel(SongRepositoryImpl songRepository) {
+    public MoreMostHeardViewModel(SongRepositoryImpl songRepository) {
         mSongRepository = songRepository;
     }
 
@@ -29,8 +29,8 @@ public class MostHeardViewModel extends ViewModel {
         mSongs.setValue(songs);
     }
 
-    public Flowable<List<Song>> loadTop15MostHeardSong() {
-        return mSongRepository.getTopNMostHeardSongs(15);
+    public Flowable<List<Song>> loadTop40MostHeardSongs() {
+        return mSongRepository.getTopNMostHeardSongs(40);
     }
 
     public static class Factory implements ViewModelProvider.Factory {
@@ -43,8 +43,8 @@ public class MostHeardViewModel extends ViewModel {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(MostHeardViewModel.class)) {
-                return (T) new MostHeardViewModel(mSongRepository);
+            if (modelClass.isAssignableFrom(MoreMostHeardViewModel.class)) {
+                return (T) new MoreMostHeardViewModel(mSongRepository);
             } else {
                 throw new IllegalArgumentException("Unknown ViewModel class");
             }

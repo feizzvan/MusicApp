@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/item_album_width"
     android:layout_height="@dimen/item_album_height"
+    android:background="?attr/selectableItemBackground"
     android:paddingLeft="@dimen/padding_4dp"
     android:paddingTop="@dimen/padding_8dp"
     android:paddingRight="@dimen/padding_4dp">

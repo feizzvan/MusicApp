@@ -14,6 +14,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
+import kotlinx.coroutines.flow.Flow;
 
 @Dao
 public interface SongDAO {
@@ -23,8 +24,17 @@ public interface SongDAO {
     @Query("SELECT * FROM songs WHERE song_id = :songId")
     Flowable<Song> getSongById(int songId); // Dùng cho tập dữ liệu có thể phát sinh hoặc thay đổi theo thời gian
 
+//    @Query("SELECT * FROM songs WHERE artist LIKE :key")
+//    List<Song> getSongsByArtistName(String key);
+
     @Query("SELECT * FROM songs WHERE favorite = 1")
     Flowable<List<Song>> getFavoriteSongs();
+
+    @Query("SELECT * FROM songs ORDER BY counter DESC LIMIT :limit")
+    Flowable<List<Song>> getTopNMostHeardSongs(int limit);
+
+    @Query("SELECT * FROM songs ORDER BY replay DESC LIMIT :limit")
+    Flowable<List<Song>> getTopNForYouSongs(int limit);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertSongs(Song... song);

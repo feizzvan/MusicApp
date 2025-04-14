@@ -1,24 +1,21 @@
-package com.example.musicapp.ui.discovery.mostheard;
+package com.example.musicapp.ui.discovery.foryou.more;
 
-import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.MOST_HEARD;
-
-import androidx.lifecycle.ViewModelProvider;
+import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.FOR_YOU;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musicapp.MusicApplication;
-import com.example.musicapp.R;
 import com.example.musicapp.data.repository.song.SongRepositoryImpl;
-import com.example.musicapp.databinding.FragmentMostHeardBinding;
+import com.example.musicapp.databinding.FragmentMoreForYouBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.discovery.mostheard.more.MoreMostHeardFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
@@ -28,9 +25,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MostHeardFragment extends AppBaseFragment {
-    private FragmentMostHeardBinding mBinding;
-    private MostHeardViewModel mMostHeardViewModel;
+public class MoreForYouFragment extends AppBaseFragment {
+    private FragmentMoreForYouBinding mBinding;
+    private MoreForYouViewModel mMoreForYouViewModel;
     private SongListAdapter mAdapter;
     private SongRepositoryImpl mSongRepository;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
@@ -38,7 +35,7 @@ public class MostHeardFragment extends AppBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentMostHeardBinding.inflate(inflater, container, false);
+        mBinding = FragmentMoreForYouBinding.inflate(inflater, container, false);
         return mBinding.getRoot();
     }
 
@@ -57,41 +54,34 @@ public class MostHeardFragment extends AppBaseFragment {
     }
 
     private void setupView() {
+        mBinding.toolbarMoreForYou.setNavigationOnClickListener(
+                view -> requireActivity().getSupportFragmentManager().popBackStack());
         mAdapter = new SongListAdapter(
                 (song, index) -> {
-                    String playlistName = MOST_HEARD.getValue();
+                    String playlistName = FOR_YOU.getValue();
                     showAndPlay(song, index, playlistName);
                 }, this::showOptionMenu
         );
-        mBinding.includeMostHeard.rvSongList.setAdapter(mAdapter);
-        mBinding.textTitleMostHeard.setOnClickListener(view -> navigateToMoreMostHeard());
-        mBinding.btnMoreMostHeard.setOnClickListener(view -> navigateToMoreMostHeard());
+        mBinding.includeMoreForYouSongList.rvSongList.setAdapter(mAdapter);
     }
 
     private void setupViewModel() {
         MusicApplication application = (MusicApplication) requireActivity().getApplication();
         mSongRepository = application.getSongRepository();
-        MostHeardViewModel.Factory factory = new MostHeardViewModel.Factory(mSongRepository);
-        mMostHeardViewModel =
-                new ViewModelProvider(requireActivity(), factory).get(MostHeardViewModel.class);
+        MoreForYouViewModel.Factory factory = new MoreForYouViewModel.Factory(mSongRepository);
+        mMoreForYouViewModel =
+                new ViewModelProvider(requireActivity(), factory).get(MoreForYouViewModel.class);
 
-        mMostHeardViewModel.getSongs().observe(getViewLifecycleOwner(), mAdapter::updateSongs);
-        mDisposable.add(mMostHeardViewModel.loadTop15MostHeardSong()
+        mMoreForYouViewModel.getSongs().observe(getViewLifecycleOwner(), mAdapter::updateSongs);
+
+        mDisposable.add(mMoreForYouViewModel.loadTop40ForYouSongs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(songs -> {
                     mAdapter.updateSongs(songs);
-                    mMostHeardViewModel.setSongs(songs);
-                    SharedViewModel.getInstance().setupPlaylist(songs, MOST_HEARD.getValue());
-                }, throwable -> mMostHeardViewModel.setSongs(new ArrayList<>()))
+                    mMoreForYouViewModel.setSongs(songs);
+                    SharedViewModel.getInstance().setupPlaylist(songs, FOR_YOU.getValue());
+                }, throwable -> mMoreForYouViewModel.setSongs(new ArrayList<>()))
         );
-    }
-
-    private void navigateToMoreMostHeard() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreMostHeardFragment.class, null)
-                .addToBackStack(null)
-                .commit();
     }
 }

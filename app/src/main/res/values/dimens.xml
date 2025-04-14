@@ -24,5 +24,7 @@
     <dimen name="width_2dp">2dp</dimen>
     <dimen name="img_size_48dp">48dp</dimen>
     <dimen name="padding_2dp">2dp</dimen>
+    <dimen name="detail_artist_avatar_size">154dp</dimen>
+    <dimen name="margin_64dp">64dp</dimen>
     />
 </resources>

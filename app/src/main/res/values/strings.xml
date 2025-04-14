@@ -63,4 +63,10 @@
     <string name="text_number_of_interest">Number of interest: %d</string>
     <string name="action_interest">Interest</string>
     <string name="title_artist">Featured Artists</string>
+    <string name="title_artist_detail">Artist information</string>
+    <string name="text_detail_artist_name">Artist name: %s</string>
+    <string name="text_detail_number_of_interest">Number of interest: %d</string>
+    <string name="text_detail_your_interested_artist">Your interested artist: %s</string>
+    <string name="title_most_heard">Most listened songs</string>
+    <string name="title_for_you">For you</string>
 </resources>
