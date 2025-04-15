@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme -->
     <style name="Theme.MusicApp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
@@ -21,13 +21,10 @@
     </style>
 
     <style name="ToolbarStyle" parent="Widget.Material3.Toolbar">
-        <item name="android:background">@color/purple_500</item>
-        <item name="android:titleTextColor">@color/white</item>
-        <item name="android:subtitleTextColor">@color/white</item>
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
     </style>
 
-    <style name="MiniPlayerStyle">
+    <style name="MiniPlayerStyle" parent="Theme.MusicApp">
         <item name="android:background">@color/purple_50</item>
     </style>
 

@@ -8,21 +8,21 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.musicapp.ui.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nav_library"
         android:name="com.example.musicapp.ui.library.LibraryFragment"
-        android:label="fragment_library"
+        android:label="@string/title_library"
         tools:layout="@layout/fragment_library" />
     <fragment
         android:id="@+id/nav_discovery"
         android:name="com.example.musicapp.ui.discovery.DiscoveryFragment"
-        android:label="fragment_discovery"
+        android:label="@string/title_discovery"
         tools:layout="@layout/fragment_discovery" />
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.musicapp.ui.settings.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="@string/title_settings"
+        tools:layout="@xml/root_preferences" />
 </navigation>

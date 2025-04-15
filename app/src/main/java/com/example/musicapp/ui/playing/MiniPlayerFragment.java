@@ -75,7 +75,7 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Thiết lập ViewModel và lắng nghe dữ liệu thay đổi
+
         setupViewModel();
         setupAnimator();
         setupListener();
@@ -103,10 +103,11 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
             if (playingSong != null) {
                 currentPlaylist = playingSong.getPlaylist();
             }
-            if ((mMediaController != null && mMediaController.getMediaItemCount() == 0)
+            if (mMediaController != null && (mMediaController.getMediaItemCount() == 0
                     || playlist != null && playlist.getMediaItems() != null
                     && !playlist.getMediaItems().isEmpty()
-                    && playlist.getMediaItems().size() != mMediaController.getMediaItemCount()) {
+                    && (currentPlaylist == null || currentPlaylist.getId() != playlist.getId()
+                    || playlist.getMediaItems().size() != mMediaController.getMediaItemCount()))) {
                 mMiniPlayerViewModel.setMediaItems(playlist.getMediaItems());
             }
         });
@@ -247,6 +248,11 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     }
 
     private void setupObserveControllerData() {
+        if (AppUtils.sIsConfigChanged) {
+            AppUtils.sIsConfigChanged = false;
+            return;
+        }
+
         // Quan sát MediaItem để cập nhật bài hát cho MediaController
         mMiniPlayerViewModel.getMediaItems().observe(getViewLifecycleOwner(), mediaItems -> {
             if (mMediaController != null) {

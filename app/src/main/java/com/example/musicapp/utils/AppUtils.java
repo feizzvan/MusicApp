@@ -2,6 +2,7 @@ package com.example.musicapp.utils;
 
 public abstract class AppUtils {
     public static final String EXTRA_CURRENT_FRACTION = "current_fraction";
+    public static boolean sIsConfigChanged = false;
 
     public enum DefaultPlaylistName {
         DEFAULT("default"),
