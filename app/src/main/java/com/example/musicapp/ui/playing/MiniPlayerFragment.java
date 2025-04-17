@@ -6,7 +6,10 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -18,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
 
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +33,7 @@ import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentMiniPlayerBinding;
-import com.example.musicapp.ui.viewmodel.MediaPlayerViewModel;
+import com.example.musicapp.service.MusicPlaybackService;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 import com.example.musicapp.utils.AppUtils;
 
@@ -65,6 +69,27 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
             }
     );
 
+    private final ServiceConnection mMusicServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            MusicPlaybackService.LocalBinder binder = (MusicPlaybackService.LocalBinder) iBinder;
+            binder.getIsMediaControllerInitialized().observe(MiniPlayerFragment.this, isInitialized -> {
+                if (isInitialized) {
+                    if (mMediaController == null) {
+                        mMediaController = binder.getMediaController();
+                        setMediaController(mMediaController);
+                        setupObserveControllerData();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,6 +104,21 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         setupViewModel();
         setupAnimator();
         setupListener();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Intent intent = new Intent(requireContext(), MusicPlaybackService.class);
+        requireActivity().bindService(intent, mMusicServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        requireActivity().unbindService(mMusicServiceConnection);
     }
 
     @Override
@@ -118,15 +158,6 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
             showSongInfo(song);
         });
 
-        // Quan sát MediaController từ MediaPlayerViewModel để liên kết Mini player với trình phát nhạc
-        MediaPlayerViewModel.getInstance()
-                .getMediaPlayerLiveData()
-                .observe(getViewLifecycleOwner(), mediaPlayer -> {
-                    if (mediaPlayer != null) {
-                        setMediaController(mediaPlayer);
-                        setupObserveControllerData();
-                    }
-                });
         mMiniPlayerViewModel.isPlaying().observe(getViewLifecycleOwner(), this::updatePlayingState);
     }
 

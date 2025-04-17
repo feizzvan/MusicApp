@@ -4,9 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.SeekBar;
@@ -23,9 +26,9 @@ import com.example.musicapp.R;
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.ActivityNowPlayingBinding;
+import com.example.musicapp.service.MusicPlaybackService;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;
-import com.example.musicapp.ui.viewmodel.MediaPlayerViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 import com.example.musicapp.utils.AppUtils;
 
@@ -44,6 +47,27 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
     private ObjectAnimator mRotationAnimator;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
+    private final ServiceConnection mMusicServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            MusicPlaybackService.LocalBinder binder = (MusicPlaybackService.LocalBinder) iBinder;
+            binder.getIsMediaControllerInitialized().observe(NowPlayingActivity.this, isInitialized -> {
+                if (isInitialized) {
+                    mMediaController = binder.getMediaController();
+                    setupController();
+                    updateSeekBar();
+                    updateSeekBarMaxValue();
+                    updateDuration();
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,11 +81,24 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, MusicPlaybackService.class);
+        bindService(intent, mMusicServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        if(isFinishing()){
+        if (isFinishing()) {
             overridePendingTransition(R.anim.fade_in, R.anim.slide_down);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(mMusicServiceConnection);
     }
 
     @Override
@@ -162,12 +199,7 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
 
     private void setupViewModel() {
         mNowPlayingViewModel = new ViewModelProvider(this).get(NowPlayingViewModel.class);
-        MediaPlayerViewModel mediaPlayerViewModel = MediaPlayerViewModel.getInstance();
-        mediaPlayerViewModel.getMediaPlayerLiveData().observe(this, mediaPlayer -> {
-            mMediaController = mediaPlayer;
-            setupController();
-            updateSeekBar();
-        });
+
         mSharedViewModel = SharedViewModel.getInstance();
         mSharedViewModel.getPlayingSong().observe(this, playingSong -> {
             if (playingSong != null) {
@@ -375,18 +407,22 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
 
     //Đặt giá trị tối đa của SeekBar dựa trên thời lượng của bài hát
     private void updateSeekBarMaxValue() {
-        long duration = mMediaController.getDuration();
-        int seekBarMaxValue = 0;
-        if (duration <= Integer.MAX_VALUE) {
-            seekBarMaxValue = (int) duration;
+        if (mMediaController != null) {
+            long duration = mMediaController.getDuration();
+            int seekBarMaxValue = 0;
+            if (duration <= Integer.MAX_VALUE) {
+                seekBarMaxValue = (int) duration;
+            }
+            int progress = (int) mMediaController.getCurrentPosition();
+            mBinding.seekBarNowPlaying.setProgress(progress);
+            mBinding.seekBarNowPlaying.setMax(seekBarMaxValue);
         }
-        int progress = (int) mMediaController.getCurrentPosition();
-        mBinding.seekBarNowPlaying.setProgress(progress);
-        mBinding.seekBarNowPlaying.setMax(seekBarMaxValue);
     }
 
     private void updateDuration() {
-        String timeLabel = mNowPlayingViewModel.getTimeLabel(mMediaController.getDuration());
-        mBinding.textTotalDuration.setText(timeLabel);
+        if (mMediaController != null) {
+            String timeLabel = mNowPlayingViewModel.getTimeLabel(mMediaController.getDuration());
+            mBinding.textTotalDuration.setText(timeLabel);
+        }
     }
 }

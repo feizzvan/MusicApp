@@ -1,4 +1,4 @@
-package com.example.musicapp.ui.playing;
+package com.example.musicapp.service;
 
 
 import android.app.PendingIntent;
@@ -20,6 +20,7 @@ import androidx.media3.session.MediaSessionService;
 
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.song.Song;
+import com.example.musicapp.ui.playing.NowPlayingActivity;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
