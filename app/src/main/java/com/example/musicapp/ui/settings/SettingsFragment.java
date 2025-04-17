@@ -9,6 +9,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
@@ -16,8 +18,11 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.example.musicapp.R;
 import com.example.musicapp.utils.AppUtils;
 
+import java.util.Locale;
+
 public class SettingsFragment extends PreferenceFragmentCompat {
     public static final String KEY_PREF_DARK_MODE = "dark_mode";
+    public static final String KEY_PREF_LANGUAGE = "language";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -36,6 +41,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (darkModePref != null) {
             darkModePref.setOnPreferenceChangeListener((preference, newValue) -> {
                 changeTheme(preference, newValue);
+                return true;
+            });
+        }
+
+        ListPreference languagePref = findPreference(KEY_PREF_LANGUAGE);
+        if (languagePref != null) {
+            languagePref.setOnPreferenceChangeListener((preference, newValue) -> {
+                changeLanguage(preference, newValue);
                 return true;
             });
         }
@@ -59,6 +72,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 AppCompatDelegate.setDefaultNightMode(mode);
             }
         }
+    }
 
+    private void changeLanguage(Preference preference, Object newValue) {
+        String defaultLanguage = Locale.getDefault().getLanguage();
+        String oldLanguage = defaultLanguage;
+        String newLanguage = newValue.toString();
+        SharedPreferences sharedPreferences = preference.getSharedPreferences();
+        if (sharedPreferences != null) {
+            oldLanguage = sharedPreferences.getString(KEY_PREF_LANGUAGE, defaultLanguage);
+        }
+        if (oldLanguage.compareTo(newLanguage) != 0) {
+            AppUtils.sIsConfigChanged = true;
+            LocaleListCompat localeListCompat = LocaleListCompat.forLanguageTags(newLanguage);
+            AppCompatDelegate.setApplicationLocales(localeListCompat);
+        }
     }
 }

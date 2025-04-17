@@ -7,6 +7,8 @@ import com.example.musicapp.data.source.PlaylistDataSource;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -15,6 +17,7 @@ import io.reactivex.rxjava3.core.Single;
 public class LocalPlaylistDataSource implements PlaylistDataSource.Local {
     private final PlaylistDAO mPlaylistDAO;
 
+    @Inject
     public LocalPlaylistDataSource(PlaylistDAO playlistDAO) {
         mPlaylistDAO = playlistDAO;
     }

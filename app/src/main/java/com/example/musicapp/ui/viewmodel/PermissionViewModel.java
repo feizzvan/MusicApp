@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class PermissionViewModel extends ViewModel {
     public static boolean isRegistered = false;
     private static final PermissionViewModel sInstance = new PermissionViewModel();
@@ -14,7 +19,8 @@ public class PermissionViewModel extends ViewModel {
         return sInstance;
     }
 
-    private PermissionViewModel() {
+    @Inject
+    public PermissionViewModel() {
 
     }
 

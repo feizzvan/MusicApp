@@ -22,10 +22,12 @@ import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 // Lớp PlaybackService để cung cấp và quản lý phát nhạc cho ứng dụng
+@AndroidEntryPoint
 public class PlaybackService extends MediaSessionService {
     // ID của thông báo phát nhạc (dùng để cập nhật hoặc hủy thông báo khi cần thiết)
     public static final int NOTIFICATION_ID = 9999;

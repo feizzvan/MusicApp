@@ -5,11 +5,17 @@ import androidx.annotation.NonNull;
 import com.example.musicapp.data.model.song.SongList;
 import com.example.musicapp.data.source.SongDataSource;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RemoteSongDataSourceImpl implements SongDataSource.Remote {
+    @Inject
+    public RemoteSongDataSourceImpl() {
+    }
+    
     @Override
     public void loadSongs(Callback<SongList> callback) {
         AppService appService = RetrofitHelper.getInstance();

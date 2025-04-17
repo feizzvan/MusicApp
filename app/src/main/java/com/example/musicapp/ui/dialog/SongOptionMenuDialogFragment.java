@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentSongOptionMenuDialogBinding;
@@ -21,10 +20,14 @@ import com.example.musicapp.ui.dialog.information.SongInfoDialogViewModel;
 import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
     public static final String TAG = "SongOptionMenuDialogFragment";
     private FragmentSongOptionMenuDialogBinding mBinding;
@@ -32,6 +35,9 @@ public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
     private OptionMenuViewModel mOptionMenuViewModel;
     private PlaylistViewModel mPlaylistViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public PlaylistViewModel.Factory factory;
 
     public static SongOptionMenuDialogFragment newInstance() {
         return new SongOptionMenuDialogFragment();
@@ -64,9 +70,6 @@ public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void setupViewModel() {
-        MusicApplication application = (MusicApplication) requireActivity().getApplication();
-        PlaylistViewModel.Factory factory =
-                new PlaylistViewModel.Factory(application.getPlaylistRepository());
         mPlaylistViewModel =
                 new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
         mOptionMenuViewModel =

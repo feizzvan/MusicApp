@@ -6,8 +6,17 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class NowPlayingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> mIsPlaying = new MutableLiveData<>();
+
+    @Inject
+    public NowPlayingViewModel() {
+    }
 
     public void setIsPlaying(boolean isPlaying) {
         mIsPlaying.setValue(isPlaying);

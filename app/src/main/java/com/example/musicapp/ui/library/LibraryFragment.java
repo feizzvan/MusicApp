@@ -15,17 +15,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.databinding.FragmentLibraryBinding;
 import com.example.musicapp.ui.library.favorite.FavoriteViewModel;
 import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.example.musicapp.ui.library.recent.RecentSongViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class LibraryFragment extends Fragment {
     public static final String SCROLL_POSITION = "com.example.musicapp.ui.library.SCROLL_POSITION";
     private FragmentLibraryBinding mBinding;
@@ -35,6 +38,12 @@ public class LibraryFragment extends Fragment {
     private PlaylistViewModel mPlaylistViewModel;
     private SharedViewModel mSharedViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public LibraryViewModel.Factory libraryFactory;
+
+    @Inject
+    public PlaylistViewModel.Factory playlistFactory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -76,16 +85,6 @@ public class LibraryFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        MusicApplication musicApplication = (MusicApplication) requireActivity().getApplication();
-        LibraryViewModel.Factory libraryFactory = new LibraryViewModel.Factory(
-                musicApplication.getSongRepository(),
-                musicApplication.getRecentSongRepository(),
-                musicApplication.getPlaylistRepository()
-        );
-        PlaylistViewModel.Factory playlistFactory = new PlaylistViewModel.Factory(
-                musicApplication.getPlaylistRepository()
-        );
-
         mLibraryViewModel =
                 new ViewModelProvider(requireActivity(), libraryFactory).get(LibraryViewModel.class);
         mSharedViewModel = SharedViewModel.getInstance();

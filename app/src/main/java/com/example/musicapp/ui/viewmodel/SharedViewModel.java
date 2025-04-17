@@ -22,10 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 
 // Trung tâm quản lý trạng thái phát nhạc
+@HiltViewModel
 public class SharedViewModel extends ViewModel {
     private final SongRepositoryImpl mSongRepository;
     private final RecentSongRepository mRecentSongRepository;
@@ -61,7 +65,9 @@ public class SharedViewModel extends ViewModel {
         this(null, null);
     }
 
-    private SharedViewModel(SongRepositoryImpl songRepository, RecentSongRepository recentSongRepository) {
+    @Inject
+    public SharedViewModel(SongRepositoryImpl songRepository,
+                            RecentSongRepository recentSongRepository) {
         mSongRepository = songRepository;
         // Liên kết NowPlayingViewModel với repository để truy cập dữ liệu bài hát gần đây.
         mRecentSongRepository = recentSongRepository;
@@ -224,6 +230,7 @@ public class SharedViewModel extends ViewModel {
 
         // Factory sẽ nhận tham số cần thiết để khởi tạo NowPlayingViewModel.
         // Sau đó, đối tượng NowPlayingViewModel sẽ có thể sử dụng mRecentSongRepository để tương tác với cơ sở dữ liệu hoặc bộ nhớ.
+        @Inject
         public Factory(SongRepositoryImpl songRepository, RecentSongRepository recentSongRepository) {
             mSongRepository = songRepository;
             mRecentSongRepository = recentSongRepository;
@@ -232,7 +239,7 @@ public class SharedViewModel extends ViewModel {
         // tạo ra một đối tượng ViewModel (NowPlayingViewModel)
         @NonNull
         @Override
-        public <T extends ViewModel> T create(Class<T> modelClass) {
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             // Kiểm tra xem loại lớp modelClass có phải là NowPlayingViewModel không
             // Phương thức này đảm bảo rằng Factory chỉ tạo ra đối tượng của đúng loại ViewModel mà nó hỗ trợ (NowPlayingViewModel
             if (modelClass.isAssignableFrom(SharedViewModel.class)) {

@@ -16,6 +16,9 @@ import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -23,12 +26,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@HiltViewModel
 public class ArtistViewModel extends ViewModel {
     private final ArtistRepository mArtistRepository;
     private final SongRepositoryImpl mSongRepository;
     private final MutableLiveData<List<Artist>> mArtists = new MutableLiveData<>();
     private final MutableLiveData<List<Artist>> mLocalArtists = new MutableLiveData<>();
 
+    @Inject
     public ArtistViewModel(ArtistRepository artistRepository, SongRepositoryImpl songRepository) {
         mArtistRepository = artistRepository;
         mSongRepository = songRepository;
@@ -111,11 +116,12 @@ public class ArtistViewModel extends ViewModel {
     }
 
     public static class Factory implements ViewModelProvider.Factory {
-        private final ArtistRepository mRepository;
+        private final ArtistRepository mArtistRepository;
         private final SongRepositoryImpl mSongRepository;
 
-        public Factory(ArtistRepository repository, SongRepositoryImpl songRepository) {
-            mRepository = repository;
+        @Inject
+        public Factory(ArtistRepository artistRepository, SongRepositoryImpl songRepository) {
+            mArtistRepository = artistRepository;
             mSongRepository = songRepository;
         }
 
@@ -123,7 +129,7 @@ public class ArtistViewModel extends ViewModel {
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.isAssignableFrom(ArtistViewModel.class)) {
-                return (T) new ArtistViewModel(mRepository, mSongRepository);
+                return (T) new ArtistViewModel(mArtistRepository, mSongRepository);
             }
             throw new IllegalArgumentException("Unknown ViewModel class" + modelClass.getName());
         }

@@ -4,28 +4,34 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.data.model.album.AlbumList;
 import com.example.musicapp.data.repository.album.AlbumRepository;
-import com.example.musicapp.data.repository.album.AlbumRepositoryImpl;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@HiltViewModel
 public class AlbumViewModel extends ViewModel {
     // LiveData để quản lý danh sách album
     private final MutableLiveData<List<Album>> mAlbumList = new MutableLiveData<>();
     // Repository để truy cập dữ liệu album
-    private final AlbumRepository mAlbumRepository = new AlbumRepositoryImpl();
+    private AlbumRepository mAlbumRepository;
 
-    public AlbumViewModel() {
+    @Inject
+    public AlbumViewModel(AlbumRepository albumRepository) {
+        mAlbumRepository = albumRepository;
         loadAlbumList();
     }
 
@@ -62,4 +68,20 @@ public class AlbumViewModel extends ViewModel {
         });
     }
 
+    public static class Factory implements ViewModelProvider.Factory {
+        private final AlbumRepository mAlbumRepository;
+
+        @Inject
+        public Factory(AlbumRepository albumRepository) {
+            mAlbumRepository = albumRepository;
+        }
+
+        @NonNull
+        public <T extends ViewModel> T create(Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(AlbumViewModel.class)) {
+                return (T) new AlbumViewModel(mAlbumRepository);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
+        }
+    }
 }

@@ -7,6 +7,8 @@ import com.example.musicapp.data.source.ArtistDataSource;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -14,6 +16,7 @@ import io.reactivex.rxjava3.core.Single;
 public class LocalArtistDataSource implements ArtistDataSource.Local {
     private final ArtistDAO mArtistDAO;
 
+    @Inject
     public LocalArtistDataSource(ArtistDAO artistDAO) {
         mArtistDAO = artistDAO;
     }

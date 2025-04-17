@@ -7,6 +7,11 @@ import androidx.media3.common.MediaItem;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class MiniPlayerViewModel extends ViewModel {
     private static final MiniPlayerViewModel sInstance = new MiniPlayerViewModel();
     private final MutableLiveData<Boolean> mIsPlaying = new MutableLiveData<>();
@@ -16,7 +21,8 @@ public class MiniPlayerViewModel extends ViewModel {
         return sInstance;
     }
 
-    private MiniPlayerViewModel() {
+    @Inject
+    public MiniPlayerViewModel() {
 
     }
 

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.databinding.FragmentMorePlaylistBinding;
@@ -21,16 +20,23 @@ import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailFragment;
 import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class MorePlaylistFragment extends Fragment {
     private FragmentMorePlaylistBinding mBinding;
     private PlaylistAdapter mAdapter;
     private PlaylistViewModel mPlaylistViewModel;
     private PlaylistDetailViewModel mPlaylistDetailViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public PlaylistViewModel.Factory factory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,9 +71,6 @@ public class MorePlaylistFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        MusicApplication application = (MusicApplication) requireActivity().getApplication();
-        PlaylistViewModel.Factory factory =
-                new PlaylistViewModel.Factory(application.getPlaylistRepository());
         mPlaylistViewModel =
                 new ViewModelProvider(requireActivity(), factory).get(PlaylistViewModel.class);
         MorePlaylistViewModel morePlaylistViewModel =

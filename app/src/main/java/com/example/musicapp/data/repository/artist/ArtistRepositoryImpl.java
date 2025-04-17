@@ -5,9 +5,10 @@ import com.example.musicapp.data.model.artist.ArtistList;
 import com.example.musicapp.data.model.artist.ArtistSongCrossRef;
 import com.example.musicapp.data.model.artist.ArtistWithSongs;
 import com.example.musicapp.data.source.ArtistDataSource;
-import com.example.musicapp.data.source.remote.RemoteArtistDataSource;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -15,16 +16,19 @@ import io.reactivex.rxjava3.core.Single;
 import retrofit2.Callback;
 
 public class ArtistRepositoryImpl implements ArtistRepository {
-    private final ArtistDataSource.Remote remoteArtistDataSource = new RemoteArtistDataSource();
+    private final ArtistDataSource.Remote mRemoteArtistDataSource;
     private final ArtistDataSource.Local mLocalArtistDataSource;
 
-    public ArtistRepositoryImpl(ArtistDataSource.Local localArtistDataSource) {
+    @Inject
+    public ArtistRepositoryImpl(ArtistDataSource.Local localArtistDataSource,
+                                ArtistDataSource.Remote remoteArtistDataSource) {
         mLocalArtistDataSource = localArtistDataSource;
+        mRemoteArtistDataSource = remoteArtistDataSource;
     }
 
     @Override
     public void loadArtists(Callback<ArtistList> callback) {
-        remoteArtistDataSource.loadArtists(callback);
+        mRemoteArtistDataSource.loadArtists(callback);
     }
 
     @Override

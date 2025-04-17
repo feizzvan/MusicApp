@@ -11,12 +11,17 @@ import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Flowable;
 
+@HiltViewModel
 public class ForYouViewModel extends ViewModel {
     private final SongRepositoryImpl mSongRepository;
     private final MutableLiveData<List<Song>> mSongs = new MutableLiveData<>();
 
+    @Inject
     public ForYouViewModel(SongRepositoryImpl songRepository) {
         mSongRepository = songRepository;
     }
@@ -36,6 +41,7 @@ public class ForYouViewModel extends ViewModel {
     public static class Factory implements ViewModelProvider.Factory {
         private final SongRepositoryImpl mSongRepository;
 
+        @Inject
         public Factory(SongRepositoryImpl songRepository) {
             mSongRepository = songRepository;
         }

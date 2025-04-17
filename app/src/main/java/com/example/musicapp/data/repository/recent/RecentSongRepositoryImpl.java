@@ -5,6 +5,8 @@ import com.example.musicapp.data.source.RecentSongDataSource;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 
@@ -13,6 +15,7 @@ import io.reactivex.rxjava3.core.Flowable;
 public class RecentSongRepositoryImpl implements RecentSongRepository {
     private final RecentSongDataSource mRecentSongDataSource;
 
+    @Inject
     public RecentSongRepositoryImpl(RecentSongDataSource recentSongDataSource) {
         this.mRecentSongDataSource = recentSongDataSource;
     }

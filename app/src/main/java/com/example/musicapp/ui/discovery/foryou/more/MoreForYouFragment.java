@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.MusicApplication;
-import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.databinding.FragmentMoreForYouBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
@@ -21,16 +19,22 @@ import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class MoreForYouFragment extends AppBaseFragment {
     private FragmentMoreForYouBinding mBinding;
     private MoreForYouViewModel mMoreForYouViewModel;
     private SongListAdapter mAdapter;
-    private SongRepositoryImpl mSongRepository;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public MoreForYouViewModel.Factory factory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -66,9 +70,6 @@ public class MoreForYouFragment extends AppBaseFragment {
     }
 
     private void setupViewModel() {
-        MusicApplication application = (MusicApplication) requireActivity().getApplication();
-        mSongRepository = application.getSongRepository();
-        MoreForYouViewModel.Factory factory = new MoreForYouViewModel.Factory(mSongRepository);
         mMoreForYouViewModel =
                 new ViewModelProvider(requireActivity(), factory).get(MoreForYouViewModel.class);
 

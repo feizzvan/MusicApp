@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.room)
+    alias(libs.plugins.dagger.hilt.android)
 }
 
 android {
@@ -63,6 +64,10 @@ dependencies {
     implementation(libs.rxjava3.di)
     implementation(libs.rxandroid.di)
     implementation(libs.preference.di)
+
+    //for dagger hilt
+    implementation(libs.hilt.android)
+    annotationProcessor(libs.hilt.android.compiler)
 
     //implementation(libs.core)
 

@@ -8,8 +8,17 @@ import com.example.musicapp.data.model.artist.Artist;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class MoreArtistViewModel extends ViewModel {
     private final MutableLiveData<List<Artist>> mArtists = new MutableLiveData<>();
+
+    @Inject
+    public MoreArtistViewModel() {
+    }
 
     public LiveData<List<Artist>> getArtists() {
         return mArtists;

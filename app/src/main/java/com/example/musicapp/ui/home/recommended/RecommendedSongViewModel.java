@@ -13,15 +13,20 @@ import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Completable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@HiltViewModel
 public class RecommendedSongViewModel extends ViewModel {
     private final SongRepositoryImpl mSongRepository;
     private final MutableLiveData<List<Song>> mSongList = new MutableLiveData<>();
 
+    @Inject
     public RecommendedSongViewModel(SongRepositoryImpl songRepository) {
         mSongRepository = songRepository;
         loadSongs();
@@ -64,6 +69,8 @@ public class RecommendedSongViewModel extends ViewModel {
 
     public static class Factory implements ViewModelProvider.Factory{
         private final SongRepositoryImpl mSongRepository;
+
+        @Inject
         public Factory(SongRepositoryImpl songRepository) {
             mSongRepository = songRepository;
         }

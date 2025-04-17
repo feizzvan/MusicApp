@@ -11,27 +11,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.song.Song;
-import com.example.musicapp.data.repository.artist.ArtistRepository;
 import com.example.musicapp.databinding.FragmentDetailArtistBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class DetailArtistFragment extends AppBaseFragment {
     public static final String EXTRA_ARTIST_ID = "extra_artist_id";
     private FragmentDetailArtistBinding mBinding;
     private DetailArtistViewModel mDetailArtistViewModel;
     private SongListAdapter mSongAdapter;
-    private ArtistRepository mArtistRepository;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public DetailArtistViewModel.Factory factory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -62,9 +66,6 @@ public class DetailArtistFragment extends AppBaseFragment {
     }
 
     private void setupViewModel() {
-        MusicApplication application = (MusicApplication) requireActivity().getApplication();
-        mArtistRepository = application.getArtistRepository();
-        DetailArtistViewModel.Factory factory = new DetailArtistViewModel.Factory(mArtistRepository);
         mDetailArtistViewModel =
                 new ViewModelProvider(requireActivity(), factory).get(DetailArtistViewModel.class);
 

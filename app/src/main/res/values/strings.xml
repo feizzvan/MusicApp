@@ -5,13 +5,12 @@
     <string name="title_discovery">Discovery</string>
     <string name="title_settings">Settings</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_album_hot">Albums hot</string>
+    <string name="title_album_hot">Album hot</string>
     <string name="text_song_title">Song title</string>
     <string name="text_song_artist">Song artist</string>
     <string name="title_recommended_songs">Recommended songs</string>
     <string name="title_detail_album">Album detail</string>
-    <string name="imgDescription">TODO</string>
+    <string name="imgDescription">Image Description</string>
     <string name="title_song_list">Song list</string>
     <string name="text_number_song">Number of songs: %d</string>
     <string name="title_more_album">Albums hot</string>
@@ -69,24 +68,8 @@
     <string name="text_detail_your_interested_artist">Your interested artist: %s</string>
     <string name="title_most_heard">Most listened songs</string>
     <string name="title_for_you">For you</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="languages_header">Languages</string>
     <string name="theme_header">Theme</string>
-    <string name="font_size_header">Font size</string>
     <string name="language_title">Application language</string>
-    <string name="font_size_title">Display font size</string>
     <string name="dark_mode_title">Dark mode</string>
 </resources>

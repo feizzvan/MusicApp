@@ -5,6 +5,8 @@ import com.example.musicapp.data.source.RecentSongDataSource;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 
@@ -13,6 +15,7 @@ public class LocalRecentSongDataSource implements RecentSongDataSource {
     private final RecentSongDAO mRecentSongDAO;
 
     // Hàm khởi tạo RecentSongDataSource.
+    @Inject
     public LocalRecentSongDataSource(RecentSongDAO recentSongDAO) {
         this.mRecentSongDAO = recentSongDAO;
     }

@@ -5,11 +5,17 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.media3.session.MediaController;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class MediaPlayerViewModel extends ViewModel {
     private static final MediaPlayerViewModel sInstance = new MediaPlayerViewModel();
     private final MutableLiveData<MediaController> mMediaPlayerLiveData = new MutableLiveData<>();
 
-    private MediaPlayerViewModel() {
+    @Inject
+    public MediaPlayerViewModel() {
 
     }
 

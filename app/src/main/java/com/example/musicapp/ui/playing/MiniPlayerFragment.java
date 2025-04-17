@@ -248,7 +248,7 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     }
 
     private void setupObserveControllerData() {
-        if (AppUtils.sIsConfigChanged) {
+        if (mMediaController != null && mMediaController.isPlaying() && AppUtils.sIsConfigChanged) {
             AppUtils.sIsConfigChanged = false;
             return;
         }

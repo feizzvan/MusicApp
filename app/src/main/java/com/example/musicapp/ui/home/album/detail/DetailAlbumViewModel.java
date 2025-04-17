@@ -11,11 +11,20 @@ import com.example.musicapp.data.model.song.Song;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class DetailAlbumViewModel extends ViewModel {
     private final MutableLiveData<List<Song>> mSongs = new MutableLiveData<>();
     private final MutableLiveData<Album> mAlbum = new MutableLiveData<>();
     private final MutableLiveData<List<Song>> mAlbumSongs = new MutableLiveData<>();
     private Playlist mPlaylist;
+
+    @Inject
+    public DetailAlbumViewModel() {
+    }
 
     public void extractSongList(Album album) {
         List<Song> songList = new ArrayList<>();

@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentRecommendedBinding;
@@ -25,9 +24,13 @@ import com.example.musicapp.ui.viewmodel.SharedViewModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class RecommendedFragment extends AppBaseFragment {
     private FragmentRecommendedBinding mBinding;
     private SongListAdapter mSongListAdapter;
@@ -36,6 +39,9 @@ public class RecommendedFragment extends AppBaseFragment {
     private DetailAlbumViewModel mDetailAlbumViewModel;
     private final SharedViewModel mSharedViewModel = SharedViewModel.getInstance();
     CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public RecommendedSongViewModel.Factory factory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -70,8 +76,6 @@ public class RecommendedFragment extends AppBaseFragment {
     }
 
     private void setupViewModel() {
-        MusicApplication musicApplication = (MusicApplication) requireActivity().getApplication();
-        RecommendedSongViewModel.Factory factory = new RecommendedSongViewModel.Factory(musicApplication.getSongRepository());
         mRecommendedSongViewModel = new ViewModelProvider(this, factory).get(RecommendedSongViewModel.class);
         mMoreRecommendedViewModel = new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
         mRecommendedSongViewModel.getSongList().observe(getViewLifecycleOwner(), songs -> {

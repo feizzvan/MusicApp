@@ -11,12 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.data.model.song.Song;
-import com.example.musicapp.data.repository.artist.ArtistRepository;
-import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.databinding.FragmentArtistBinding;
 import com.example.musicapp.ui.discovery.artist.detail.DetailArtistFragment;
 import com.example.musicapp.ui.discovery.artist.more.MoreArtistFragment;
@@ -25,16 +22,23 @@ import com.example.musicapp.ui.discovery.artist.more.MoreArtistViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class ArtistFragment extends Fragment {
     private FragmentArtistBinding mBinding;
     private ArtistAdapter mArtistAdapter;
     private ArtistViewModel mArtistViewModel;
     private MoreArtistViewModel mMoreArtistViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public ArtistViewModel.Factory factory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,11 +69,6 @@ public class ArtistFragment extends Fragment {
     }
 
     private void setupViewModel() {
-        MusicApplication application = (MusicApplication) requireActivity().getApplication();
-        ArtistRepository ArtistRepository = application.getArtistRepository();
-        SongRepositoryImpl songRepository = application.getSongRepository();
-        ArtistViewModel.Factory factory = new ArtistViewModel.Factory(ArtistRepository, songRepository);
-
         mArtistViewModel =
                 new ViewModelProvider(requireActivity(), factory).get(ArtistViewModel.class);
         mMoreArtistViewModel =

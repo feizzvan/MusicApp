@@ -8,8 +8,17 @@ import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class MorePlaylistViewModel extends ViewModel {
     private final MutableLiveData<List<PlaylistWithSongs>> mPlaylistLiveData = new MutableLiveData<>();
+
+    @Inject
+    public MorePlaylistViewModel() {
+    }
 
     public void setPlaylistLiveData(List<PlaylistWithSongs> playlists) {
         mPlaylistLiveData.setValue(playlists);

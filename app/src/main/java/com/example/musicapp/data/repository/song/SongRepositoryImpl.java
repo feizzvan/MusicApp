@@ -2,10 +2,11 @@ package com.example.musicapp.data.repository.song;
 
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.model.song.SongList;
-import com.example.musicapp.data.source.local.song.LocalSongDataSource;
-import com.example.musicapp.data.source.remote.RemoteSongDataSourceImpl;
+import com.example.musicapp.data.source.SongDataSource;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -13,16 +14,19 @@ import io.reactivex.rxjava3.core.Single;
 import retrofit2.Callback;
 
 public class SongRepositoryImpl implements SongRepository.Local, SongRepository.Remote {
-    private final LocalSongDataSource mLocalSongDataSource;
+    private final SongDataSource.Local mLocalSongDataSource;
+    private final SongDataSource.Remote mRemoteSongDataSource;
 
-    public SongRepositoryImpl(LocalSongDataSource localSongDataSource) {
-        this.mLocalSongDataSource = localSongDataSource;
+    @Inject
+    public SongRepositoryImpl(SongDataSource.Local localSongDataSource,
+                              SongDataSource.Remote remoteSongDataSource) {
+        mLocalSongDataSource = localSongDataSource;
+        mRemoteSongDataSource = remoteSongDataSource;
     }
 
     @Override
     public void loadSongs(Callback<SongList> callback) {
-        RemoteSongDataSourceImpl songRemoteDataSource = new RemoteSongDataSourceImpl();
-        songRemoteDataSource.loadSongs(callback);
+        mRemoteSongDataSource.loadSongs(callback);
     }
 
     @Override

@@ -19,7 +19,7 @@
         <item name="colorSecondary">@color/pink_700</item>
         <item name="colorOnSecondary">@color/white</item>
     </style>
-
+    
     <style name="ToolbarStyle" parent="Widget.Material3.Toolbar">
         <item name="navigationIcon">@drawable/ic_arrow_back</item>
     </style>

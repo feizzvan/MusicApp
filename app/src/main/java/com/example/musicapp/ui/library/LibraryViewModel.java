@@ -15,8 +15,12 @@ import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Flowable;
 
+@HiltViewModel
 public class LibraryViewModel extends ViewModel {
     private final SongRepositoryImpl mSongRepository;
     private final RecentSongRepository mRecentSongRepository;
@@ -25,6 +29,7 @@ public class LibraryViewModel extends ViewModel {
     private final MutableLiveData<List<Song>> mRecentSongs = new MutableLiveData<>();
     private final MutableLiveData<List<Song>> mFavoriteSongs = new MutableLiveData<>();
 
+    @Inject
     public LibraryViewModel(SongRepositoryImpl songRepository,
                             RecentSongRepository recentSongRepository,
                             PlaylistRepositoryImpl playlistRepository) {
@@ -68,6 +73,7 @@ public class LibraryViewModel extends ViewModel {
         private final RecentSongRepository mRecentSongRepository;
         private final PlaylistRepositoryImpl mPlaylistRepository;
 
+        @Inject
         public Factory(SongRepositoryImpl songRepository,
                        RecentSongRepository recentSongRepository,
                        PlaylistRepositoryImpl playlistRepository) {

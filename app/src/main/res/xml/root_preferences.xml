@@ -16,15 +16,4 @@
             app:key="dark_mode"
             app:title="@string/dark_mode_title" />
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/font_size_header">
-        <ListPreference
-            android:defaultValue="18sp"
-            android:entries="@array/font_size_entries"
-            android:entryValues="@array/font_size_values"
-            android:key="font_size"
-            android:title="@string/font_size_title"
-            app:useSimpleSummaryProvider="true" />
-    </PreferenceCategory>
-
 </PreferenceScreen>

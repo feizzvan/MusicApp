@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -20,10 +24,14 @@ import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.example.musicapp.ui.viewmodel.SharedViewModel;
 import com.example.musicapp.utils.AppUtils;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     public static final String PREF_SONG_ID = "com.example.musicapp.PREF_SONG_ID";
     public static final String PREF_PLAYLIST_NAME = "com.example.musicapp.PREF_PLAYLIST_NAME";
@@ -36,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean isFirstLoad = true;
 
     private CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    public PlaylistViewModel.Factory playlistViewModelFactory;
+
+    @Inject
+    public SharedViewModel.Factory shareViewModelFactory;
 
 //    private final ActivityResultLauncher<String> mResultLauncher = registerForActivityResult(
 //            new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -55,7 +69,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        EdgeToEdge.enable(this);
+
         setContentView(mBinding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.main, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         setupToolbar();
         setupViewModel();
@@ -105,17 +128,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        MusicApplication application = (MusicApplication) getApplication();
-        RecentSongRepository recentSongRepository = application.getRecentSongRepository();
-        SongRepositoryImpl songRepository = application.getSongRepository();
-
-        SharedViewModel.Factory shareViewModelFactory =
-                new SharedViewModel.Factory(songRepository, recentSongRepository);
         mSharedViewModel =
                 new ViewModelProvider(this, shareViewModelFactory).get(SharedViewModel.class);
 
-        PlaylistViewModel.Factory playlistViewModelFactory =
-                new PlaylistViewModel.Factory(application.getPlaylistRepository());
         mPlaylistViewModel =
                 new ViewModelProvider(this, playlistViewModelFactory).get(PlaylistViewModel.class);
 

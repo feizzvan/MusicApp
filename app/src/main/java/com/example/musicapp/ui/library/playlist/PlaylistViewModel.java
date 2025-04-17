@@ -14,16 +14,20 @@ import com.example.musicapp.data.repository.playlist.PlaylistRepositoryImpl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
-
+@HiltViewModel
 public class PlaylistViewModel extends ViewModel {
     private final PlaylistRepositoryImpl mPlaylistRepository;
     private final MutableLiveData<List<PlaylistWithSongs>> mPlaylists = new MutableLiveData<>();
 
     // Tạo lập đối tượng cho PlaylistRepositoryImpl
+    @Inject
     public PlaylistViewModel(PlaylistRepositoryImpl playlistRepository) {
         mPlaylistRepository = playlistRepository;
     }
@@ -67,6 +71,7 @@ public class PlaylistViewModel extends ViewModel {
     public static class Factory implements ViewModelProvider.Factory {
         private final PlaylistRepositoryImpl mPlaylistRepository;
 
+        @Inject
         public Factory(PlaylistRepositoryImpl playlistRepository) {
             mPlaylistRepository = playlistRepository;
         }
