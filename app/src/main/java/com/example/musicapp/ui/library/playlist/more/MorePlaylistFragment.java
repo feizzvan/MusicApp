@@ -7,17 +7,17 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.databinding.FragmentMorePlaylistBinding;
 import com.example.musicapp.ui.library.playlist.PlaylistAdapter;
 import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
-import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailFragment;
 import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailViewModel;
 
 import javax.inject.Inject;
@@ -94,10 +94,7 @@ public class MorePlaylistFragment extends Fragment {
     }
 
     private void navigateToPlaylistDetail() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, PlaylistDetailFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections directions = MorePlaylistFragmentDirections.actionMorePlaylistFrToPlaylistDetailFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 }

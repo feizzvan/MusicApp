@@ -7,23 +7,22 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.databinding.FragmentMoreAlbumBinding;
 import com.example.musicapp.ui.home.album.AlbumViewModel;
+import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
 
 public class MoreAlbumFragment extends Fragment {
-
     private FragmentMoreAlbumBinding mBinding;
+    private MoreAlbumAdapter mMoreAlbumAdapter;
     private AlbumViewModel mAlbumViewModel;
-
-    public static MoreAlbumFragment newInstance() {
-        return new MoreAlbumFragment();
-    }
+    private DetailAlbumViewModel mDetailAlbumViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -35,16 +34,30 @@ public class MoreAlbumFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupComponents();
+
+        setupView();
+        setupViewModel();
     }
 
-    private void setupComponents() {
+    private void setupView() {
         mBinding.toolbarMoreAlbum.setNavigationOnClickListener(
                 view -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
-        MoreAlbumAdapter adapter = new MoreAlbumAdapter(album -> {
+        mMoreAlbumAdapter = new MoreAlbumAdapter(album -> {
+            mDetailAlbumViewModel.setAlbum(album);
+            mDetailAlbumViewModel.extractSongList(album);
+            navigateToDetailAlbum();
         });
-        mBinding.recyclerMoreAlbum.setAdapter(adapter);
+        mBinding.recyclerMoreAlbum.setAdapter(mMoreAlbumAdapter);
+    }
+
+    private void setupViewModel() {
         mAlbumViewModel = new ViewModelProvider(requireActivity()).get(AlbumViewModel.class);
-        mAlbumViewModel.getAlbumList().observe(getViewLifecycleOwner(), adapter::updateAlbums);
+        mDetailAlbumViewModel = new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
+        mAlbumViewModel.getAlbumList().observe(getViewLifecycleOwner(), mMoreAlbumAdapter::updateAlbums);
+    }
+
+    private void navigateToDetailAlbum() {
+        NavDirections direction = MoreAlbumFragmentDirections.actionMoreAlbumFrToDetailAlbumFr();
+        NavHostFragment.findNavController(this).navigate(direction);
     }
 }

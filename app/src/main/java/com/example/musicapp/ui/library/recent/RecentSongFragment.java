@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentRecentSongBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.library.recent.more.MoreRecentFragment;
+import com.example.musicapp.ui.library.LibraryFragmentDirections;
 import com.example.musicapp.ui.library.recent.more.MoreRecentViewModel;
 import com.example.musicapp.utils.AppUtils;
 
@@ -70,14 +71,6 @@ public class RecentSongFragment extends AppBaseFragment {
         mBinding.btnMoreRecentSongs.setOnClickListener(view -> navigateToMoreRecentScreen());
     }
 
-    private void navigateToMoreRecentScreen() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreRecentFragment.class, null)
-                .addToBackStack(null)
-                .commit();
-    }
-
     private void setupViewModel() {
         RecentSongViewModel recentSongViewModel =
                 new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
@@ -93,6 +86,11 @@ public class RecentSongFragment extends AppBaseFragment {
             mRecentSongAdapter.updateSongs(subList);
             mBinding.progressBarRecentSong.setVisibility(View.GONE);
         });
+    }
+
+    private void navigateToMoreRecentScreen() {
+        NavDirections directions = LibraryFragmentDirections.actionLibraryFrToMoreRecentFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 
     static class MyLayoutManager extends GridLayoutManager {

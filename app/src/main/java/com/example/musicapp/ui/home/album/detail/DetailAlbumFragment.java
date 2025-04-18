@@ -16,7 +16,7 @@ import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.databinding.FragmentDetailAlbumBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 public class DetailAlbumFragment extends AppBaseFragment {
     private FragmentDetailAlbumBinding mBinding;
@@ -33,37 +33,39 @@ public class DetailAlbumFragment extends AppBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupComponents();
+
+        setupView();
+        setupViewModel();
     }
 
-    private void setupComponents() {
+    private void setupView() {
         mBinding.includeFragmentDetailPlaylist
                 .toolbarPlaylistDetail
-                .setNavigationOnClickListener(view -> {
-                    requireActivity().getOnBackPressedDispatcher().onBackPressed();
-                });
+                .setNavigationOnClickListener(
+                        view -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
 
-        mSongListAdapter = new SongListAdapter((song, index) -> {
-            Album album = mDetailAlbumViewModel.getAlbum().getValue();
-            String playlistName = album == null ? " " : album.getName();
-            SharedViewModel.getInstance().addPlaylist(mDetailAlbumViewModel.getPlaylist());
-            showAndPlay(song, index, playlistName);
-        }, this::showOptionMenu);
+        mSongListAdapter = new SongListAdapter(
+                (song, index) -> {
+                    Album album = mDetailAlbumViewModel.getAlbum().getValue();
+                    String playlistName = album == null ? " " : album.getName();
+                    SharedDataUtils.addPlaylist(mDetailAlbumViewModel.getPlaylist());
+                    showAndPlay(song, index, playlistName);
+                }, this::showOptionMenu);
 
         mBinding.includeFragmentDetailPlaylist
                 .includeSongList
                 .rvSongList
                 .setAdapter(mSongListAdapter);
+    }
 
+    private void setupViewModel() {
         mDetailAlbumViewModel =
                 new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
 
-        mDetailAlbumViewModel
-                .getAlbum()
+        mDetailAlbumViewModel.getAlbum()
                 .observe(getViewLifecycleOwner(), this::showAlbumInfo);
 
-        mDetailAlbumViewModel
-                .getAlbumSongs()
+        mDetailAlbumViewModel.getAlbumSongs()
                 .observe(getViewLifecycleOwner(), mSongListAdapter::updateSongs);
     }
 

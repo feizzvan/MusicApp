@@ -20,8 +20,12 @@ import androidx.media3.session.MediaSessionService;
 
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.song.Song;
+import com.example.musicapp.data.repository.recent.RecentSongRepository;
+import com.example.musicapp.data.repository.song.SongRepository;
 import com.example.musicapp.ui.playing.NowPlayingActivity;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -41,9 +45,13 @@ public class PlaybackService extends MediaSessionService {
     // Listener để theo dõi các thay đổi từ ExoPlayer
     private Player.Listener mPlayerListener;
 
-    private SharedViewModel mSharedViewModel;
-
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    RecentSongRepository recentSongRepository;
+
+    @Inject
+    SongRepository.Local localSongRepository;
 
     @OptIn(markerClass = UnstableApi.class)
     @Override
@@ -52,7 +60,6 @@ public class PlaybackService extends MediaSessionService {
         // Khởi tạo MediaSession và ExoPlayer khi dịch vụ được tạo
         initSessionAndPlayer();
 
-        setupViewModel();
         // Thiết lập listener để theo dõi các sự kiện từ ExoPlayer
         setupListener();
     }
@@ -97,21 +104,16 @@ public class PlaybackService extends MediaSessionService {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
-    private void setupViewModel() {
-        mSharedViewModel = SharedViewModel.getInstance();
-    }
-
     private void setupListener() {
         Player player = mMediaSession.getPlayer();
         mPlayerListener = new Player.Listener() {
             @Override
             public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
                 boolean isPlaylistChanged = reason == Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED;
-                mSharedViewModel = SharedViewModel.getInstance();
-                Integer indexToPlay = mSharedViewModel.getIndexToPlay().getValue();
+                Integer indexToPlay = SharedDataUtils.getIndexToPlay().getValue();
                 if (!isPlaylistChanged || indexToPlay != null && indexToPlay == 0) {
                     // Cập nhật chỉ số bài hát đang phát trong NowPlayingViewModel
-                    mSharedViewModel.setPlayingSong(player.getCurrentMediaItemIndex());
+                    SharedDataUtils.setPlayingSong(player.getCurrentMediaItemIndex());
                     saveDataToDB();
                 }
             }
@@ -133,7 +135,7 @@ public class PlaybackService extends MediaSessionService {
             handler.postDelayed(() -> {
                 Player player = mMediaSession.getPlayer();
                 if (player.isPlaying()) {
-                    mDisposable.add(mSharedViewModel.saveRecentSong(song)
+                    mDisposable.add(SharedDataUtils.saveRecentSong(song, recentSongRepository)
                             .subscribeOn(Schedulers.io())
                             .subscribe());
                     saveCounterToDB();
@@ -149,14 +151,14 @@ public class PlaybackService extends MediaSessionService {
                     Process.THREAD_PRIORITY_BACKGROUND);
             handlerThread.start();
             Handler handler = new Handler(handlerThread.getLooper());
-            handler.post(() -> mDisposable.add(mSharedViewModel.updateSongInDB(song)
+            handler.post(() -> mDisposable.add(SharedDataUtils.updateSongInDB(song, localSongRepository)
                     .subscribeOn(Schedulers.io())
                     .subscribe()));
         }
     }
 
     private Song extractSong() {
-        PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
         if (playingSong == null) {
             return null;
         }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.room)
     alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.safeArgs)
 }
 
 android {
@@ -68,6 +69,11 @@ dependencies {
     //for dagger hilt
     implementation(libs.hilt.android)
     annotationProcessor(libs.hilt.android.compiler)
+
+    //for navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.navigation.runtime)
 
     //implementation(libs.core)
 

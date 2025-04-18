@@ -2,23 +2,22 @@ package com.example.musicapp.ui.discovery.mostheard;
 
 import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.MOST_HEARD;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
+
 import com.example.musicapp.databinding.FragmentMostHeardBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.discovery.mostheard.more.MoreMostHeardFragment;
+import com.example.musicapp.ui.discovery.DiscoveryFragmentDirections;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import java.util.ArrayList;
 
@@ -83,16 +82,13 @@ public class MostHeardFragment extends AppBaseFragment {
                 .subscribe(songs -> {
                     mAdapter.updateSongs(songs);
                     mMostHeardViewModel.setSongs(songs);
-                    SharedViewModel.getInstance().setupPlaylist(songs, MOST_HEARD.getValue());
+                    SharedDataUtils.setupPlaylist(songs, MOST_HEARD.getValue());
                 }, throwable -> mMostHeardViewModel.setSongs(new ArrayList<>()))
         );
     }
 
     private void navigateToMoreMostHeard() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreMostHeardFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections direction = DiscoveryFragmentDirections.actionDiscoveryFrToMoreMostHeardFr();
+        NavHostFragment.findNavController(this).navigate(direction);
     }
 }

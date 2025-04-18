@@ -6,21 +6,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.musicapp.MusicApplication;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.databinding.FragmentPlaylistBinding;
 import com.example.musicapp.ui.dialog.PlaylistCreationDialog;
-import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailFragment;
+import com.example.musicapp.ui.library.LibraryFragmentDirections;
 import com.example.musicapp.ui.library.playlist.detail.PlaylistDetailViewModel;
-import com.example.musicapp.ui.library.playlist.more.MorePlaylistFragment;
 import com.example.musicapp.ui.library.playlist.more.MorePlaylistViewModel;
 
 import java.util.ArrayList;
@@ -116,11 +116,8 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void navigateToPlaylistDetail() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, PlaylistDetailFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections directions = LibraryFragmentDirections.actionLibraryFrToPlaylistDetailFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 
     private void createPlaylist() {
@@ -149,10 +146,7 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void navigateToMorePlaylist() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MorePlaylistFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections directions = LibraryFragmentDirections.actionLibraryFrToMorePlaylistFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 }

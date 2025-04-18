@@ -17,11 +17,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.song.Song;
-import com.example.musicapp.data.repository.recent.RecentSongRepository;
-import com.example.musicapp.data.repository.song.SongRepositoryImpl;
 import com.example.musicapp.databinding.ActivityMainBinding;
 import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 import com.example.musicapp.utils.AppUtils;
 
 import javax.inject.Inject;
@@ -37,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREF_PLAYLIST_NAME = "com.example.musicapp.PREF_PLAYLIST_NAME";
 
     private ActivityMainBinding mBinding;
-    private SharedViewModel mSharedViewModel;
     private PlaylistViewModel mPlaylistViewModel;
     private SharedPreferences mSharedPreferences;
 
@@ -48,13 +45,11 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     public PlaylistViewModel.Factory playlistViewModelFactory;
 
-    @Inject
-    public SharedViewModel.Factory shareViewModelFactory;
 
 //    private final ActivityResultLauncher<String> mResultLauncher = registerForActivityResult(
 //            new ActivityResultContracts.RequestPermission(), isGranted -> {
 //                if (isGranted) {
-//                    PermissionViewModel.getInstance().setPermissionGranted(isGranted);
+//                    PermissionUtils.setPermissionGranted(isGranted);
 //                } else {
 //                    Snackbar snackbar = Snackbar.make(mBinding.getRoot(),
 //                            R.string.message_permission_denied,
@@ -90,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mSharedViewModel.getPlayingSong().observe(this, playingSong -> {
+        SharedDataUtils.getPlayingSong().observe(this, playingSong -> {
             if (playingSong != null) {
                 if (playingSong.getSong() != null) { //Nếu bài hát có cả ở local và ở remote
                     mBinding.fcvMiniPlayer.setVisibility(View.VISIBLE);
@@ -128,20 +123,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        mSharedViewModel =
-                new ViewModelProvider(this, shareViewModelFactory).get(SharedViewModel.class);
-
         mPlaylistViewModel =
                 new ViewModelProvider(this, playlistViewModelFactory).get(PlaylistViewModel.class);
 
-        mSharedViewModel.isSongLoaded().observe(this, isLoaded -> {
+        SharedDataUtils.isSongLoaded().observe(this, isLoaded -> {
             if (isLoaded && isFirstLoad) {
                 readPrefPlayingSong();
                 isFirstLoad = false;
             }
         });
 
-//        PermissionViewModel.getInstance().getPermissionAsked().observe(this, isAsked -> {
+//        PermissionUtils.getPermissionAsked().observe(this, isAsked -> {
 //            if (isAsked) {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 //                    checkPermission();
@@ -170,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(
                         playlistWithSongs -> {
                             mPlaylistViewModel.setPlaylists(playlistWithSongs);
-                            mSharedViewModel.setPlaylistSongs(playlistWithSongs);
+                            SharedDataUtils.setPlaylistSongs(playlistWithSongs);
                         },
                         error -> {
                         }
@@ -179,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveCurrentSong() {
-        PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
         if (playingSong != null) {
             Song song = playingSong.getSong();
             if (song != null) {
@@ -195,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         String songId = mSharedPreferences.getString(PREF_SONG_ID, null);
         String playlistName = mSharedPreferences.getString(PREF_PLAYLIST_NAME, null);
         if (songId != null && playlistName != null) {
-            mSharedViewModel.setupPrefPlayingSong(songId, playlistName);
+            SharedDataUtils.setupPreviousSessionPlayingSong(songId, playlistName);
         }
     }
 
@@ -205,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 //        boolean isGranted = ActivityCompat.checkSelfPermission(this, permission)
 //                == PackageManager.PERMISSION_GRANTED;
 //        if (isGranted) {
-//            PermissionViewModel.getInstance().setPermissionGranted(true);
+//            PermissionUtils.setPermissionGranted(true);
 //        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
 //            // Kiểm tra xem hệ thống có nên hiển thị lời giải thích về quyền trước khi yêu cầu lại không
 //            Snackbar snackbar = Snackbar.make(mBinding.getRoot(),

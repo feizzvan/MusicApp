@@ -5,16 +5,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.databinding.FragmentAlbumBinding;
-import com.example.musicapp.ui.home.album.detail.DetailAlbumFragment;
+import com.example.musicapp.ui.home.HomeFragmentDirections;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
-import com.example.musicapp.ui.home.album.more.MoreAlbumFragment;
 
 public class AlbumFragment extends Fragment {
     private AlbumAdapter mAlbumAdapter;
@@ -64,19 +64,12 @@ public class AlbumFragment extends Fragment {
     }
 
     private void navigateToDetailAlbum() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, DetailAlbumFragment.class, null)
-                .addToBackStack(null)
-                .commit();
-
+        NavDirections direction = HomeFragmentDirections.actionHomeFrToDetailAlbumFr();
+        NavHostFragment.findNavController(this).navigate(direction);
     }
 
     private void navigateToMoreAlbum() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreAlbumFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections direction = HomeFragmentDirections.actionHomeFrToMoreAlbumFr();
+        NavHostFragment.findNavController(this).navigate(direction);
     }
 }

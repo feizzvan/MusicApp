@@ -78,11 +78,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
                     .into(mBinding.imgItemSongAvatar);
 
 //            mBinding.getRoot().setOnClickListener(view -> {
-//                Boolean isGranted = PermissionViewModel.getInstance()
-//                        .getPermissionGranted()
-//                        .getValue();
+//                Boolean isGranted = PermissionUtils.getPermissionGranted().getValue();
 //                if (isGranted == null || !isGranted) {
-//                    PermissionViewModel.getInstance().setPermissionAsked(true);
+//                    PermissionUtils.setPermissionAsked(true);
 //                }
 //                mSongItemClickListener.onSongItemClick(song, position);
 //            });
@@ -90,7 +88,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
             mBinding.getRoot().setOnClickListener(view -> mSongItemClickListener.onSongItemClick(song, position));
 
             mBinding.btnItemSongOption.setOnClickListener(
-                            view -> mSongItemMenuClickListener.onSongMenuItemClick(song));
+                    view -> mSongItemMenuClickListener.onSongMenuItemClick(song));
         }
     }
 

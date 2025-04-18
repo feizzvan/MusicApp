@@ -8,19 +8,20 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentRecommendedBinding;
 import com.example.musicapp.ui.AppBaseFragment;
+import com.example.musicapp.ui.home.HomeFragmentDirections;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
-import com.example.musicapp.ui.home.recommended.more.MoreRecommendedFragment;
 import com.example.musicapp.ui.home.recommended.more.MoreRecommendedViewModel;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class RecommendedFragment extends AppBaseFragment {
     private RecommendedSongViewModel mRecommendedSongViewModel;
     private MoreRecommendedViewModel mMoreRecommendedViewModel;
     private DetailAlbumViewModel mDetailAlbumViewModel;
-    private final SharedViewModel mSharedViewModel = SharedViewModel.getInstance();
+
     CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Inject
@@ -61,6 +62,7 @@ public class RecommendedFragment extends AppBaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         mDisposable.dispose();
     }
 
@@ -83,10 +85,10 @@ public class RecommendedFragment extends AppBaseFragment {
             mDetailAlbumViewModel.setSongs(songs);
             mSongListAdapter.updateSongs(songs.subList(0, 15));
             mMoreRecommendedViewModel.setSongs(songs);
-            mSharedViewModel.setupPlaylist(songs, DEFAULT.getValue());
-            mSharedViewModel.setupPlaylist(songs, RECOMMENDED.getValue());
+            SharedDataUtils.setupPlaylist(songs, DEFAULT.getValue());
+            SharedDataUtils.setupPlaylist(songs, RECOMMENDED.getValue());
             mBinding.progressRecommendedSong.setVisibility(View.GONE);
-            mSharedViewModel.setSongLoaded(true);
+            SharedDataUtils.setSongLoaded(true);
         });
     }
 
@@ -97,10 +99,8 @@ public class RecommendedFragment extends AppBaseFragment {
     }
 
     private void navigateToMoreRecommended() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreRecommendedFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections direction = HomeFragmentDirections.actionHomeFrToMoreRecommendedFr();
+        NavHostFragment.findNavController(this).navigate(direction);
     }
+
 }

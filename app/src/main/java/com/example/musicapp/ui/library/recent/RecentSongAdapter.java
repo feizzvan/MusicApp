@@ -44,7 +44,7 @@ public class RecentSongAdapter extends RecyclerView.Adapter<RecentSongAdapter.Vi
                 int width = constraintLayout.getMeasuredWidth();
                 int height = constraintLayout.getMeasuredHeight();
                 //Chuyển đổi từ dpi sang px bằng cách nhân với tỉ lệ dpi
-                int deltaX = (int)(48 * AppUtils.X_DPI / 160); //1 dp = 1 pixel trên màn hình có mật độ 160 dpi
+                int deltaX = (int) (48 * AppUtils.X_DPI / 160); //1 dp = 1 pixel trên màn hình có mật độ 160 dpi
                 binding.layoutItemSong.getLayoutParams().width = width - deltaX;
                 binding.layoutItemSong.getLayoutParams().height = height;
             }
@@ -86,11 +86,9 @@ public class RecentSongAdapter extends RecyclerView.Adapter<RecentSongAdapter.Vi
                     .into(mBinding.imgItemSongAvatar);
 
 //            mBinding.getRoot().setOnClickListener(view -> {
-//                Boolean isGranted = PermissionViewModel.getInstance()
-//                        .getPermissionGranted()
-//                        .getValue();
+//                Boolean isGranted = PermissionUtils.getPermissionGranted().getValue();
 //                if (isGranted == null || !isGranted) {
-//                    PermissionViewModel.getInstance().setPermissionAsked(true);
+//                    PermissionUtils.setPermissionAsked(true);
 //                }
 //                mSongItemClickListener.onSongItemClick(song, position);
 //            });

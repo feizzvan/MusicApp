@@ -1,14 +1,13 @@
 package com.example.musicapp.ui.discovery.artist.detail;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
@@ -28,7 +27,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class DetailArtistFragment extends AppBaseFragment {
-    public static final String EXTRA_ARTIST_ID = "extra_artist_id";
     private FragmentDetailArtistBinding mBinding;
     private DetailArtistViewModel mDetailArtistViewModel;
     private SongListAdapter mSongAdapter;
@@ -70,7 +68,7 @@ public class DetailArtistFragment extends AppBaseFragment {
                 new ViewModelProvider(requireActivity(), factory).get(DetailArtistViewModel.class);
 
         if (getArguments() != null) {
-            int artistId = getArguments().getInt(EXTRA_ARTIST_ID, -1);
+            int artistId = DetailArtistFragmentArgs.fromBundle(getArguments()).getArtistId();
             mDisposable.add(mDetailArtistViewModel.getArtistWithSongs(artistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

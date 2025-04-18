@@ -25,20 +25,24 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.song.Song;
+import com.example.musicapp.data.repository.song.SongRepository;
 import com.example.musicapp.databinding.ActivityNowPlayingBinding;
 import com.example.musicapp.service.MusicPlaybackService;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 import com.example.musicapp.utils.AppUtils;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class NowPlayingActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityNowPlayingBinding mBinding;
     private NowPlayingViewModel mNowPlayingViewModel;
-    private SharedViewModel mSharedViewModel;
     private MediaController mMediaController;
     private Player.Listener mPlayerListener;
     private Handler mHandler;
@@ -46,6 +50,9 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
     private Animator mAnimator;
     private ObjectAnimator mRotationAnimator;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    @Inject
+    SongRepository.Local localSongRepository;
 
     private final ServiceConnection mMusicServiceConnection = new ServiceConnection() {
         @Override
@@ -190,8 +197,8 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
                 new ViewModelProvider(this).get(OptionMenuViewModel.class);
         SongOptionMenuDialogFragment dialogFragment = SongOptionMenuDialogFragment.newInstance();
         Song song = null;
-        if (mSharedViewModel.getPlayingSong().getValue() != null) {
-            song = mSharedViewModel.getPlayingSong().getValue().getSong();
+        if (SharedDataUtils.getPlayingSong().getValue() != null) {
+            song = SharedDataUtils.getPlayingSong().getValue().getSong();
         }
         optionMenuViewModel.setSong(song);
         dialogFragment.show(getSupportFragmentManager(), SongOptionMenuDialogFragment.TAG);
@@ -200,8 +207,7 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
     private void setupViewModel() {
         mNowPlayingViewModel = new ViewModelProvider(this).get(NowPlayingViewModel.class);
 
-        mSharedViewModel = SharedViewModel.getInstance();
-        mSharedViewModel.getPlayingSong().observe(this, playingSong -> {
+        SharedDataUtils.getPlayingSong().observe(this, playingSong -> {
             if (playingSong != null) {
                 Song song = playingSong.getSong();
                 showSongInfo(song);
@@ -365,16 +371,16 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void setupActionFavorite() {
-        PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
         Song song = null;
         if (playingSong != null) {
             song = playingSong.getSong();
         }
         if (song != null) {
             song.setFavorite(!song.isFavorite());
-            mSharedViewModel.getPlayingSong().getValue().setSong(song);
+            SharedDataUtils.getPlayingSong().getValue().setSong(song);
             showFavoriteMode(song.isFavorite());
-            mDisposable.add(mSharedViewModel.updateSongInDB(song)
+            mDisposable.add(SharedDataUtils.updateSongFavoriteStatus(song, localSongRepository)
                     .subscribeOn(Schedulers.io())
                     .subscribe());
         }

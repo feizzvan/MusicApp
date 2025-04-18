@@ -6,17 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentArtistBinding;
-import com.example.musicapp.ui.discovery.artist.detail.DetailArtistFragment;
-import com.example.musicapp.ui.discovery.artist.more.MoreArtistFragment;
+import com.example.musicapp.ui.discovery.DiscoveryFragmentDirections;
 import com.example.musicapp.ui.discovery.artist.more.MoreArtistViewModel;
 
 import java.util.ArrayList;
@@ -114,21 +114,14 @@ public class ArtistFragment extends Fragment {
     }
 
     private void navigateToDetailArtist(Artist artist) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(DetailArtistFragment.EXTRA_ARTIST_ID, artist.getId());
-
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, DetailArtistFragment.class, bundle)
-                .addToBackStack(null)
-                .commit();
+        DiscoveryFragmentDirections.ActionDiscoveryFrToDetailArtistFr action =
+                DiscoveryFragmentDirections.actionDiscoveryFrToDetailArtistFr();
+        action.setArtistId(artist.getId());
+        NavHostFragment.findNavController(this).navigate(action);
     }
 
     private void navigateToMoreArtist() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreArtistFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections directions = DiscoveryFragmentDirections.actionDiscoveryFrToMoreArtistFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 }

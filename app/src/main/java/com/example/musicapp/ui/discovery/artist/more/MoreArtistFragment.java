@@ -7,16 +7,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.databinding.FragmentMoreArtistBinding;
 import com.example.musicapp.ui.discovery.artist.ArtistAdapter;
-import com.example.musicapp.ui.discovery.artist.detail.DetailArtistFragment;
 
 public class MoreArtistFragment extends Fragment {
     private FragmentMoreArtistBinding mBinding;
@@ -51,13 +50,9 @@ public class MoreArtistFragment extends Fragment {
     }
 
     private void navigateToDetailArtist(Artist artist) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(DetailArtistFragment.EXTRA_ARTIST_ID, artist.getId());
-
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, DetailArtistFragment.class, bundle)
-                .addToBackStack(null)
-                .commit();
+        MoreArtistFragmentDirections.ActionMoreArtistFrToDetailArtistFr action
+                = MoreArtistFragmentDirections.actionMoreArtistFrToDetailArtistFr();
+        action.setArtistId(artist.getId());
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

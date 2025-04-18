@@ -11,28 +11,24 @@ import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;
 import com.example.musicapp.ui.playing.NowPlayingActivity;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 public class AppBaseFragment extends Fragment {
 
     protected void showAndPlay(Song song, int index, String playlistName) {
-//        Boolean isPermissionGranted = PermissionViewModel.getInstance()
-//                .getPermissionGranted()
-//                .getValue();
+//        Boolean isPermissionGranted = PermissionUtils.getPermissionGranted().getValue();
 //        if (isPermissionGranted != null && isPermissionGranted) {
 //            doNavigate(index, playlistName);
-//        } else if (!PermissionViewModel.isRegistered) {
-//            PermissionViewModel.getInstance()
-//                    .getPermissionGranted()
-//                    .observe(requireActivity(), isGranted -> {
+//        } else if (!PermissionUtils.isRegistered) {
+//            PermissionUtils.getPermissionGranted().observe(requireActivity(), isGranted -> {
 //                        if (isGranted) {
 //                            doNavigate(index, playlistName);
 //                        }
 //                    });
-//            PermissionViewModel.isRegistered = true;
+//            PermissionUtils.isRegistered = true;
 //        }
 
-        doNavigate(index, playlistName);
+        doNavigate(index, playlistName); //Bỏ comment phía trên thì xoá dòng này
     }
 
     protected void showOptionMenu(Song song) {
@@ -44,15 +40,13 @@ public class AppBaseFragment extends Fragment {
     }
 
     private void doNavigate(int index, String playlistName) {
-        SharedViewModel.getInstance().setCurrentPlaylist(playlistName);
-        SharedViewModel.getInstance().setIndexToPlay(index);
+        SharedDataUtils.setCurrentPlaylist(playlistName);
+        SharedDataUtils.setIndexToPlay(index);
 
         Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
-//        intent.putExtra(AppUtils.EXTRA_CURRENT_FRACTION, mRotationAnimator.getAnimatedFraction());
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeCustomAnimation(requireContext(), R.anim.slide_up, R.anim.fade_out);
-//        nowPlayingActivityLauncher.launch(intent, options);
         requireContext().startActivity(intent, options.toBundle());
     }
 }

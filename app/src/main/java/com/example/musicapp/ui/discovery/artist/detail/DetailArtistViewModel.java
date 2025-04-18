@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.musicapp.data.model.artist.ArtistWithSongs;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.repository.artist.ArtistRepository;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import javax.inject.Inject;
 
@@ -43,7 +43,7 @@ public class DetailArtistViewModel extends ViewModel {
         if (artistWithSongs != null) {
             Playlist playlist = new Playlist(-1, artistWithSongs.artist.getName());
             playlist.updateSongs(artistWithSongs.songs);
-            SharedViewModel.getInstance().addPlaylist(playlist);
+            SharedDataUtils.addPlaylist(playlist);
             return playlist;
         }
         return null;

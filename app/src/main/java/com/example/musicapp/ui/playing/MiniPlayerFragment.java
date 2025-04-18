@@ -32,15 +32,20 @@ import com.example.musicapp.R;
 import com.example.musicapp.data.model.PlayingSong;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.song.Song;
+import com.example.musicapp.data.repository.song.SongRepository;
 import com.example.musicapp.databinding.FragmentMiniPlayerBinding;
 import com.example.musicapp.service.MusicPlaybackService;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 import com.example.musicapp.utils.AppUtils;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class MiniPlayerFragment extends Fragment implements View.OnClickListener {
     private FragmentMiniPlayerBinding mBinding;
     private MiniPlayerViewModel mMiniPlayerViewModel;
@@ -50,9 +55,11 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     private Player.Listener mPlayerListener;
     private Animator mAnimator;
     private ObjectAnimator mRotationAnimator;
-    private SharedViewModel mSharedViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     private float currentFraction = 0f; //Lưu tỷ lệ hoàn thành của animation xoay
+
+    @Inject
+    SongRepository.Local localSongRepository;
 
     private final ActivityResultLauncher<Intent> nowPlayingActivityLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -77,6 +84,8 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
                 if (isInitialized) {
                     if (mMediaController == null) {
                         mMediaController = binder.getMediaController();
+                        setupViewModel();
+
                         setMediaController(mMediaController);
                         setupObserveControllerData();
                     }
@@ -101,7 +110,6 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setupViewModel();
         setupAnimator();
         setupListener();
     }
@@ -132,13 +140,12 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     }
 
     private void setupViewModel() {
-        mSharedViewModel = SharedViewModel.getInstance();
         mMiniPlayerViewModel = MiniPlayerViewModel.getInstance();
 
         // Lấy danh sách bài hát hiện tại từ SharedViewModel
         //Nếu MiniPlayer đang trống hoặc danh sách bài trong playlist mới khác với danh sách hiện tại, thì cập nhật MiniPlayer.
-        mSharedViewModel.getCurrentPlaylist().observe(getViewLifecycleOwner(), playlist -> {
-            PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+        SharedDataUtils.getCurrentPlaylist().observe(getViewLifecycleOwner(), playlist -> {
+            PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
             Playlist currentPlaylist = null;
             if (playingSong != null) {
                 currentPlaylist = playingSong.getPlaylist();
@@ -153,7 +160,7 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         });
 
         // Quan sát bài hát đang phát để hiển thị thông tin bài hát
-        mSharedViewModel.getPlayingSong().observe(getViewLifecycleOwner(), playingSong -> {
+        SharedDataUtils.getPlayingSong().observe(getViewLifecycleOwner(), playingSong -> {
             Song song = playingSong.getSong();
             showSongInfo(song);
         });
@@ -217,11 +224,11 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     }
 
     private void setupFavorite() {
-        PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
         if (playingSong != null) {
             Song song = playingSong.getSong();
             song.setFavorite(!song.isFavorite());
-            mDisposable.add(mSharedViewModel.updateSongFavoriteStatus(song)
+            mDisposable.add(SharedDataUtils.updateSongFavoriteStatus(song, localSongRepository)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> updateFavoriteStatus(song)));
@@ -292,13 +299,13 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         });
 
         // Quan sát index bài hát để phát bài hát tương ứng trong danh sách bài hát hiện tại của MediaController
-        mSharedViewModel.getIndexToPlay().observe(getViewLifecycleOwner(), index -> {
-            PlayingSong playingSong = mSharedViewModel.getPlayingSong().getValue();
+        SharedDataUtils.getIndexToPlay().observe(getViewLifecycleOwner(), index -> {
+            PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
             Playlist currentPlaylist = null;
             if (playingSong != null) {
                 currentPlaylist = playingSong.getPlaylist();
             }
-            Playlist playlist = mSharedViewModel.getCurrentPlaylist().getValue();
+            Playlist playlist = SharedDataUtils.getCurrentPlaylist().getValue();
             //TH1: cùng playlist, cùng index => KHÔNG phát lại mà tiếp tục
             //TH2: khác playlist, cùng index => PHÁT từ đầu bài hát
             if (mMediaController != null && index > -1) {

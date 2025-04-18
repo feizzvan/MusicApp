@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.example.musicapp.databinding.FragmentMoreMostHeardBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import java.util.ArrayList;
 
@@ -79,7 +79,7 @@ public class MoreMostHeardFragment extends AppBaseFragment {
                 .subscribe(songs -> {
                     mAdapter.updateSongs(songs);
                     mMoreMostHeardViewModel.setSongs(songs);
-                    SharedViewModel.getInstance().setupPlaylist(songs, MOST_HEARD.getValue());
+                    SharedDataUtils.setupPlaylist(songs, MOST_HEARD.getValue());
                 }, t -> {
                     mAdapter.updateSongs(new ArrayList<>());
                     mMoreMostHeardViewModel.setSongs(new ArrayList<>());

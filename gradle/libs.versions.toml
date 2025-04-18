@@ -11,8 +11,7 @@ constraintlayout = "2.1.4"
 legacySupportV4 = "1.0.0"
 lifecycleLivedataKtx = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
-navigationFragment = "2.8.1"
-navigationUi = "2.8.1"
+navigation = "2.8.1"
 
 #custom
 gson = "2.10.1"
@@ -39,8 +38,10 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
+navigation-runtime = { group = "androidx.navigation", name = "navigation-runtime", version.ref = "navigation" }
+navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 
 #custom
 gson-di = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
@@ -67,4 +68,5 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 android-application = { id = "com.android.application", version.ref = "agp" }
 room = { id = "androidx.room", version.ref = "room" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+safeArgs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
 

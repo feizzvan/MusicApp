@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.example.musicapp.databinding.FragmentMoreForYouBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import java.util.ArrayList;
 
@@ -81,7 +81,7 @@ public class MoreForYouFragment extends AppBaseFragment {
                 .subscribe(songs -> {
                     mAdapter.updateSongs(songs);
                     mMoreForYouViewModel.setSongs(songs);
-                    SharedViewModel.getInstance().setupPlaylist(songs, FOR_YOU.getValue());
+                    SharedDataUtils.setupPlaylist(songs, FOR_YOU.getValue());
                 }, throwable -> mMoreForYouViewModel.setSongs(new ArrayList<>()))
         );
     }

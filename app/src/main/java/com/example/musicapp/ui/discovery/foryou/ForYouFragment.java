@@ -8,17 +8,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.databinding.FragmentForYouBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.discovery.foryou.more.MoreForYouFragment;
+import com.example.musicapp.ui.discovery.DiscoveryFragmentDirections;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import java.util.ArrayList;
 
@@ -83,16 +84,13 @@ public class ForYouFragment extends AppBaseFragment {
                 .subscribe(songs -> {
                     mAdapter.updateSongs(songs);
                     mForYouViewModel.setSongs(songs);
-                    SharedViewModel.getInstance().setupPlaylist(songs, FOR_YOU.getValue());
+                    SharedDataUtils.setupPlaylist(songs, FOR_YOU.getValue());
                 }, throwable -> mForYouViewModel.setSongs(new ArrayList<>()))
         );
     }
 
     private void navigateToMoreForYou() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreForYouFragment.class, null)
-                .addToBackStack(null)
-                .commit();
+        NavDirections directions = DiscoveryFragmentDirections.actionDiscoveryFrToMoreForYouFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 }

@@ -8,17 +8,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentFavoriteBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.ui.library.favorite.more.MoreFavoriteFragment;
+import com.example.musicapp.ui.library.LibraryFragmentDirections;
 import com.example.musicapp.ui.library.favorite.more.MoreFavoriteViewModel;
 
 import java.util.ArrayList;
@@ -63,14 +64,6 @@ public class FavoriteFragment extends AppBaseFragment {
         mBinding.btnMoreFavorite.setOnClickListener(view -> navigateToMoreFavorite());
     }
 
-    private void navigateToMoreFavorite() {
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, MoreFavoriteFragment.class, null)
-                .addToBackStack(null)
-                .commit();
-    }
-
     private void setupViewModel() {
         FavoriteViewModel favoriteViewModel =
                 new ViewModelProvider(requireActivity()).get(FavoriteViewModel.class);
@@ -88,5 +81,10 @@ public class FavoriteFragment extends AppBaseFragment {
                 }
             mAdapter.updateSongs(subList);
         });
+    }
+
+    private void navigateToMoreFavorite() {
+        NavDirections directions = LibraryFragmentDirections.actionLibraryFrToMoreFavoriteFr();
+        NavHostFragment.findNavController(this).navigate(directions);
     }
 }

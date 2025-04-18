@@ -19,7 +19,7 @@ import com.example.musicapp.databinding.FragmentLibraryBinding;
 import com.example.musicapp.ui.library.favorite.FavoriteViewModel;
 import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.example.musicapp.ui.library.recent.RecentSongViewModel;
-import com.example.musicapp.ui.viewmodel.SharedViewModel;
+import com.example.musicapp.utils.SharedDataUtils;
 
 import javax.inject.Inject;
 
@@ -36,7 +36,6 @@ public class LibraryFragment extends Fragment {
     private RecentSongViewModel mRecentSongViewModel;
     private FavoriteViewModel mFavoriteViewModel;
     private PlaylistViewModel mPlaylistViewModel;
-    private SharedViewModel mSharedViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Inject
@@ -68,6 +67,8 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        // Lưu trữ vị trí cuộn của ScrollView
         int scrollY = mBinding.scrollViewLibrary.getScrollY();
         outState.putInt(SCROLL_POSITION, scrollY);
     }
@@ -75,6 +76,7 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         mBinding = null;
     }
 
@@ -87,7 +89,6 @@ public class LibraryFragment extends Fragment {
     private void setupViewModel() {
         mLibraryViewModel =
                 new ViewModelProvider(requireActivity(), libraryFactory).get(LibraryViewModel.class);
-        mSharedViewModel = SharedViewModel.getInstance();
         mRecentSongViewModel =
                 new ViewModelProvider(requireActivity()).get(RecentSongViewModel.class);
         mFavoriteViewModel = new ViewModelProvider(requireActivity()).get(FavoriteViewModel.class);
@@ -96,11 +97,11 @@ public class LibraryFragment extends Fragment {
 
         mLibraryViewModel.getFavoriteSongs().observe(getViewLifecycleOwner(), songs -> {
             mFavoriteViewModel.setFavoriteSongs(songs);
-            mSharedViewModel.setupPlaylist(songs, FAVOURITE.getValue());
+            SharedDataUtils.setupPlaylist(songs, FAVOURITE.getValue());
         });
         mLibraryViewModel.getRecentSongs().observe(getViewLifecycleOwner(), songs -> {
             mRecentSongViewModel.setRecentSongs(songs);
-            mSharedViewModel.setupPlaylist(songs, RECENT.getValue());
+            SharedDataUtils.setupPlaylist(songs, RECENT.getValue());
         });
     }
 
