@@ -21,4 +21,19 @@
     <style name="ButtonBackgroundTheme">
         <item name="android:backgroundTint">?android:colorBackground</item>
     </style>
+
+    <style name="SearchViewStyle" parent="Widget.Material3.SearchView">
+        <item name="android:searchIcon">@drawable/ic_search_while</item>
+        <item name="android:searchHintIcon">@drawable/ic_search_while</item>
+        <item name="android:closeIcon">@drawable/ic_close</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+    </style>
+
+    <style name="SearchKeyStyle">
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
 </resources>

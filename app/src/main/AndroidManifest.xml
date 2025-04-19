@@ -26,7 +26,7 @@
         <activity
             android:name=".ui.playing.NowPlayingActivity"
             android:exported="false"
-            android:label=""
+            android:label=" "
             android:launchMode="singleTop" />
 
         <service

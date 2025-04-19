@@ -72,4 +72,12 @@
     <string name="theme_header">Theme</string>
     <string name="language_title">Application language</string>
     <string name="dark_mode_title">Dark mode</string>
+    <string name="search_hint">Song name, artist...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="key_history">Searched key</string>
+    <string name="title_history_searched_keys">History searched keys</string>
+    <string name="action_clear_all">Clear all</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_history_searched_songs">History searched songs</string>
 </resources>
