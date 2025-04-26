@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MusicApp</string>
+    <string name="app_name">Music App</string>
     <string name="title_home">Home</string>
     <string name="title_library">Library</string>
     <string name="title_discovery">Discovery</string>
@@ -72,12 +72,12 @@
     <string name="theme_header">Theme</string>
     <string name="language_title">Application language</string>
     <string name="dark_mode_title">Dark mode</string>
-    <string name="search_hint">Song name, artist...</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="search_hint">Song name, artist…</string>
     <string name="key_history">Searched key</string>
     <string name="title_history_searched_keys">History searched keys</string>
     <string name="action_clear_all">Clear all</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_history_searched_songs">History searched songs</string>
+    <string name="confirm_delete_title">Delete confirm</string>
+    <string name="message_confirm_clear_history_searched_key">Are you sure to delete all history searched keys?</string>
+    <string name="message_confirm_clear_history_searched_songs">Are you sure to delete all history searched songs?</string>
 </resources>

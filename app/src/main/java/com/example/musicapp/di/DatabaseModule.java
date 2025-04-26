@@ -9,6 +9,7 @@ import com.example.musicapp.data.source.local.AppDatabase;
 import com.example.musicapp.data.source.local.artist.ArtistDAO;
 import com.example.musicapp.data.source.local.playlist.PlaylistDAO;
 import com.example.musicapp.data.source.local.recent.RecentSongDAO;
+import com.example.musicapp.data.source.local.searching.SearchingDAO;
 import com.example.musicapp.data.source.local.song.SongDAO;
 
 import javax.inject.Singleton;
@@ -54,5 +55,10 @@ public class DatabaseModule {
     @Provides
     public AlbumDAO provideAlbumDAO(AppDatabase appDatabase) {
         return appDatabase.albumDAO();
+    }
+
+    @Provides
+    public SearchingDAO provideSearchingDAO(AppDatabase appDatabase) {
+        return appDatabase.searchingDAO();
     }
 }

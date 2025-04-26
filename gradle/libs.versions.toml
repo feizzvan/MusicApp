@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2"
 core = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -24,7 +24,7 @@ rxAndroid = "3.0.2"
 preference = "1.2.1"
 
 recyclerview = "1.4.0"
-daggerHilt = "2.48"
+daggerHilt = "2.55"
 
 [libraries]
 core = { module = "androidx.core:core", version.ref = "core" }

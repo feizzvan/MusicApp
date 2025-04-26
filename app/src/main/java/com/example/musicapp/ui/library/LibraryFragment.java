@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.example.musicapp.databinding.FragmentLibraryBinding;
 import com.example.musicapp.ui.library.favorite.FavoriteViewModel;
 import com.example.musicapp.ui.library.playlist.PlaylistViewModel;
 import com.example.musicapp.ui.library.recent.RecentSongViewModel;
+import com.example.musicapp.ui.searching.SearchingFragmentDirections;
 import com.example.musicapp.utils.SharedDataUtils;
 
 import javax.inject.Inject;
@@ -60,6 +63,7 @@ public class LibraryFragment extends Fragment {
             mBinding.scrollViewLibrary.post(() -> mBinding.scrollViewLibrary.scrollTo(0, scrollY));
         }
 
+        setupView();
         setupViewModel();
         setupObserver();
     }
@@ -84,6 +88,13 @@ public class LibraryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mDisposable.clear();
+    }
+
+    private void setupView() {
+        mBinding.btnLibrarySearch.setOnClickListener(view -> {
+            NavDirections directions = SearchingFragmentDirections.actionGlobalFrSearching();
+            NavHostFragment.findNavController(this).navigate(directions);
+        });
     }
 
     private void setupViewModel() {

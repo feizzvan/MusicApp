@@ -9,7 +9,7 @@
         android:id="@+id/nav_home"
         android:name="com.example.musicapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFr_to_moreRecommendedFr"
             app:destination="@id/moreRecommendedFragment"
@@ -39,7 +39,7 @@
         android:id="@+id/nav_library"
         android:name="com.example.musicapp.ui.library.LibraryFragment"
         android:label="@string/title_library"
-        tools:layout="@layout/fragment_library" >
+        tools:layout="@layout/fragment_library">
         <action
             android:id="@+id/action_libraryFr_to_moreFavoriteFr"
             app:destination="@id/moreFavoriteFragment"
@@ -76,7 +76,7 @@
         android:id="@+id/nav_discovery"
         android:name="com.example.musicapp.ui.discovery.DiscoveryFragment"
         android:label="@string/title_discovery"
-        tools:layout="@layout/fragment_discovery" >
+        tools:layout="@layout/fragment_discovery">
         <action
             android:id="@+id/action_discoveryFr_to_moreArtistFr"
             app:destination="@id/moreArtistFragment"
@@ -119,7 +119,7 @@
         android:id="@+id/moreAlbumFragment"
         android:name="com.example.musicapp.ui.home.album.more.MoreAlbumFragment"
         android:label="fragment_more_album"
-        tools:layout="@layout/fragment_more_album" >
+        tools:layout="@layout/fragment_more_album">
         <action
             android:id="@+id/action_moreAlbumFr_to_detailAlbumFr"
             app:destination="@id/detailAlbumFragment"
@@ -153,7 +153,7 @@
         android:id="@+id/morePlaylistFragment"
         android:name="com.example.musicapp.ui.library.playlist.more.MorePlaylistFragment"
         android:label="fragment_more_playlist"
-        tools:layout="@layout/fragment_more_playlist" >
+        tools:layout="@layout/fragment_more_playlist">
         <action
             android:id="@+id/action_morePlaylistFr_to_playlistDetailFr"
             app:destination="@id/playlistDetailFragment"
@@ -172,7 +172,7 @@
         android:id="@+id/detailArtistFragment"
         android:name="com.example.musicapp.ui.discovery.artist.detail.DetailArtistFragment"
         android:label="fragment_detail_artist"
-        tools:layout="@layout/fragment_detail_artist" >
+        tools:layout="@layout/fragment_detail_artist">
         <argument
             android:name="artistId"
             app:argType="integer"
@@ -187,7 +187,7 @@
         android:id="@+id/moreArtistFragment"
         android:name="com.example.musicapp.ui.discovery.artist.more.MoreArtistFragment"
         android:label="fragment_more_artist"
-        tools:layout="@layout/fragment_more_artist" >
+        tools:layout="@layout/fragment_more_artist">
         <action
             android:id="@+id/action_moreArtistFr_to_detailArtistFr"
             app:destination="@id/detailArtistFragment"
@@ -202,7 +202,8 @@
         android:name="com.example.musicapp.ui.discovery.foryou.more.MoreForYouFragment"
         android:label="fragment_more_for_you"
         tools:layout="@layout/fragment_more_for_you" />
-    <navigation android:id="@+id/nav_now_playing"
+    <navigation
+        android:id="@+id/nav_now_playing"
         app:startDestination="@id/nowPlayingActivity">
         <activity
             android:id="@+id/nowPlayingActivity"
@@ -217,4 +218,16 @@
         app:exitAnim="@anim/slide_down"
         app:popEnterAnim="@anim/slide_up"
         app:popExitAnim="@anim/slide_down" />
+    <fragment
+        android:id="@+id/fr_searching"
+        android:name="com.example.musicapp.ui.searching.SearchingFragment"
+        android:label="fragment_searching"
+        tools:layout="@layout/fragment_searching" />
+    <action
+        android:id="@+id/action_global_fr_searching"
+        app:destination="@id/fr_searching"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
 </navigation>

@@ -2,6 +2,8 @@ package com.example.musicapp.ui.playing;
 
 import static android.app.Activity.RESULT_OK;
 
+import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.SEARCHED;
+
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
@@ -154,7 +156,8 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
                     || playlist != null && playlist.getMediaItems() != null
                     && !playlist.getMediaItems().isEmpty()
                     && (currentPlaylist == null || currentPlaylist.getId() != playlist.getId()
-                    || playlist.getMediaItems().size() != mMediaController.getMediaItemCount()))) {
+                    || playlist.getMediaItems().size() != mMediaController.getMediaItemCount()))
+                    || (playlist != null && playlist.getName().compareTo(SEARCHED.getValue()) == 0)) {
                 mMiniPlayerViewModel.setMediaItems(playlist.getMediaItems());
             }
         });
@@ -314,7 +317,9 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
                 Boolean condition2 = playlist != null && currentPlaylist != null
                         && mMediaController.getCurrentMediaItemIndex() == index
                         && playlist.getId() != currentPlaylist.getId();
-                if (condition1 || condition2) {
+                Boolean condition3 = playlist != null
+                        && playlist.getName().compareTo(SEARCHED.getValue()) == 0;
+                if (condition1 || condition2 || condition3) {
                     mMediaController.seekTo(index, 0);
                     mMediaController.prepare();
                 }

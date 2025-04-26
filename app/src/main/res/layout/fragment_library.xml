@@ -23,17 +23,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_library_search"
+        <androidx.cardview.widget.CardView
             android:layout_width="@dimen/button_size_48dp"
             android:layout_height="@dimen/button_size_48dp"
+            android:layout_gravity="end"
             android:layout_marginEnd="@dimen/margin_8dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_search"
+            android:background="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="@dimen/card_corner_radius_24dp"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/text_title_library"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/text_title_library"
-            tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            app:layout_constraintTop_toTopOf="@+id/text_title_library">
+
+            <ImageButton
+                android:id="@+id/btn_library_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_search"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_recent_song"

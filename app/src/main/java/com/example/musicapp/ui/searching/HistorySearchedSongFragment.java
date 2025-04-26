@@ -1,67 +1,97 @@
 package com.example.musicapp.ui.searching;
 
+import static com.example.musicapp.utils.AppUtils.DefaultPlaylistName.SEARCHED;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.musicapp.R;
+import com.example.musicapp.databinding.FragmentHistorySearchedSongBinding;
+import com.example.musicapp.ui.AppBaseFragment;
+import com.example.musicapp.ui.dialog.ConfirmationDialogFragment;
+import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.utils.SharedDataUtils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HistorySearchedSongFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
-public class HistorySearchedSongFragment extends Fragment {
+import javax.inject.Inject;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+@AndroidEntryPoint
+public class HistorySearchedSongFragment extends AppBaseFragment {
+    private FragmentHistorySearchedSongBinding mBinding;
+    private SongListAdapter mAdapter;
+    private SearchingViewModel mSearchingViewModel;
+    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
-    public HistorySearchedSongFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HistorySearchedSongFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HistorySearchedSongFragment newInstance(String param1, String param2) {
-        HistorySearchedSongFragment fragment = new HistorySearchedSongFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    @Inject
+    SearchingViewModel.Factory mViewModelFactory;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history_searched_song, container, false);
+        mBinding = FragmentHistorySearchedSongBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setupView();
+        setupViewModel();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDisposable.dispose();
+    }
+
+    private void setupView() {
+        mAdapter = new SongListAdapter(
+                (song, index) -> {
+                    mBinding.getRoot().requestFocus();
+                    String playlistName = SEARCHED.getValue();
+                    showAndPlay(song, index, playlistName);
+                }, this::showOptionMenu
+        );
+        mBinding.rvHistorySearchedSong.setAdapter(mAdapter);
+
+        mBinding.actionClearAllHistorySearchedSong.setOnClickListener(view -> {
+            int messageId = R.string.message_confirm_clear_history_searched_songs;
+            ConfirmationDialogFragment dialog = new ConfirmationDialogFragment(messageId, isConfirmed -> {
+                if (isConfirmed) {
+                    mDisposable.add(mSearchingViewModel.clearAllSongs()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe());
+                }
+            });
+
+            dialog.show(requireActivity().getSupportFragmentManager(), ConfirmationDialogFragment.TAG);
+        });
+    }
+
+    private void setupViewModel() {
+        mSearchingViewModel = new ViewModelProvider(requireActivity(), mViewModelFactory)
+                .get(SearchingViewModel.class);
+        mDisposable.add(mSearchingViewModel.getHistorySearchedSongs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(song -> {
+                    mAdapter.updateSongs(song);
+                    SharedDataUtils.setupPlaylist(song, SEARCHED.getValue());
+                }, throwable -> {
+
+                }));
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MusicApp</string>
+    <string name="app_name">Music App</string>
     <string name="title_home">Trang chủ</string>
     <string name="title_library">Thư viện</string>
     <string name="title_discovery">Khám phá</string>
@@ -74,4 +74,12 @@
     <string name="theme_header">Giao diện</string>
     <string name="language_title">Ngôn ngữ của ứng dụng</string>
     <string name="dark_mode_title">Chế độ tối</string>
+    <string name="search_hint">Tìm kiếm bài hát, nghệ sĩ…</string>
+    <string name="key_history">Các từ khóa đã tìm kiếm</string>
+    <string name="title_history_searched_keys">Các từ khóa đã tìm kiếm</string>
+    <string name="action_clear_all">Xóa bỏ</string>
+    <string name="title_history_searched_songs">Các bài hát đã tìm kiếm</string>
+    <string name="confirm_delete_title">Xác nhận xóa</string>
+    <string name="message_confirm_clear_history_searched_key">Bạn có chắc chắn muốn xóa bỏ tất cả các từ khóa đã tìm kiếm không?</string>
+    <string name="message_confirm_clear_history_searched_songs">Bạn có chắc chắn muốn xóa bỏ tất cả các bài hát đã tìm kiếm không?</string>
 </resources>

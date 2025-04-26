@@ -12,12 +12,15 @@ import androidx.room.migration.AutoMigrationSpec;
 import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.data.model.artist.Artist;
 import com.example.musicapp.data.model.artist.ArtistSongCrossRef;
+import com.example.musicapp.data.model.history.HistorySearchedKey;
+import com.example.musicapp.data.model.history.HistorySearchedSong;
 import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.RecentSong;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.data.model.playlist.PlaylistSongCrossRef;
 import com.example.musicapp.data.source.local.playlist.PlaylistDAO;
 import com.example.musicapp.data.source.local.recent.RecentSongDAO;
+import com.example.musicapp.data.source.local.searching.SearchingDAO;
 import com.example.musicapp.data.source.local.song.SongDAO;
 import com.example.musicapp.data.source.local.artist.ArtistDAO;
 
@@ -30,14 +33,16 @@ import com.example.musicapp.data.source.local.artist.ArtistDAO;
                 RecentSong.class,
                 PlaylistSongCrossRef.class,
                 Artist.class,
-                ArtistSongCrossRef.class
+                ArtistSongCrossRef.class,
+                HistorySearchedKey.class,
+                HistorySearchedSong.class
         },
-        version = 4,
+        version = 6,
         exportSchema = true,
         autoMigrations = {
                 @AutoMigration(
-                        from = 3,
-                        to = 4,
+                        from = 5,
+                        to = 6,
                         spec = AppDatabase.DbMigrationSpec.class)
         }
 )
@@ -67,6 +72,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AlbumDAO albumDAO();
 
     public abstract ArtistDAO artistDAO();
+
+    public abstract SearchingDAO searchingDAO();
 
     static class DbMigrationSpec implements AutoMigrationSpec {
 

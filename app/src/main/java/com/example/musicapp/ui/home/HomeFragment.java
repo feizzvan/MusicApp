@@ -5,12 +5,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.musicapp.databinding.FragmentHomeBinding;
+import com.example.musicapp.ui.searching.SearchingFragmentDirections;
 
 public class HomeFragment extends Fragment {
     public static final String SCROLL_POSITION = "com.example.musicapp.ui.home.SCROLL_POSITION";
@@ -33,6 +36,11 @@ public class HomeFragment extends Fragment {
 //            Nếu gọi scrollTo() ngay lập tức, có thể ScrollView chưa kịp đo kích thước và layout → cuộn không đúng.
             mBinding.scrollViewHome.post(() -> mBinding.scrollViewHome.scrollTo(0, scrollY));
         }
+
+        mBinding.btnHomeSearch.setOnClickListener(view1 -> {
+            NavDirections directions = SearchingFragmentDirections.actionGlobalFrSearching();
+            NavHostFragment.findNavController(this).navigate(directions);
+        });
     }
 
     @Override

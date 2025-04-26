@@ -11,22 +11,23 @@ import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.ui.dialog.OptionMenuViewModel;
 import com.example.musicapp.ui.dialog.SongOptionMenuDialogFragment;
 import com.example.musicapp.ui.playing.NowPlayingActivity;
+import com.example.musicapp.utils.PermissionUtils;
 import com.example.musicapp.utils.SharedDataUtils;
 
 public class AppBaseFragment extends Fragment {
 
     protected void showAndPlay(Song song, int index, String playlistName) {
-//        Boolean isPermissionGranted = PermissionUtils.getPermissionGranted().getValue();
-//        if (isPermissionGranted != null && isPermissionGranted) {
-//            doNavigate(index, playlistName);
-//        } else if (!PermissionUtils.isRegistered) {
-//            PermissionUtils.getPermissionGranted().observe(requireActivity(), isGranted -> {
-//                        if (isGranted) {
-//                            doNavigate(index, playlistName);
-//                        }
-//                    });
-//            PermissionUtils.isRegistered = true;
-//        }
+        Boolean isPermissionGranted = PermissionUtils.getPermissionGranted().getValue();
+        if (isPermissionGranted != null && isPermissionGranted) {
+            doNavigate(index, playlistName);
+        } else if (!PermissionUtils.isRegistered) {
+            PermissionUtils.getPermissionGranted().observe(requireActivity(), isGranted -> {
+                        if (isGranted) {
+                            doNavigate(index, playlistName);
+                        }
+                    });
+            PermissionUtils.isRegistered = true;
+        }
 
         doNavigate(index, playlistName); //Bỏ comment phía trên thì xoá dòng này
     }

@@ -13,14 +13,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_history_search_key" />
+        tools:layout="@layout/fragment_history_searched_key" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcv_history_searched_songs"
         android:name="com.example.musicapp.ui.searching.HistorySearchedSongFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/margin_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
