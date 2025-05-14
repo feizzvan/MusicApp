@@ -80,4 +80,29 @@
     <string name="confirm_delete_title">Delete confirm</string>
     <string name="message_confirm_clear_history_searched_key">Are you sure to delete all history searched keys?</string>
     <string name="message_confirm_clear_history_searched_songs">Are you sure to delete all history searched songs?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_welcome">Welcome Back</string>
+    <string name="title_login_to_your_account">Login to your account</string>
+    <string name="text_hint_email">Email</string>
+    <string name="text_hint_password">Password</string>
+    <string name="action_forgot_password">Forgot Password</string>
+    <string name="text_login">Login</string>
+    <string name="text_or_continue_with">Or continue with</string>
+    <string name="action_forward_to_register">Don\'t have an account? Sign Up</string>
+    <string name="text_forgot_password">Forgot Password?</string>
+    <string name="text_enter_your_email_address_to_recover_reset_your_password">Enter your email address to recover/reset your password</string>
+    <string name="text_hint_email_address">Email Address</string>
+    <string name="text_reset_password">Reset Password</string>
+    <string name="action_back_to_login">Back to Login</string>
+    <string name="text_create_account">Create account</string>
+    <string name="text_create_your_account">Create your account</string>
+    <string name="text_hint_full_name">Full Name</string>
+    <string name="text_hint_confirm_password">Confirm Password</string>
+    <string name="action_forward_to_login">Already have an account? Login</string>
+    <string name="text_register">Register</string>
+    <string name="text_please_fill_in_all_information">Please fill in all information</string>
+    <string name="text_login_successful">Login successful</string>
+    <string name="text_please_check_your_login_information_again">Please check your login information again.</string>
+    <string name="text_network_error">Network error</string>
 </resources>

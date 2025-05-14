@@ -8,7 +8,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class RetrofitHelper {
     public static AppService getInstance() {
-        String baseUrl = "https://thantrieu.com";
+        //http://localhost:8080/api/v1
+        //String baseUrl = "https://thantrieu.com";
+        String baseUrl = "http://localhost:8080/api/v1";
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
