@@ -27,11 +27,6 @@ import retrofit2.Response;
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding mBinding;
 
-    private AppService appService;
-
-    public LoginFragment() {
-
-    }
 
     @Nullable
     @Override
@@ -67,7 +62,7 @@ public class LoginFragment extends Fragment {
 
         LoginRequest request = new LoginRequest(email, password);
 
-        appService.login(request).enqueue(new Callback<AuthenticationResponse>() {
+        AppService.apiService.login(request).enqueue(new Callback<AuthenticationResponse>() {
             @Override
             public void onResponse(Call<AuthenticationResponse> call, Response<AuthenticationResponse> response) {
                 if (!isAdded()) return;

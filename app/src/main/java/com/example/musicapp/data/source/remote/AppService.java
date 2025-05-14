@@ -8,8 +8,12 @@ import com.example.musicapp.data.model.artist.ArtistList;
 import com.example.musicapp.data.network.request.LoginRequest;
 import com.example.musicapp.data.network.request.RegisterRequest;
 import com.example.musicapp.data.network.response.AuthenticationResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -19,7 +23,16 @@ import retrofit2.http.POST;
 
 public interface AppService {
 //    https://thantrieu.com/resources/braniumapis/playlist.json
-    @POST("/auth/login")
+
+
+    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    AppService apiService = new Retrofit.Builder()
+            .baseUrl("localhost:8080/api/v1")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(AppService.class);
+
+    @POST("/auth/sign-in")
     Call<AuthenticationResponse> login(@Body LoginRequest loginRequest);
 
     @POST("/auth/register")

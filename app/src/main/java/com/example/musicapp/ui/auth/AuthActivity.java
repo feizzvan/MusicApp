@@ -23,7 +23,6 @@ public class AuthActivity extends AppCompatActivity {
 
         setContentView(mBinding.getRoot());
 
-        setContentView(R.layout.activity_auth);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
