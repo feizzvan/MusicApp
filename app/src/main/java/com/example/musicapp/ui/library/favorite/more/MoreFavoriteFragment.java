@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.musicapp.databinding.FragmentMoreFavoriteBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 
 public class MoreFavoriteFragment extends AppBaseFragment {
     private FragmentMoreFavoriteBinding mBinding;

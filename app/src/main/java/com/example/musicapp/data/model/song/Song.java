@@ -13,74 +13,56 @@ import java.util.Objects;
 @Entity(tableName = "songs")
 public class Song {
     @SerializedName("id")
-    @NonNull
     @PrimaryKey
     @ColumnInfo(name = "song_id")
-    private String mId = "";
+    private int mId;
 
     @SerializedName("title")
     @ColumnInfo(name = "title")
     private String mTitle;
 
-    @SerializedName("album")
-    @ColumnInfo(name = "album")
-    private String mAlbum;
-
-    @SerializedName("artist")
-    @ColumnInfo(name = "artist")
-    private String mArtist;
-
-    @SerializedName("source")
-    @ColumnInfo(name = "source")
-    private String mSource;
-
-    @SerializedName("image")
-    @ColumnInfo(name = "image")
-    private String mImage;
+    @SerializedName("artistId")
+    @ColumnInfo(name = "artist_id")
+    private int mArtistId;
 
     @SerializedName("duration")
     @ColumnInfo(name = "duration")
     private int mDuration;
 
-    @SerializedName("favorite")
-    @ColumnInfo(name = "favorite")
-    private boolean mFavorite;
+    @SerializedName("fileUrl")
+    @ColumnInfo(name = "file_url")
+    private String mFileUrl;
 
-    @SerializedName("counter")
-    @ColumnInfo(name = "counter")
-    private int mCounter;
+    @SerializedName("imageUrl")
+    @ColumnInfo(name = "image_url")
+    private String mImageUrl;
 
-    @SerializedName("replay")
-    @ColumnInfo(name = "replay")
-    private int mReplay;
+    @SerializedName("genreId")
+    @Ignore
+    private int genreId;
 
     public Song() {
     }
 
     @Ignore
-    public Song(@NonNull String Id) {
+    public Song(int Id) {
         setId(Id);
     }
 
-    public Song(@NonNull String Id, String Title, String Album, String Artist, String Source,
-                String Image, int Duration, boolean Favorite, int Counter, int Replay) {
+    public Song(int Id, String Title, int artistId, int Duration, String fileUrl, String imageUrl) {
         setId(Id);
         setTitle(Title);
-        setAlbum(Album);
-        setArtist(Artist);
-        setSource(Source);
-        setImage(Image);
+        setArtistId(artistId);
+        setFileUrl(fileUrl);
+        setImageUrl(imageUrl);
         setDuration(Duration);
-        setFavorite(Favorite);
-        setCounter(Counter);
-        setReplay(Replay);
     }
 
-    public String getId() {
+    public int getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.mId = id;
     }
 
@@ -92,36 +74,28 @@ public class Song {
         this.mTitle = title;
     }
 
-    public String getAlbum() {
-        return mAlbum;
+    public int getArtistId() {
+        return mArtistId;
     }
 
-    public void setAlbum(String album) {
-        this.mAlbum = album;
+    public void setArtistId(int artist) {
+        this.mArtistId = artist;
     }
 
-    public String getArtist() {
-        return mArtist;
+    public String getFileUrl() {
+        return mFileUrl;
     }
 
-    public void setArtist(String artist) {
-        this.mArtist = artist;
+    public void setFileUrl(String source) {
+        this.mFileUrl = source;
     }
 
-    public String getSource() {
-        return mSource;
+    public String getImageUrl() {
+        return mImageUrl;
     }
 
-    public void setSource(String source) {
-        this.mSource = source;
-    }
-
-    public String getImage() {
-        return mImage;
-    }
-
-    public void setImage(String image) {
-        this.mImage = image;
+    public void setImageUrl(String image) {
+        this.mImageUrl = image;
     }
 
     public int getDuration() {
@@ -130,30 +104,6 @@ public class Song {
 
     public void setDuration(int duration) {
         this.mDuration = duration;
-    }
-
-    public boolean isFavorite() {
-        return mFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.mFavorite = favorite;
-    }
-
-    public int getCounter() {
-        return mCounter;
-    }
-
-    public void setCounter(int counter) {
-        this.mCounter = counter;
-    }
-
-    public int getReplay() {
-        return mReplay;
-    }
-
-    public void setReplay(int replay) {
-        this.mReplay = replay;
     }
 
     @Override

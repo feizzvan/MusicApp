@@ -108,7 +108,7 @@ public class Playlist {
     private void updateMediaItems() {
         mMediaItems.clear();
         for (Song song : mSongs) {
-            mMediaItems.add(MediaItem.fromUri(song.getSource()));
+            mMediaItems.add(MediaItem.fromUri(song.getFileUrl()));
         }
     }
 }

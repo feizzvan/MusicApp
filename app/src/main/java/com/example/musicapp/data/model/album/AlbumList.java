@@ -4,8 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+//Lấy danh sách Album
 public class AlbumList {
-    @SerializedName("playlists")
+    @SerializedName("data")
     private List<Album> albums;
 
     public List<Album> getAlbums() {

@@ -37,14 +37,15 @@ import com.example.musicapp.data.source.local.artist.ArtistDAO;
                 HistorySearchedKey.class,
                 HistorySearchedSong.class
         },
-        version = 6,
-        exportSchema = true,
-        autoMigrations = {
-                @AutoMigration(
-                        from = 5,
-                        to = 6,
-                        spec = AppDatabase.DbMigrationSpec.class)
-        }
+        version = 1,
+        exportSchema = true
+//        ,
+//        autoMigrations = {
+//                @AutoMigration(
+//                        from = 1,
+//                        to = 2,
+//                        spec = AppDatabase.DbMigrationSpec.class)
+//        }
 )
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {

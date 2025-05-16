@@ -16,7 +16,7 @@ import com.example.musicapp.data.model.playlist.Playlist;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentDetailArtistBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 
 import javax.inject.Inject;
 

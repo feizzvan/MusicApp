@@ -52,9 +52,9 @@ public class LibraryViewModel extends ViewModel {
     }
 
     // Tải danh sách bài hát yêu thích từ một nguồn dữ liệu thông qua SongRepository
-    public Flowable<List<Song>> loadFavoriteSongs() {
-        return mSongRepository.getFavoriteSongs();
-    }
+//    public Flowable<List<Song>> loadFavoriteSongs() {
+//        return mSongRepository.getFavoriteSongs();
+//    }
 
     public void setFavoriteSongs(List<Song> favoriteSongs) {
         mFavoriteSongs.postValue(favoriteSongs);

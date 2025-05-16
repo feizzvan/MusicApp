@@ -15,7 +15,7 @@ import com.example.musicapp.R;
 import com.example.musicapp.data.model.playlist.PlaylistWithSongs;
 import com.example.musicapp.databinding.FragmentPlaylistDetailBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 
 public class PlaylistDetailFragment extends AppBaseFragment {
     private FragmentPlaylistDetailBinding mBinding;
@@ -69,7 +69,7 @@ public class PlaylistDetailFragment extends AppBaseFragment {
     private void showPlaylistInfo(PlaylistWithSongs playlistWithSongs) {
         String artworkUrl = null;
         if (!playlistWithSongs.songs.isEmpty()) {
-            artworkUrl = playlistWithSongs.songs.get(0).getImage();
+            artworkUrl = playlistWithSongs.songs.get(0).getImageUrl();
         }
         Glide.with(this)
                 .load(artworkUrl)

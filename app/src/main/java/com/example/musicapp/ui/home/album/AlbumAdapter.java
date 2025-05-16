@@ -66,10 +66,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
         public void bind(Album album) {
             Glide.with(itemView.getContext())
-                    .load(album.getArtwork())
+                    .load(album.getCoverImageUrl())
                     .error(R.drawable.ic_music_note)
                     .into(mBinding.imgItemAlbumAvatar);
-            mBinding.textItemAlumTitle.setText(album.getName());
+            mBinding.textItemAlumTitle.setText(album.getTitle());
             mBinding.getRoot().setOnClickListener(v -> mListener.onAlbumClick(album));
         }
     }

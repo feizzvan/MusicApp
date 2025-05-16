@@ -75,11 +75,11 @@ public final class SharedDataUtils {
         return songRepository.updateSong(song);
     }
 
-    public static Completable updateSongInDB(Song song, SongRepository.Local songRepository) {
-        song.setCounter(song.getCounter() + 1);
-        song.setReplay(song.getReplay() + 1);
-        return songRepository.updateSong(song);
-    }
+//    public static Completable updateSongInDB(Song song, SongRepository.Local songRepository) {
+//        song.setCounter(song.getCounter() + 1);
+//        song.setReplay(song.getReplay() + 1);
+//        return songRepository.updateSong(song);
+//    }
 
     public static void setupPreviousSessionPlayingSong(String songId, String playlistName) {
         mPlaylistName = playlistName;
@@ -100,15 +100,15 @@ public final class SharedDataUtils {
 
             mPlayingSong.setPlaylist(playlist);
             List<Song> songList = playlist.getSongs();
-            index = songList.indexOf(new Song(songId));
-            if (index >= 0 && index < songList.size()) {
-                Song song = songList.get(index);
-                mPlayingSong.setSong(song);
-                mPlayingSong.setCurrentSongIndex(index);
-            }
-            setCurrentPlaylist(playlistName);
-            setPlayingSong(mPlayingSong);
-            setIndexToPlay(index);
+//            index = songList.indexOf(new Song(songId));
+//            if (index >= 0 && index < songList.size()) {
+//                Song song = songList.get(index);
+//                mPlayingSong.setSong(song);
+//                mPlayingSong.setCurrentSongIndex(index);
+//            }
+//            setCurrentPlaylist(playlistName);
+//            setPlayingSong(mPlayingSong);
+//            setIndexToPlay(index);
         }
     }
 

@@ -34,7 +34,7 @@ public class PlayingSong {
     public void setSong(Song song) {
         this.mSong = song;
         if (song != null) {
-            setMediaItem(MediaItem.fromUri(song.getSource()));
+            setMediaItem(MediaItem.fromUri(song.getFileUrl()));
         }
     }
 

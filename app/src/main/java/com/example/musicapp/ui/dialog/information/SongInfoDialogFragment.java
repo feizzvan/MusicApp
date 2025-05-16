@@ -48,28 +48,28 @@ public class SongInfoDialogFragment extends BottomSheetDialogFragment {
 
     private void showSongInfo(Song song) {
         Glide.with(this)
-                .load(song.getImage())
+                .load(song.getImageUrl())
                 .error(R.drawable.ic_music_note)
                 .circleCrop()
                 .into(mBinding.imgSongInfoAvatar);
 
         mBinding.textSongInfoTitle
                 .setText(getString(R.string.text_song_info_title, song.getTitle()));
-        mBinding.textSongInfoArtist
-                .setText(getString(R.string.text_song_info_artist, song.getArtist()));
-        mBinding.textSongInfoAlbum
-                .setText(getString(R.string.text_song_info_album, song.getAlbum()));
+//        mBinding.textSongInfoArtist
+//                .setText(getString(R.string.text_song_info_artist, song.getArtistId()));
+//        mBinding.textSongInfoAlbum
+//                .setText(getString(R.string.text_song_info_album, song.getAlbum()));
         mBinding.textSongInfoDuration
                 .setText(getString(R.string.text_song_info_duration, song.getDuration()));
-        mBinding.textSongInfoCounter
-                .setText(getString(R.string.text_song_info_counter, song.getCounter()));
-        mBinding.textSongInfoReplay
-                .setText(getString(R.string.text_song_info_replay, song.getReplay()));
-        mBinding.textSongInfoFavorite
-                .setText(getString(R.string.text_song_info_favorite,
-                        song.isFavorite()
-                                ? getString(R.string.text_yes)
-                                : getString(R.string.text_no)));
+//        mBinding.textSongInfoCounter
+//                .setText(getString(R.string.text_song_info_counter, song.getCounter()));
+//        mBinding.textSongInfoReplay
+//                .setText(getString(R.string.text_song_info_replay, song.getReplay()));
+//        mBinding.textSongInfoFavorite
+//                .setText(getString(R.string.text_song_info_favorite,
+//                        song.isFavorite()
+//                                ? getString(R.string.text_yes)
+//                                : getString(R.string.text_no)));
         mBinding.textSongInfoGenre
                 .setText(getString(R.string.text_song_info_genre, getString(R.string.text_na)));
         mBinding.textSongInfoPublishedYear

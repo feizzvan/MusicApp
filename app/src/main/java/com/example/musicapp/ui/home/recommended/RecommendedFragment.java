@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentRecommendedBinding;
 import com.example.musicapp.ui.AppBaseFragment;
+import com.example.musicapp.ui.SongListAdapter;
 import com.example.musicapp.ui.home.HomeFragmentDirections;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
 import com.example.musicapp.ui.home.recommended.more.MoreRecommendedViewModel;
@@ -72,12 +73,12 @@ public class RecommendedFragment extends AppBaseFragment {
                 (song, index) -> showAndPlay(song, index, RECOMMENDED.getValue()),
                 this::showOptionMenu);
         mBinding.includeRecommendedSongs.rvSongList.setAdapter(mSongListAdapter);
-        mDetailAlbumViewModel = new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
         mBinding.btnMoreRecommendedSongs.setOnClickListener(view -> navigateToMoreRecommended());
         mBinding.textTitleRecommendedSongs.setOnClickListener(view -> navigateToMoreRecommended());
     }
 
     private void setupViewModel() {
+        mDetailAlbumViewModel = new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
         mRecommendedSongViewModel = new ViewModelProvider(this, factory).get(RecommendedSongViewModel.class);
         mMoreRecommendedViewModel = new ViewModelProvider(requireActivity()).get(MoreRecommendedViewModel.class);
         mRecommendedSongViewModel.getSongList().observe(getViewLifecycleOwner(), songs -> {

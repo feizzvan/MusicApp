@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.databinding.FragmentAlbumBinding;
 import com.example.musicapp.ui.home.HomeFragmentDirections;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
@@ -38,9 +39,9 @@ public class AlbumFragment extends Fragment {
     private void setupView() {
         mBinding.progressAlbum.setVisibility(View.VISIBLE);
         mAlbumAdapter = new AlbumAdapter(album -> {
-            mDetailAlbumViewModel.setAlbum(album);
-            mDetailAlbumViewModel.extractSongList(album);
-            navigateToDetailAlbum();
+            mDetailAlbumViewModel.setAlbum(album.getId(), album.getTitle(), album.getCoverImageUrl());
+            mDetailAlbumViewModel.loadAlbumById(album.getId());
+            navigateToDetailAlbum(album);
         });
 
         // Gắn adapter vào RecyclerView trong layout
@@ -58,14 +59,19 @@ public class AlbumFragment extends Fragment {
 
         // Quan sát mAlbumList trong ViewModel
         mAlbumViewModel.getAlbumList().observe(getViewLifecycleOwner(), albumList -> {
-            mAlbumAdapter.updateAlbums(albumList.subList(0, 10));
+//            mAlbumAdapter.updateAlbums(albumList.subList(0, 10));
+            mAlbumAdapter.updateAlbums(albumList.subList(0, Math.min(10, albumList.size())));
             mBinding.progressAlbum.setVisibility(View.GONE);
         });
     }
 
-    private void navigateToDetailAlbum() {
-        NavDirections direction = HomeFragmentDirections.actionHomeFrToDetailAlbumFr();
-        NavHostFragment.findNavController(this).navigate(direction);
+    private void navigateToDetailAlbum(Album album) {
+        HomeFragmentDirections.ActionHomeFrToDetailAlbumFr action =
+            HomeFragmentDirections.actionHomeFrToDetailAlbumFr();
+        action.setId(album.getId());
+        action.setTitle(album.getTitle());
+        action.setCoverImageUrl(album.getCoverImageUrl());
+        NavHostFragment.findNavController(this).navigate(action);
     }
 
     private void navigateToMoreAlbum() {

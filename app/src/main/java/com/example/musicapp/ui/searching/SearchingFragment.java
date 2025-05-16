@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.musicapp.databinding.FragmentSearchingBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;

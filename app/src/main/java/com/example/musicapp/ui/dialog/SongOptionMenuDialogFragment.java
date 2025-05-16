@@ -102,9 +102,9 @@ public class SongOptionMenuDialogFragment extends BottomSheetDialogFragment {
 
     private void showSongInfo(Song song) {
         mBinding.includeSongMenuOption.textItemMenuOptionTitle.setText(song.getTitle());
-        mBinding.includeSongMenuOption.textItemSongArtist.setText(song.getArtist());
+        mBinding.includeSongMenuOption.textItemSongArtist.setText(song.getArtistId());
         Glide.with(this)
-                .load(song.getImage())
+                .load(song.getImageUrl())
                 .error(R.drawable.ic_music_note)
                 .into(mBinding.includeSongMenuOption.imgItemMenuOptionAvatar);
     }

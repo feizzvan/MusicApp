@@ -14,17 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.musicapp.databinding.FragmentMoreForYouBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.utils.SharedDataUtils;
-
-import java.util.ArrayList;
+import com.example.musicapp.ui.SongListAdapter;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class MoreForYouFragment extends AppBaseFragment {
@@ -75,14 +70,14 @@ public class MoreForYouFragment extends AppBaseFragment {
 
         mMoreForYouViewModel.getSongs().observe(getViewLifecycleOwner(), mAdapter::updateSongs);
 
-        mDisposable.add(mMoreForYouViewModel.loadTop40ForYouSongs()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(songs -> {
-                    mAdapter.updateSongs(songs);
-                    mMoreForYouViewModel.setSongs(songs);
-                    SharedDataUtils.setupPlaylist(songs, FOR_YOU.getValue());
-                }, throwable -> mMoreForYouViewModel.setSongs(new ArrayList<>()))
-        );
+//        mDisposable.add(mMoreForYouViewModel.loadTop40ForYouSongs()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(songs -> {
+//                    mAdapter.updateSongs(songs);
+//                    mMoreForYouViewModel.setSongs(songs);
+//                    SharedDataUtils.setupPlaylist(songs, FOR_YOU.getValue());
+//                }, throwable -> mMoreForYouViewModel.setSongs(new ArrayList<>()))
+//        );
     }
 }

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.musicapp.databinding.FragmentMoreRecentBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 
 public class MoreRecentFragment extends AppBaseFragment {
     private FragmentMoreRecentBinding mBinding;

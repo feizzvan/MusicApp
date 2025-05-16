@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             Song song = playingSong.getSong();
             if (song != null) {
                 mSharedPreferences.edit()
-                        .putString("PREF_SONG_ID", song.getId())
+                        .putInt("PREF_SONG_ID", song.getId())
                         .putString("PREF_PLAYLIST_NAME", playingSong.getPlaylist().getName())
                         .apply();
             }

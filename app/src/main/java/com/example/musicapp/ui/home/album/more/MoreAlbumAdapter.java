@@ -67,9 +67,9 @@ public class MoreAlbumAdapter extends RecyclerView.Adapter<MoreAlbumAdapter.View
         }
 
         public void bind(Album album) {
-            mBinding.textItemAlbum.setText(album.getName());
+            mBinding.textItemAlbum.setText(album.getTitle());
             Glide.with(itemView.getContext())
-                    .load(album.getArtwork())
+                    .load(album.getCoverImageUrl())
                     .error(R.drawable.ic_album)
                     .into(mBinding.imgItemAlbumDetail);
             mBinding.getRoot().setOnClickListener(v -> albumClickListener.onAlbumClick(album));

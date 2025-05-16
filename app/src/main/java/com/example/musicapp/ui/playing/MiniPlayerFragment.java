@@ -206,7 +206,7 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         } else if (view.getId() == R.id.btn_mini_player_skip_next) {
             setupNextAction();
         } else if (view.getId() == R.id.btn_mini_player_favorite) {
-            setupFavorite();
+//            setupFavorite();
         }
     }
 
@@ -226,25 +226,25 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void setupFavorite() {
-        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
-        if (playingSong != null) {
-            Song song = playingSong.getSong();
-            song.setFavorite(!song.isFavorite());
-            mDisposable.add(SharedDataUtils.updateSongFavoriteStatus(song, localSongRepository)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> updateFavoriteStatus(song)));
-        }
-    }
+//    private void setupFavorite() {
+//        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
+//        if (playingSong != null) {
+//            Song song = playingSong.getSong();
+//            song.setFavorite(!song.isFavorite());
+//            mDisposable.add(SharedDataUtils.updateSongFavoriteStatus(song, localSongRepository)
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(() -> updateFavoriteStatus(song)));
+//        }
+//    }
 
-    private void updateFavoriteStatus(Song song) {
-        if (song.isFavorite()) {
-            mBinding.btnMiniPlayerFavorite.setImageResource(R.drawable.ic_favorite_on);
-        } else {
-            mBinding.btnMiniPlayerFavorite.setImageResource(R.drawable.ic_favorite_off);
-        }
-    }
+//    private void updateFavoriteStatus(Song song) {
+//        if (song.isFavorite()) {
+//            mBinding.btnMiniPlayerFavorite.setImageResource(R.drawable.ic_favorite_on);
+//        } else {
+//            mBinding.btnMiniPlayerFavorite.setImageResource(R.drawable.ic_favorite_off);
+//        }
+//    }
 
     private void updatePlayingState(Boolean isPlaying) {
         if (isPlaying) {
@@ -278,13 +278,13 @@ public class MiniPlayerFragment extends Fragment implements View.OnClickListener
     private void showSongInfo(Song song) {
         if (song != null) {
             Glide.with(this)
-                    .load(song.getImage())
+                    .load(song.getImageUrl())
                     .circleCrop()
                     .error(R.drawable.ic_music_note)
                     .into(mBinding.imgMiniPlayerAvatar);
             mBinding.textMiniPlayerTitle.setText(song.getTitle());
-            mBinding.textMiniPlayerArtist.setText(song.getArtist());
-            updateFavoriteStatus(song);
+            mBinding.textMiniPlayerArtist.setText(song.getArtistId());
+            //updateFavoriteStatus(song);
         }
     }
 

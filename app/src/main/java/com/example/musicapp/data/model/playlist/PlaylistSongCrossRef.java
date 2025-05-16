@@ -20,7 +20,7 @@ import androidx.room.Index;
 public class PlaylistSongCrossRef {
     @NonNull
     @ColumnInfo(name = "song_id")
-    public String songId = "";
+    public int songId = -1;
 
     @ColumnInfo(name = "playlist_id")
     public int playlistId = 0;

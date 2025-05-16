@@ -151,9 +151,9 @@ public class PlaybackService extends MediaSessionService {
                     Process.THREAD_PRIORITY_BACKGROUND);
             handlerThread.start();
             Handler handler = new Handler(handlerThread.getLooper());
-            handler.post(() -> mDisposable.add(SharedDataUtils.updateSongInDB(song, localSongRepository)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe()));
+//            handler.post(() -> mDisposable.add(SharedDataUtils.updateSongInDB(song, localSongRepository)
+//                    .subscribeOn(Schedulers.io())
+//                    .subscribe()));
         }
     }
 

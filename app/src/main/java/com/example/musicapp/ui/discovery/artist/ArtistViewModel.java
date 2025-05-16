@@ -107,9 +107,9 @@ public class ArtistViewModel extends ViewModel {
         for (Artist artist : artists) {
             for (Song song : songs) {
                 String key = ".*" + artist.getName().toLowerCase() + ".*";
-                if (song.getArtist().toLowerCase().matches(key)) {
-                    artistSongCrossRefList.add(new ArtistSongCrossRef(artist.getId(), song.getId()));
-                }
+//                if (song.getArtistId().toLowerCase().matches(key)) {
+//                    artistSongCrossRefList.add(new ArtistSongCrossRef(artist.getId(), song.getId()));
+//                }
             }
         }
         return artistSongCrossRefList;

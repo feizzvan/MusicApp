@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.musicapp.data.model.album.Album;
 import com.example.musicapp.databinding.FragmentMoreAlbumBinding;
 import com.example.musicapp.ui.home.album.AlbumViewModel;
 import com.example.musicapp.ui.home.album.detail.DetailAlbumViewModel;
@@ -43,9 +44,9 @@ public class MoreAlbumFragment extends Fragment {
         mBinding.toolbarMoreAlbum.setNavigationOnClickListener(
                 view -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
         mMoreAlbumAdapter = new MoreAlbumAdapter(album -> {
-            mDetailAlbumViewModel.setAlbum(album);
-            mDetailAlbumViewModel.extractSongList(album);
-            navigateToDetailAlbum();
+            mDetailAlbumViewModel.setAlbum(album.getId(), album.getTitle(), album.getCoverImageUrl());
+            //mDetailAlbumViewModel.extractSongList(album);
+            navigateToDetailAlbum(album);
         });
         mBinding.recyclerMoreAlbum.setAdapter(mMoreAlbumAdapter);
     }
@@ -56,8 +57,12 @@ public class MoreAlbumFragment extends Fragment {
         mAlbumViewModel.getAlbumList().observe(getViewLifecycleOwner(), mMoreAlbumAdapter::updateAlbums);
     }
 
-    private void navigateToDetailAlbum() {
-        NavDirections direction = MoreAlbumFragmentDirections.actionMoreAlbumFrToDetailAlbumFr();
-        NavHostFragment.findNavController(this).navigate(direction);
+    private void navigateToDetailAlbum(Album album) {
+        MoreAlbumFragmentDirections.ActionMoreAlbumFrToDetailAlbumFr action =
+                MoreAlbumFragmentDirections.actionMoreAlbumFrToDetailAlbumFr();
+        action.setId(album.getId());
+        action.setTitle(album.getTitle());
+        action.setCoverImageUrl(album.getCoverImageUrl());
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

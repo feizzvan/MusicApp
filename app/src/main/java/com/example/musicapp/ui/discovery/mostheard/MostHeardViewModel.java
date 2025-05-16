@@ -34,9 +34,9 @@ public class MostHeardViewModel extends ViewModel {
         mSongs.setValue(songs);
     }
 
-    public Flowable<List<Song>> loadTop15MostHeardSong() {
-        return mSongRepository.getTopNMostHeardSongs(15);
-    }
+//    public Flowable<List<Song>> loadTop15MostHeardSong() {
+//        return mSongRepository.getTopNMostHeardSongs(15);
+//    }
 
     public static class Factory implements ViewModelProvider.Factory {
         private final SongRepositoryImpl mSongRepository;

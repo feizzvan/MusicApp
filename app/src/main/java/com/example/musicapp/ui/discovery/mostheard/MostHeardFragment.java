@@ -16,17 +16,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.musicapp.databinding.FragmentMostHeardBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.discovery.DiscoveryFragmentDirections;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.utils.SharedDataUtils;
-
-import java.util.ArrayList;
+import com.example.musicapp.ui.SongListAdapter;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class MostHeardFragment extends AppBaseFragment {
@@ -76,15 +71,15 @@ public class MostHeardFragment extends AppBaseFragment {
                 new ViewModelProvider(requireActivity(), factory).get(MostHeardViewModel.class);
 
         mMostHeardViewModel.getSongs().observe(getViewLifecycleOwner(), mAdapter::updateSongs);
-        mDisposable.add(mMostHeardViewModel.loadTop15MostHeardSong()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(songs -> {
-                    mAdapter.updateSongs(songs);
-                    mMostHeardViewModel.setSongs(songs);
-                    SharedDataUtils.setupPlaylist(songs, MOST_HEARD.getValue());
-                }, throwable -> mMostHeardViewModel.setSongs(new ArrayList<>()))
-        );
+//        mDisposable.add(mMostHeardViewModel.loadTop15MostHeardSong()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(songs -> {
+//                    mAdapter.updateSongs(songs);
+//                    mMostHeardViewModel.setSongs(songs);
+//                    SharedDataUtils.setupPlaylist(songs, MOST_HEARD.getValue());
+//                }, throwable -> mMostHeardViewModel.setSongs(new ArrayList<>()))
+//        );
     }
 
     private void navigateToMoreMostHeard() {

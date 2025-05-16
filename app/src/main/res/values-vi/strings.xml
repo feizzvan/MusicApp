@@ -82,10 +82,18 @@
     <string name="confirm_delete_title">Xác nhận xóa</string>
     <string name="message_confirm_clear_history_searched_key">Bạn có chắc chắn muốn xóa bỏ tất cả các từ khóa đã tìm kiếm không?</string>
     <string name="message_confirm_clear_history_searched_songs">Bạn có chắc chắn muốn xóa bỏ tất cả các bài hát đã tìm kiếm không?</string>
-    <string name="title_login_to_your_account">Login to your account</string>
+    <string name="text_welcome">Chào mừng trở lại</string>
+    <string name="title_login_to_your_account">Đăng nhập vào tài khoản của bạn</string>
     <string name="text_hint_email">Email</string>
-    <string name="text_forgot_password">Forgot Password?</string>
-    <string name="text_reset_password">Reset Password</string>
+    <string name="text_hint_password">Mật khẩu</string>
+    <string name="action_forgot_password">Quên mật khẩu</string>
+    <string name="text_login">Đăng nhập</string>
+    <string name="text_or_continue_with">Hoặc tiếp tục với</string>
+    <string name="action_forward_to_register">Bạn không có tài khoản? Đăng ký.</string>
+    <string name="text_forgot_password">Quên mật khẩu?</string>
+    <string name="text_enter_your_email_address_to_recover_reset_your_password">Nhập địa chỉ email của bạn để khôi phục/đặt lại mật khẩu</string>
+    <string name="text_hint_email_address">Email</string>
+    <string name="text_reset_password">Đặt lại mật khẩu</string>
     <string name="text_create_account">Create account</string>
     <string name="text_create_your_account">Create your account</string>
     <string name="text_hint_full_name">Full Name</string>
@@ -95,5 +103,10 @@
     <string name="text_please_fill_in_all_information">Please fill in all information</string>
     <string name="text_login_successful">Login successful</string>
     <string name="text_please_check_your_login_information_again">Please check your login information again.</string>
-    <string name="text_network_error">Network error</string>
+    <string name="text_network_error">Lỗi mạng: </string>
+    <string name="text_invalid_email_format">Email không đúng định dạng.</string>
+    <string name="text_invalid_password_format">Mật khẩu phải có ít nhất 6 ký tự, bao gồm cả chữ và số.</string>
+    <string name="text_confirmation_password_does_not_match">Confirmation password does not match.</string>
+    <string name="text_registration_successful">Registration successful!</string>
+    <string name="text_email_already_exists">Email already exists</string>
 </resources>

@@ -24,20 +24,20 @@ public class LocalSongDataSource implements SongDataSource.Local {
         return mSongDAO.getAllSongs();
     }
 
-    @Override
-    public Flowable<List<Song>> getFavoriteSongs() {
-        return mSongDAO.getFavoriteSongs();
-    }
-
-    @Override
-    public Flowable<List<Song>> getTopNMostHeardSongs(int limit) {
-        return mSongDAO.getTopNMostHeardSongs(limit);
-    }
-
-    @Override
-    public Flowable<List<Song>> getTopNForYouSongs(int limit) {
-        return mSongDAO.getTopNForYouSongs(limit);
-    }
+//    @Override
+//    public Flowable<List<Song>> getFavoriteSongs() {
+//        return mSongDAO.getFavoriteSongs();
+//    }
+//
+//    @Override
+//    public Flowable<List<Song>> getTopNMostHeardSongs(int limit) {
+//        return mSongDAO.getTopNMostHeardSongs(limit);
+//    }
+//
+//    @Override
+//    public Flowable<List<Song>> getTopNForYouSongs(int limit) {
+//        return mSongDAO.getTopNForYouSongs(limit);
+//    }
 
     @Override
     public Completable saveSongs(Song... songs) {

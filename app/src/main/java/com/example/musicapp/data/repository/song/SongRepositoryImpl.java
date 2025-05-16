@@ -34,20 +34,20 @@ public class SongRepositoryImpl implements SongRepository.Local, SongRepository.
         return mLocalSongDataSource.getSongs();
     }
 
-    @Override
-    public Flowable<List<Song>> getFavoriteSongs() {
-        return mLocalSongDataSource.getFavoriteSongs();
-    }
-
-    @Override
-    public Flowable<List<Song>> getTopNMostHeardSongs(int limit) {
-        return mLocalSongDataSource.getTopNMostHeardSongs(limit);
-    }
-
-    @Override
-    public Flowable<List<Song>> getTopNForYouSongs(int limit) {
-        return mLocalSongDataSource.getTopNForYouSongs(limit);
-    }
+//    @Override
+//    public Flowable<List<Song>> getFavoriteSongs() {
+//        return mLocalSongDataSource.getFavoriteSongs();
+//    }
+//
+//    @Override
+//    public Flowable<List<Song>> getTopNMostHeardSongs(int limit) {
+//        return mLocalSongDataSource.getTopNMostHeardSongs(limit);
+//    }
+//
+//    @Override
+//    public Flowable<List<Song>> getTopNForYouSongs(int limit) {
+//        return mLocalSongDataSource.getTopNForYouSongs(limit);
+//    }
 
     @Override
     public Completable saveSongs(Song... songs) {

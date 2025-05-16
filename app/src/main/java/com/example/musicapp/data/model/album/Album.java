@@ -5,44 +5,51 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.musicapp.data.model.song.Song;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(tableName = "albums")
+//Lấy danh sách Album
+@Entity(tableName = "album")
 public class Album {
     @SerializedName("id")
     @PrimaryKey
     @ColumnInfo(name = "album_id")
     private int mId;
 
-    @SerializedName("name")
-    @ColumnInfo(name = "name")
-    private String mName;
+    @SerializedName("title")
+    @ColumnInfo(name = "title")
+    private String mTitle;
 
-    @SerializedName("size")
-    @ColumnInfo(name = "size")
-    private int mSize;
+    @SerializedName("coverImageUrl")
+    @ColumnInfo(name = "cover_image_url")
+    private String mCoverImageUrl;
 
-    @SerializedName("artwork")
-    @ColumnInfo(name = "artwork")
-    private String mArtwork;
+    @SerializedName("createdAt")
+    @Ignore
+    @ColumnInfo(name = "created_at")
+    private String mCreatedAt;
+
+    @SerializedName("genreName")
+    @Ignore
+    @ColumnInfo(name = "genre_name")
+    private String mGenreName;
 
     @SerializedName("songs")
     @Ignore
-    private final List<String> mSongs = new ArrayList<>();
+    private final List<Song> mSongs = new ArrayList<>();
 
     public Album() {
     }
 
     @Ignore
-    public Album(int id, int size, String name, String artwork) {
-        this.mId = id;
-        this.mSize = size;
-        this.mName = name;
-        this.mArtwork = artwork;
+    public Album(int id, String title, String coverImageUrl) {
+        mId = id;
+        mTitle = title;
+        mCoverImageUrl = coverImageUrl;
     }
 
     public int getId() {
@@ -53,38 +60,30 @@ public class Album {
         this.mId = id;
     }
 
-    public String getName() {
-        return mName;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setName(String name) {
-        this.mName = name;
+    public void setTitle(String title) {
+        this.mTitle = title;
     }
 
-    public int getSize() {
-        return mSize;
+    public String getCoverImageUrl() {
+        return mCoverImageUrl;
     }
 
-    public void setSize(int size) {
-        this.mSize = size;
+    public void setCoverImageUrl(String coverImageUrl) {
+        this.mCoverImageUrl = coverImageUrl;
     }
 
-    public String getArtwork() {
-        return mArtwork;
-    }
-
-    public void setArtwork(String artwork) {
-        this.mArtwork = artwork;
-    }
-
-    public void setSongs(List<String> songs) {
+    public void setSongs(List<Song> songs) {
         if (songs != null && !songs.isEmpty()) {
             mSongs.clear();
             mSongs.addAll(songs);
         }
     }
 
-    public List<String> getSongs() {
+    public List<Song> getSongs() {
         return mSongs;
     }
 

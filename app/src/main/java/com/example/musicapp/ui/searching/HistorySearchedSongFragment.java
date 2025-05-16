@@ -15,7 +15,7 @@ import com.example.musicapp.R;
 import com.example.musicapp.databinding.FragmentHistorySearchedSongBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.dialog.ConfirmationDialogFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 import com.example.musicapp.utils.SharedDataUtils;
 
 import javax.inject.Inject;

@@ -54,9 +54,10 @@ public class AlbumViewModel extends ViewModel {
             public void onResponse(@NonNull Call<AlbumList> call, @NonNull Response<AlbumList> response) {
                 AlbumList albumList = response.body();
                 if (albumList != null) {
-                    List<Album> albums = albumList.getAlbums();
-                    albums.sort(Comparator.comparing(Album::getSize));
-                    setAlbumList(Lists.reverse(albums));
+//                    List<Album> albums = albumList.getAlbums();
+//                    albums.sort(Comparator.comparing(albums.size()));
+//                    setAlbumList(Lists.reverse(albums));
+                    setAlbumList(albumList.getAlbums());
                 }
             }
 

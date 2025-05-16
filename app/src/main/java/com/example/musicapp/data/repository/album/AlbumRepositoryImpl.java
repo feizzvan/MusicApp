@@ -1,5 +1,7 @@
 package com.example.musicapp.data.repository.album;
 
+import com.example.musicapp.data.model.album.Album;
+import com.example.musicapp.data.model.album.AlbumById;
 import com.example.musicapp.data.model.album.AlbumList;
 import com.example.musicapp.data.source.AlbumDataSource;
 
@@ -21,5 +23,10 @@ public class AlbumRepositoryImpl implements AlbumRepository{
     public void loadAlbums(Callback<AlbumList> callback) {
         // Gọi phương thức loadAlbums từ tầng dữ liệu từ xa và truyền vào callback để xử lý kết quả trả về từ API.
         mRemoteAlbumDataSource.loadAlbums(callback);
+    }
+
+    @Override
+    public void loadAlbumById(int id, Callback<AlbumById> callback) {
+        mRemoteAlbumDataSource.loadAlbumById(id, callback);
     }
 }

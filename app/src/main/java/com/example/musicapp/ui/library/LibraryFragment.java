@@ -124,12 +124,12 @@ public class LibraryFragment extends Fragment {
                         throwable -> mLibraryViewModel.setRecentSongs(null))
         );
 
-        mDisposable.add(mLibraryViewModel.loadFavoriteSongs()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(songs -> mLibraryViewModel.setFavoriteSongs(songs),
-                        throwable -> mLibraryViewModel.setFavoriteSongs(null))
-        );
+//        mDisposable.add(mLibraryViewModel.loadFavoriteSongs()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(songs -> mLibraryViewModel.setFavoriteSongs(songs),
+//                        throwable -> mLibraryViewModel.setFavoriteSongs(null))
+//        );
 
         mDisposable.add(mLibraryViewModel.loadPlaylistWithSongs()
                 .subscribeOn(Schedulers.io())

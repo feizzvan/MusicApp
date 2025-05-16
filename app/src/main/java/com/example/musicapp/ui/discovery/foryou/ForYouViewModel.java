@@ -34,9 +34,9 @@ public class ForYouViewModel extends ViewModel {
         mSongs.setValue(songs);
     }
 
-    public Flowable<List<Song>> loadTop15ForYouSongs() {
-        return mSongRepository.getTopNForYouSongs(15);
-    }
+//    public Flowable<List<Song>> loadTop15ForYouSongs() {
+//        return mSongRepository.getTopNForYouSongs(15);
+//    }
 
     public static class Factory implements ViewModelProvider.Factory {
         private final SongRepositoryImpl mSongRepository;

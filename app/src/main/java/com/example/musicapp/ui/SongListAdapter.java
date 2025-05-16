@@ -1,4 +1,4 @@
-package com.example.musicapp.ui.home.recommended;
+package com.example.musicapp.ui;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.ItemSongBinding;
+import com.example.musicapp.utils.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,19 +72,21 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
 
         public void bind(Song song, int position) {
             mBinding.textItemSongTitle.setText(song.getTitle());
-            mBinding.textItemSongArtist.setText(song.getArtist());
+//            mBinding.textItemSongArtist.setText(song.getArtistId());
+            // chỗ này nó ko set được rồi, ông dùng thư viện khác xem
+            // nó ko load được ảnh từ image lên, ông dùng thư viện giống load cover image nha
             Glide.with(mBinding.getRoot().getContext())
-                    .load(song.getImage())
+                    .load(song.getImageUrl())
                     .error(R.drawable.ic_music_note)
                     .into(mBinding.imgItemSongAvatar);
 
-//            mBinding.getRoot().setOnClickListener(view -> {
-//                Boolean isGranted = PermissionUtils.getPermissionGranted().getValue();
-//                if (isGranted == null || !isGranted) {
-//                    PermissionUtils.setPermissionAsked(true);
-//                }
-//                mSongItemClickListener.onSongItemClick(song, position);
-//            });
+            mBinding.getRoot().setOnClickListener(view -> {
+                Boolean isGranted = PermissionUtils.getPermissionGranted().getValue();
+                if (isGranted == null || !isGranted) {
+                    PermissionUtils.setPermissionAsked(true);
+                }
+                mSongItemClickListener.onSongItemClick(song, position);
+            });
 
             mBinding.getRoot().setOnClickListener(view -> mSongItemClickListener.onSongItemClick(song, position));
 

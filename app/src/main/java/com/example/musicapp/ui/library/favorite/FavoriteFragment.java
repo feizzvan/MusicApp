@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentFavoriteBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 import com.example.musicapp.ui.library.LibraryFragmentDirections;
 import com.example.musicapp.ui.library.favorite.more.MoreFavoriteViewModel;
 

@@ -148,7 +148,7 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
         } else if (view.getId() == R.id.btn_shuffle) {
             setupActionShuffle();
         } else if (view.getId() == R.id.btn_now_playing_favorite) {
-            setupActionFavorite();
+            //setupActionFavorite();
         }
     }
 
@@ -290,13 +290,13 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
             updateDuration();
             showRepeatMode();
             showShuffleMode();
-            showFavoriteMode(song.isFavorite());
+           // showFavoriteMode(song.isFavorite());
 
-            mBinding.textNowPlayingAlbum.setText(song.getAlbum());
+            //mBinding.textNowPlayingAlbum.setText(song.getAlbum());
             mBinding.textNowPlayingSongTitle.setText(song.getTitle());
-            mBinding.textNowPlayingSongArtist.setText(song.getArtist());
+            mBinding.textNowPlayingSongArtist.setText(song.getArtistId());
             Glide.with(this)
-                    .load(song.getImage())
+                    .load(song.getImageUrl())
                     .circleCrop()
                     .error(R.drawable.ic_album)
                     .into(mBinding.imageNowPlayingArtwork);
@@ -383,21 +383,21 @@ public class NowPlayingActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void setupActionFavorite() {
-        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
-        Song song = null;
-        if (playingSong != null) {
-            song = playingSong.getSong();
-        }
-        if (song != null) {
-            song.setFavorite(!song.isFavorite());
-            SharedDataUtils.getPlayingSong().getValue().setSong(song);
-            showFavoriteMode(song.isFavorite());
-            mDisposable.add(SharedDataUtils.updateSongFavoriteStatus(song, localSongRepository)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe());
-        }
-    }
+//    private void setupActionFavorite() {
+//        PlayingSong playingSong = SharedDataUtils.getPlayingSong().getValue();
+//        Song song = null;
+//        if (playingSong != null) {
+//            song = playingSong.getSong();
+//        }
+//        if (song != null) {
+//            song.setFavorite(!song.isFavorite());
+//            SharedDataUtils.getPlayingSong().getValue().setSong(song);
+//            showFavoriteMode(song.isFavorite());
+//            mDisposable.add(SharedDataUtils.updateSongFavoriteStatus(song, localSongRepository)
+//                    .subscribeOn(Schedulers.io())
+//                    .subscribe());
+//        }
+//    }
 
     private void showFavoriteMode(boolean isFavorite) {
         if (isFavorite) {

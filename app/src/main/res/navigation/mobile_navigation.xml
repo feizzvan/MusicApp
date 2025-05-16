@@ -133,7 +133,19 @@
         android:id="@+id/detailAlbumFragment"
         android:name="com.example.musicapp.ui.home.album.detail.DetailAlbumFragment"
         android:label="fragment_detail_album"
-        tools:layout="@layout/fragment_detail_album" />
+        tools:layout="@layout/fragment_detail_album" >
+        <argument
+            android:name="id"
+            android:defaultValue="0" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="coverImageUrl"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
     <fragment
         android:id="@+id/moreRecommendedFragment"
         android:name="com.example.musicapp.ui.home.recommended.more.MoreRecommendedFragment"

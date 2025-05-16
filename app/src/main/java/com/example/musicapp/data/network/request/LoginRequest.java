@@ -1,8 +1,15 @@
 package com.example.musicapp.data.network.request;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LoginRequest {
+    @SerializedName("email")
     private String mEmail;
+    @SerializedName("password")
     private String mPassword;
+
+    public LoginRequest() {
+    }
 
     public LoginRequest(String email, String password) {
         mEmail = email;

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.example.musicapp.R;
 import com.example.musicapp.databinding.FragmentMoreRecommendedBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 
 public class MoreRecommendedFragment extends AppBaseFragment {
     private FragmentMoreRecommendedBinding mBinding;

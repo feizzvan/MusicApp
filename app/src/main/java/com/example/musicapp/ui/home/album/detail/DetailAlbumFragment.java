@@ -1,27 +1,39 @@
 package com.example.musicapp.ui.home.album.detail;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.album.Album;
+import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.FragmentDetailAlbumBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 import com.example.musicapp.utils.SharedDataUtils;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+@AndroidEntryPoint
 public class DetailAlbumFragment extends AppBaseFragment {
     private FragmentDetailAlbumBinding mBinding;
     private DetailAlbumViewModel mDetailAlbumViewModel;
     private SongListAdapter mSongListAdapter;
+
+    @Inject
+    DetailAlbumViewModel.Factory factory;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -34,8 +46,18 @@ public class DetailAlbumFragment extends AppBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mDetailAlbumViewModel =
+                new ViewModelProvider(requireActivity(), factory).get(DetailAlbumViewModel.class);
+
+        setupAlbumData();
         setupView();
         setupViewModel();
+    }
+
+    private void setupAlbumData() {
+        DetailAlbumFragmentArgs args = DetailAlbumFragmentArgs.fromBundle(getArguments());
+//        mDetailAlbumViewModel.setAlbum(args.getId(), args.getTitle(), args.getCoverImageUrl());
+        mDetailAlbumViewModel.loadAlbumById(args.getId());
     }
 
     private void setupView() {
@@ -47,7 +69,7 @@ public class DetailAlbumFragment extends AppBaseFragment {
         mSongListAdapter = new SongListAdapter(
                 (song, index) -> {
                     Album album = mDetailAlbumViewModel.getAlbum().getValue();
-                    String playlistName = album == null ? " " : album.getName();
+                    String playlistName = album == null ? " " : album.getTitle();
                     SharedDataUtils.addPlaylist(mDetailAlbumViewModel.getPlaylist());
                     showAndPlay(song, index, playlistName);
                 }, this::showOptionMenu);
@@ -59,22 +81,32 @@ public class DetailAlbumFragment extends AppBaseFragment {
     }
 
     private void setupViewModel() {
-        mDetailAlbumViewModel =
-                new ViewModelProvider(requireActivity()).get(DetailAlbumViewModel.class);
-
         mDetailAlbumViewModel.getAlbum()
                 .observe(getViewLifecycleOwner(), this::showAlbumInfo);
 
-        mDetailAlbumViewModel.getAlbumSongs()
-                .observe(getViewLifecycleOwner(), mSongListAdapter::updateSongs);
+        mDetailAlbumViewModel.getSongs().observe(getViewLifecycleOwner(), mSongListAdapter::updateSongs);
+
+//        mDetailAlbumViewModel.loadAlbumById(mDetailAlbumViewModel.getAlbum().getValue().getId())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(songList -> {
+//                    List<Song> songs = songList.getSongs();
+//                    mSongListAdapter.updateSongs(songs);
+//                    mDetailAlbumViewModel.setSongs(songs);
+//                    mDetailAlbumViewModel.createPlaylist(mDetailAlbumViewModel.getAlbum().getValue().getTitle());
+//                }, throwable -> {
+//                });
+
+//        mDetailAlbumViewModel.getAlbumSongs()
+//                .observe(getViewLifecycleOwner(), mSongListAdapter::updateSongs);
     }
 
     private void showAlbumInfo(Album album) {
-        mBinding.includeFragmentDetailPlaylist.textTitlePlaylistDetail.setText(album.getName());
-        String numberSong = getString(R.string.text_number_song, album.getSize());
+        mBinding.includeFragmentDetailPlaylist.textTitlePlaylistDetail.setText(album.getTitle());
+        String numberSong = getString(R.string.text_number_song, album.getSongs().size());
         mBinding.includeFragmentDetailPlaylist.textNumberSongPlaylist.setText(numberSong);
         Glide.with(this)
-                .load(album.getArtwork())
+                .load(album.getCoverImageUrl())
                 .error(R.drawable.ic_album)
                 .into(mBinding.includeFragmentDetailPlaylist.imgPlaylistAvatar);
     }

@@ -81,7 +81,6 @@
     <string name="message_confirm_clear_history_searched_key">Are you sure to delete all history searched keys?</string>
     <string name="message_confirm_clear_history_searched_songs">Are you sure to delete all history searched songs?</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_welcome">Welcome Back</string>
     <string name="title_login_to_your_account">Login to your account</string>
     <string name="text_hint_email">Email</string>
@@ -104,5 +103,10 @@
     <string name="text_please_fill_in_all_information">Please fill in all information</string>
     <string name="text_login_successful">Login successful</string>
     <string name="text_please_check_your_login_information_again">Please check your login information again.</string>
-    <string name="text_network_error">Network error</string>
+    <string name="text_network_error">Network error: </string>
+    <string name="text_invalid_email_format">Email is not in correct format.</string>
+    <string name="text_invalid_password_format">Password must be at least 6 characters, including letters and numbers.</string>
+    <string name="text_confirmation_password_does_not_match">Confirmation password does not match.</string>
+    <string name="text_registration_successful">Registration successful!</string>
+    <string name="text_email_already_exists">Email already exists</string>
 </resources>

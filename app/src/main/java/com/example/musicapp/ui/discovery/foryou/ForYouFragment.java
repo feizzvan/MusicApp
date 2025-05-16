@@ -18,17 +18,12 @@ import android.view.ViewGroup;
 import com.example.musicapp.databinding.FragmentForYouBinding;
 import com.example.musicapp.ui.AppBaseFragment;
 import com.example.musicapp.ui.discovery.DiscoveryFragmentDirections;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.utils.SharedDataUtils;
-
-import java.util.ArrayList;
+import com.example.musicapp.ui.SongListAdapter;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class ForYouFragment extends AppBaseFragment {
@@ -78,15 +73,15 @@ public class ForYouFragment extends AppBaseFragment {
                 new ViewModelProvider(requireActivity(), factory).get(ForYouViewModel.class);
 
         mForYouViewModel.getSongs().observe(getViewLifecycleOwner(), mAdapter::updateSongs);
-        mDisposable.add(mForYouViewModel.loadTop15ForYouSongs()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(songs -> {
-                    mAdapter.updateSongs(songs);
-                    mForYouViewModel.setSongs(songs);
-                    SharedDataUtils.setupPlaylist(songs, FOR_YOU.getValue());
-                }, throwable -> mForYouViewModel.setSongs(new ArrayList<>()))
-        );
+//        mDisposable.add(mForYouViewModel.loadTop15ForYouSongs()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(songs -> {
+//                    mAdapter.updateSongs(songs);
+//                    mForYouViewModel.setSongs(songs);
+//                    SharedDataUtils.setupPlaylist(songs, FOR_YOU.getValue());
+//                }, throwable -> mForYouViewModel.setSongs(new ArrayList<>()))
+//        );
     }
 
     private void navigateToMoreForYou() {

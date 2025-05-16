@@ -1,12 +1,18 @@
 package com.example.musicapp.data.network.request;
 
+import com.google.gson.annotations.SerializedName;
+
 public class RegisterRequest {
+    @SerializedName("email")
     private String mEmail;
+    @SerializedName("password")
     private String mPassword;
-
     private final String role = "CUSTOMER";
-
+    @SerializedName("username")
     private String mFullName;
+
+    public RegisterRequest() {
+    }
 
     public RegisterRequest(String email, String password, String fullName) {
         mEmail = email;

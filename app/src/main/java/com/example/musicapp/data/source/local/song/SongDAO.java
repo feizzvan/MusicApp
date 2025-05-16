@@ -27,14 +27,14 @@ public interface SongDAO {
 //    @Query("SELECT * FROM songs WHERE artist LIKE :key")
 //    List<Song> getSongsByArtistName(String key);
 
-    @Query("SELECT * FROM songs WHERE favorite = 1")
-    Flowable<List<Song>> getFavoriteSongs();
-
-    @Query("SELECT * FROM songs ORDER BY counter DESC LIMIT :limit")
-    Flowable<List<Song>> getTopNMostHeardSongs(int limit);
-
-    @Query("SELECT * FROM songs ORDER BY replay DESC LIMIT :limit")
-    Flowable<List<Song>> getTopNForYouSongs(int limit);
+//    @Query("SELECT * FROM songs WHERE favorite = 1")
+//    Flowable<List<Song>> getFavoriteSongs();
+//
+//    @Query("SELECT * FROM songs ORDER BY counter DESC LIMIT :limit")
+//    Flowable<List<Song>> getTopNMostHeardSongs(int limit);
+//
+//    @Query("SELECT * FROM songs ORDER BY replay DESC LIMIT :limit")
+//    Flowable<List<Song>> getTopNForYouSongs(int limit);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertSongs(Song... song);

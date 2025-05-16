@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.musicapp.R;
 import com.example.musicapp.data.model.song.Song;
 import com.example.musicapp.databinding.ItemSongBinding;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
+import com.example.musicapp.ui.SongListAdapter;
 import com.example.musicapp.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -79,9 +79,9 @@ public class RecentSongAdapter extends RecyclerView.Adapter<RecentSongAdapter.Vi
 
         public void bind(Song song, int position) {
             mBinding.textItemSongTitle.setText(song.getTitle());
-            mBinding.textItemSongArtist.setText(song.getArtist());
+            mBinding.textItemSongArtist.setText(song.getArtistId());
             Glide.with(mBinding.getRoot().getContext())
-                    .load(song.getImage())
+                    .load(song.getImageUrl())
                     .error(R.drawable.ic_music_note)
                     .into(mBinding.imgItemSongAvatar);
 

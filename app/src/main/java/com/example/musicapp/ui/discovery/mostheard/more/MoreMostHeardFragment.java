@@ -14,17 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.musicapp.databinding.FragmentMoreMostHeardBinding;
 import com.example.musicapp.ui.AppBaseFragment;
-import com.example.musicapp.ui.home.recommended.SongListAdapter;
-import com.example.musicapp.utils.SharedDataUtils;
-
-import java.util.ArrayList;
+import com.example.musicapp.ui.SongListAdapter;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class MoreMostHeardFragment extends AppBaseFragment {
@@ -73,17 +68,17 @@ public class MoreMostHeardFragment extends AppBaseFragment {
         mMoreMostHeardViewModel =
                 new ViewModelProvider(requireActivity(), factory).get(MoreMostHeardViewModel.class);
 
-        mDisposable.add(mMoreMostHeardViewModel.loadTop40MostHeardSongs()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(songs -> {
-                    mAdapter.updateSongs(songs);
-                    mMoreMostHeardViewModel.setSongs(songs);
-                    SharedDataUtils.setupPlaylist(songs, MOST_HEARD.getValue());
-                }, t -> {
-                    mAdapter.updateSongs(new ArrayList<>());
-                    mMoreMostHeardViewModel.setSongs(new ArrayList<>());
-                })
-        );
+//        mDisposable.add(mMoreMostHeardViewModel.loadTop40MostHeardSongs()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(songs -> {
+//                    mAdapter.updateSongs(songs);
+//                    mMoreMostHeardViewModel.setSongs(songs);
+//                    SharedDataUtils.setupPlaylist(songs, MOST_HEARD.getValue());
+//                }, t -> {
+//                    mAdapter.updateSongs(new ArrayList<>());
+//                    mMoreMostHeardViewModel.setSongs(new ArrayList<>());
+//                })
+//        );
     }
 }

@@ -2,6 +2,8 @@ package com.example.musicapp.data.source.remote;
 
 import androidx.annotation.NonNull;
 
+import com.example.musicapp.data.model.album.Album;
+import com.example.musicapp.data.model.album.AlbumById;
 import com.example.musicapp.data.model.album.AlbumList;
 import com.example.musicapp.data.source.AlbumDataSource;
 
@@ -31,6 +33,24 @@ public class RemoteAlbumDataSourceImpl implements AlbumDataSource.Remote {
 
             @Override
             public void onFailure(@NonNull Call<AlbumList> call, @NonNull Throwable throwable) {
+                callback.onFailure(call, throwable);
+            }
+        });
+    }
+
+    @Override
+    public void loadAlbumById(int id, Callback<AlbumById> callback) {
+        AppService appService = RetrofitHelper.getInstance();
+        Call<AlbumById> call = appService.getAlbumById(id);
+
+        call.enqueue(new Callback<AlbumById>() {
+            @Override
+            public void onResponse(@NonNull Call<AlbumById> call, @NonNull Response<AlbumById> response) {
+                callback.onResponse(call, response);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AlbumById> call, @NonNull Throwable throwable) {
                 callback.onFailure(call, throwable);
             }
         });

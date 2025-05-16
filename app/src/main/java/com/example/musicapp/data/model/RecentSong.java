@@ -30,14 +30,14 @@ public class RecentSong extends Song {
             sRecentSong = new RecentSong();
             sRecentSong.setId(song.getId());
             sRecentSong.setTitle(song.getTitle());
-            sRecentSong.setAlbum(song.getAlbum());
-            sRecentSong.setArtist(song.getArtist());
-            sRecentSong.setSource(song.getSource());
-            sRecentSong.setImage(song.getImage());
+//            sRecentSong.setAlbum(song.getAlbum());
+            sRecentSong.setArtistId(song.getArtistId());
+            sRecentSong.setFileUrl(song.getFileUrl());
+            sRecentSong.setImageUrl(song.getImageUrl());
             sRecentSong.setDuration(song.getDuration());
-            sRecentSong.setFavorite(song.isFavorite());
-            sRecentSong.setCounter(song.getCounter());
-            sRecentSong.setReplay(song.getReplay());
+//            sRecentSong.setFavorite(song.isFavorite());
+////            sRecentSong.setCounter(song.getCounter());
+////            sRecentSong.setReplay(song.getReplay());
             sRecentSong.mPlayAt = new Date(); // Thiết lập thời gian hiện tại cho playAt
         }
 
