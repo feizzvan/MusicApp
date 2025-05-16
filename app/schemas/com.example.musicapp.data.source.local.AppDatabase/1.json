@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "be6f9c447f39d1e2feb6b2b46f674228",
+    "identityHash": "c9153f891f31714cb8f49d6e48e682ab",
     "entities": [
       {
         "tableName": "album",
@@ -67,7 +67,7 @@
       },
       {
         "tableName": "songs",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`song_id` INTEGER NOT NULL, `title` TEXT, `artist_id` INTEGER NOT NULL, `duration` INTEGER NOT NULL, `file_url` TEXT, `image_url` TEXT, PRIMARY KEY(`song_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`song_id` INTEGER NOT NULL, `title` TEXT, `artist_id` INTEGER NOT NULL, `artist_name` TEXT, `duration` INTEGER NOT NULL, `file_url` TEXT, `image_url` TEXT, PRIMARY KEY(`song_id`))",
         "fields": [
           {
             "fieldPath": "mId",
@@ -85,6 +85,11 @@
             "columnName": "artist_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "mArtistName",
+            "columnName": "artist_name",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "mDuration",
@@ -112,7 +117,7 @@
       },
       {
         "tableName": "recent_songs",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`play_at` INTEGER, `song_id` INTEGER NOT NULL, `title` TEXT, `artist_id` INTEGER NOT NULL, `duration` INTEGER NOT NULL, `file_url` TEXT, `image_url` TEXT, PRIMARY KEY(`song_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`play_at` INTEGER, `song_id` INTEGER NOT NULL, `title` TEXT, `artist_id` INTEGER NOT NULL, `artist_name` TEXT, `duration` INTEGER NOT NULL, `file_url` TEXT, `image_url` TEXT, PRIMARY KEY(`song_id`))",
         "fields": [
           {
             "fieldPath": "mPlayAt",
@@ -135,6 +140,11 @@
             "columnName": "artist_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "mArtistName",
+            "columnName": "artist_name",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "mDuration",
@@ -325,7 +335,7 @@
       },
       {
         "tableName": "history_searched_songs",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`selected_at` INTEGER, `song_id` INTEGER NOT NULL, `title` TEXT, `artist_id` INTEGER NOT NULL, `duration` INTEGER NOT NULL, `file_url` TEXT, `image_url` TEXT, PRIMARY KEY(`song_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`selected_at` INTEGER, `song_id` INTEGER NOT NULL, `title` TEXT, `artist_id` INTEGER NOT NULL, `artist_name` TEXT, `duration` INTEGER NOT NULL, `file_url` TEXT, `image_url` TEXT, PRIMARY KEY(`song_id`))",
         "fields": [
           {
             "fieldPath": "mSelectedAt",
@@ -348,6 +358,11 @@
             "columnName": "artist_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "mArtistName",
+            "columnName": "artist_name",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "mDuration",
@@ -376,7 +391,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'be6f9c447f39d1e2feb6b2b46f674228')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c9153f891f31714cb8f49d6e48e682ab')"
     ]
   }
 }
