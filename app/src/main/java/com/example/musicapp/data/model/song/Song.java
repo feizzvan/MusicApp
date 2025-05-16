@@ -25,6 +25,18 @@ public class Song {
     @ColumnInfo(name = "artist_id")
     private int mArtistId;
 
+    @SerializedName("artistName")
+    @ColumnInfo(name = "artist_name")
+    private String mArtistName;
+
+    public String getMArtistName() {
+        return mArtistName;
+    }
+
+    public void setMArtistName(String mArtistName) {
+        this.mArtistName = mArtistName;
+    }
+
     @SerializedName("duration")
     @ColumnInfo(name = "duration")
     private int mDuration;
@@ -104,6 +116,15 @@ public class Song {
 
     public void setDuration(int duration) {
         this.mDuration = duration;
+    }
+
+    public String getFullFileUrl() {
+        // Thêm base URL của server
+        String baseUrl = "http://192.168.2.120:8080"; // Thay bằng URL thực tế của server
+        if (mFileUrl != null && !mFileUrl.startsWith("http")) {
+            return baseUrl + mFileUrl;
+        }
+        return mFileUrl;
     }
 
     @Override
